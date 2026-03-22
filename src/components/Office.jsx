@@ -25,74 +25,74 @@ export function Office(props) {
   });
 
   useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      tl.current = gsap.timeline();
+    tl.current = gsap.timeline();
 
-      // ============================================
-      // 3D CIRCLE ANIMATION (Ferris Wheel Revolution)
-      // ============================================
-      tl.current.to(ref.current.rotation, { duration: 6, x: THETA * 6 }, 0);
+    // ============================================
+    // 3D CIRCLE ANIMATION (Ferris Wheel Revolution)
+    // ============================================
+    // Revolve the entire drum containing 6 text elements
+    tl.current.to(
+      ref.current.rotation,
+      {
+        duration: 5,
+        x: THETA * 5, // Rotates exactly far enough to smoothly stop when the 6th text reaches the apex
+      },
+      0
+    );
 
-      // ============================================
-      // TEXT 1 (Starts at center)
-      // ============================================
-      tl.current.to(text1.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 0);
-      tl.current.to(text1.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 0);
-      tl.current.to(text1.current.position, { duration: 1, x: 6 }, 0);
+    // ============================================
+    // TEXT 1 (Starts at center)
+    // ============================================
+    tl.current.to(text1.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 0);
+    tl.current.to(text1.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 0);
+    tl.current.to(text1.current.position, { duration: 1, x: 6 }, 0);
 
-      // ============================================
-      // TEXT 2
-      // ============================================
-      tl.current.to(text2.current.scale, { duration: 1, x: 1, y: 1, z: 1 }, 0);
-      tl.current.to(text2.current.rotation, { duration: 1, z: 0 }, 0);
-      
-      tl.current.to(text2.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 1);
-      tl.current.to(text2.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 1);
-      tl.current.to(text2.current.position, { duration: 1, x: 6 }, 1);
+    // ============================================
+    // TEXT 2
+    // ============================================
+    tl.current.from(text2.current.scale, { duration: 1, x: 0.8, y: 0.8, z: 0.8 }, 0);
+    tl.current.from(text2.current.rotation, { duration: 2, z: -1 * (Math.PI / 180) }, 0);
 
-      // ============================================
-      // TEXT 3
-      // ============================================
-      tl.current.to(text3.current.scale, { duration: 1, x: 1, y: 1, z: 1 }, 1);
-      tl.current.to(text3.current.rotation, { duration: 1, z: 0 }, 1);
+    tl.current.to(text2.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 1);
+    tl.current.to(text2.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 1);
+    tl.current.to(text2.current.position, { duration: 1, x: 6 }, 1);
 
-      tl.current.to(text3.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 2);
-      tl.current.to(text3.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 2);
-      tl.current.to(text3.current.position, { duration: 1, x: 6 }, 2);
+    // ============================================
+    // TEXT 3
+    // ============================================
+    tl.current.from(text3.current.scale, { duration: 1, x: 0.8, y: 0.8, z: 0.8 }, 1);
+    tl.current.from(text3.current.rotation, { duration: 1, z: -1 * (Math.PI / 180) }, 1);
 
-      // ============================================
-      // TEXT 4
-      // ============================================
-      tl.current.to(text4.current.scale, { duration: 1, x: 1, y: 1, z: 1 }, 2);
-      tl.current.to(text4.current.rotation, { duration: 1, z: 0 }, 2);
+    tl.current.to(text3.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 2);
+    tl.current.to(text3.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 2);
+    tl.current.to(text3.current.position, { duration: 1, x: 6 }, 2);
 
-      tl.current.to(text4.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 3);
-      tl.current.to(text4.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 3);
-      tl.current.to(text4.current.position, { duration: 1, x: 6 }, 3);
+    // ============================================
+    // TEXT 4
+    // ============================================
+    tl.current.from(text4.current.scale, { duration: 1, x: 0.8, y: 0.8, z: 0.8 }, 2);
+    tl.current.from(text4.current.rotation, { duration: 1, z: -1 * (Math.PI / 180) }, 2);
 
-      // ============================================
-      // TEXT 5
-      // ============================================
-      tl.current.to(text5.current.scale, { duration: 1, x: 1, y: 1, z: 1 }, 3);
-      tl.current.to(text5.current.rotation, { duration: 1, z: 0 }, 3);
+    tl.current.to(text4.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 3);
+    tl.current.to(text4.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 3);
+    tl.current.to(text4.current.position, { duration: 1, x: 6 }, 3);
 
-      tl.current.to(text5.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 4);
-      tl.current.to(text5.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 4);
-      tl.current.to(text5.current.position, { duration: 1, x: 6 }, 4);
+    // ============================================
+    // TEXT 5
+    // ============================================
+    tl.current.from(text5.current.scale, { duration: 1, x: 0.8, y: 0.8, z: 0.8 }, 3);
+    tl.current.from(text5.current.rotation, { duration: 1, z: -1 * (Math.PI / 180) }, 3);
 
-      // ============================================
-      // TEXT 6 (Final Text)
-      // ============================================
-      tl.current.to(text6.current.scale, { duration: 1, x: 1, y: 1, z: 1 }, 4);
-      tl.current.to(text6.current.rotation, { duration: 1, z: 0 }, 4);
+    tl.current.to(text5.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 4);
+    tl.current.to(text5.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 4);
+    tl.current.to(text5.current.position, { duration: 1, x: 6 }, 4);
 
-      tl.current.to(text6.current.scale, { duration: 1, x: 2, y: 2, z: 2 }, 5);
-      tl.current.to(text6.current.rotation, { duration: 1, z: 10 * (Math.PI / 180) }, 5);
-      tl.current.to(text6.current.position, { duration: 1, x: 6 }, 5);
+    // ============================================
+    // TEXT 6 (Final Text)
+    // ============================================
+    tl.current.from(text6.current.scale, { duration: 1, x: 0.8, y: 0.8, z: 0.8 }, 4);
+    tl.current.from(text6.current.rotation, { duration: 1, z: -1 * (Math.PI / 180) }, 4);
 
-    });
-    
-    return () => ctx.revert();
   }, []);
 
   return (
@@ -103,46 +103,34 @@ export function Office(props) {
       position={[0, 0, -RADIUS]}
     >
       <group rotation={[0, 0, 0]}>
-        <group ref={text1} position={[0, 0, RADIUS]}>
-          <Text maxWidth={41} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
-            EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
-          </Text>
-        </group>
+        <Text ref={text1} maxWidth={41} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
+        </Text>
       </group>
       <group rotation={[-THETA, 0, 0]}>
-        <group ref={text2} scale={[0.8, 0.8, 0.8]} rotation={[0, 0, -1 * (Math.PI / 180)]} position={[0, 0, RADIUS]}>
-          <Text fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
-            RESEARCH
-          </Text>
-        </group>
+        <Text ref={text2} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          RESEARCH
+        </Text>
       </group>
       <group rotation={[-THETA * 2, 0, 0]}>
-        <group ref={text3} scale={[0.8, 0.8, 0.8]} rotation={[0, 0, -1 * (Math.PI / 180)]} position={[0, 0, RADIUS]}>
-          <Text fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
-            OPTIMISATION
-          </Text>
-        </group>
+        <Text ref={text3} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          OPTIMISATION
+        </Text>
       </group>
       <group rotation={[-THETA * 3, 0, 0]}>
-        <group ref={text4} scale={[0.8, 0.8, 0.8]} rotation={[0, 0, -1 * (Math.PI / 180)]} position={[0, 0, RADIUS]}>
-          <Text fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
-            STRATEGY
-          </Text>
-        </group>
+        <Text ref={text4} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          STRATEGY
+        </Text>
       </group>
       <group rotation={[-THETA * 4, 0, 0]}>
-        <group ref={text5} scale={[0.8, 0.8, 0.8]} rotation={[0, 0, -1 * (Math.PI / 180)]} position={[0, 0, RADIUS]}>
-          <Text fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
-            PARTNERSHIP
-          </Text>
-        </group>
+        <Text ref={text5} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          PARTNERSHIP
+        </Text>
       </group>
       <group rotation={[-THETA * 5, 0, 0]}>
-        <group ref={text6} scale={[0.8, 0.8, 0.8]} rotation={[0, 0, -1 * (Math.PI / 180)]} position={[0, 0, RADIUS]}>
-          <Text fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
-            SKILLS {"\n"} GATHERED {"\n"}OVER {"\n"}THE {"\n"}YEARS
-          </Text>
-        </group>
+        <Text ref={text6} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          SKILLS {"\n"} GATHERED {"\n"}OVER {"\n"}THE {"\n"}YEARS
+        </Text>
       </group>
     </group>
   );

@@ -1,93 +1,105 @@
-import { Scroll, useScroll } from "@react-three/drei";
+import { Html, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useState } from "react";
-
-const Section = (props) => {
-  return (
-    <section
-      className={`h-screen flex flex-col justify-center p-10 ${
-        props.right ? "items-end" : "items-start"
-      }`}
-      style={{
-        opacity: props.opacity,
-      }}
-    >
-      <div className="w-1/2 flex items-center justify-center">
-        <div className="max-w-sm w-full">
-          <div className="bg-white  rounded-lg px-8 py-12">
-            {props.children}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+import { useRef, useEffect, useState } from "react";
+import gsap from "gsap";
 
 export const Overlay = () => {
   const scroll = useScroll();
-  const [opacityFirstSection, setOpacityFirstSection] = useState(1);
-  const [opacitySecondSection, setOpacitySecondSection] = useState(1);
-  const [opacityLastSection, setOpacityLastSection] = useState(1);
+  const subRefs = useRef([]);
+  const activeSubIndex = useRef(-1);
+  const smoothOffset = useRef(0);
+  const [mounted, setMounted] = useState(false);
+  
+  const portalRef = useRef(null);
+
+  useEffect(() => {
+    portalRef.current = document.body;
+    setMounted(true);
+  }, []);
+
+  const texts = [
+    "",
+    "Understanding users, markets & possibilities",
+    "Refining flows and maximizing performance",
+    "Defining clear goals and actionable roadmaps",
+    "Collaborating to build lasting value",
+    "A foundation built on experience"
+  ];
+
+  const showSub = (index) => {
+    const sRef = subRefs.current[index];
+    if (sRef) {
+      gsap.killTweensOf(sRef);
+      gsap.fromTo(sRef, 
+        { y: 10, opacity: 0 },
+        { y: -0, opacity: 1, duration: 1, ease: "power4.out" }
+      );
+      return true;
+    }
+    return false;
+  };
+
+  const hideSub = (index) => {
+    const sRef = subRefs.current[index];
+    if (sRef) {
+      gsap.killTweensOf(sRef);
+      gsap.to(sRef, { y: 30, opacity: 0, duration: 0.4, ease: "power3.in" });
+    }
+  };
 
   useFrame(() => {
-    setOpacityFirstSection(1 - scroll.range(0, 1 / 3));
-    setOpacitySecondSection(scroll.curve(1 / 3, 1 / 3));
-    setOpacityLastSection(scroll.range(2 / 3, 1 / 3));
+    if (!mounted) return;
+
+    const raw = scroll.offset;
+    const NUM_CARDS = 6;
+    const LERP_SPEED = 0.055;
+    const step = 1 / (NUM_CARDS - 1);
+    
+    let nearest = Math.round(raw / step) * step;
+    let rawDist = Math.abs(raw - nearest);
+
+    let pullFactor = Math.max(0, 1 - (rawDist / (step / 2)));
+    pullFactor = Math.pow(pullFactor, 3);
+
+    let targetOffset = raw * (1 - pullFactor * 0.45) + nearest * (pullFactor * 0.45);
+
+    smoothOffset.current += (targetOffset - smoothOffset.current) * LERP_SPEED;
+    smoothOffset.current = Math.max(0, Math.min(1, smoothOffset.current));
+
+    const currentRender = smoothOffset.current;
+    const renderedIndex = Math.round(currentRender / step);
+    const dist = Math.abs(currentRender - (renderedIndex * step));
+    
+    if (dist < 0.015) {
+      if (activeSubIndex.current !== renderedIndex) {
+        if (activeSubIndex.current !== -1) hideSub(activeSubIndex.current);
+        if (showSub(renderedIndex)) {
+            activeSubIndex.current = renderedIndex;
+        }
+      }
+    } else if (dist > 0.035) {
+      if (activeSubIndex.current !== -1) {
+        hideSub(activeSubIndex.current);
+        activeSubIndex.current = -1;
+      }
+    }
   });
 
+  if (!mounted || !portalRef.current) return null;
+
   return (
-    <Scroll html>
-      <div class="w-screen">
-        <Section opacity={opacityFirstSection}>
-          <h1 className="font-semibold font-serif text-2xl">
-            Hello, I'm Wawa Sensei
-          </h1>
-          <p className="text-gray-500">Welcome to my beautiful portfolio</p>
-          <p className="mt-3">I know:</p>
-          <ul className="leading-9">
-            <li>🧑‍💻 How to code</li>
-            <li>🧑‍🏫 How to learn</li>
-            <li>📦 How to deliver</li>
-          </ul>
-          <p className="animate-bounce  mt-6">↓</p>
-        </Section>
-        <Section right opacity={opacitySecondSection}>
-          <h1 className="font-semibold font-serif text-2xl">
-            Here are my skillsets 🔥
-          </h1>
-          <p className="text-gray-500">PS: I never test</p>
-          <p className="mt-3">
-            <b>Frontend 🚀</b>
+    <Html portal={portalRef} className="pointer-events-none z-[999]">
+      <div className="fixed top-[0vh] right-10 w-full flex justify-center text-center px-4 pointer-events-none">
+        {texts.map((txt, i) => (
+          <p 
+            key={i} 
+            ref={(el) => subRefs.current[i] = el}
+            className="absolute left-0 w-full text-lg md:text-xl font-medium text-gray-700 tracking-wide font-sans opacity-0 translate-y-[30px]"
+          >
+            {txt}
           </p>
-          <ul className="leading-9">
-            <li>ReactJS</li>
-            <li>React Native</li>
-            <li>VueJS</li>
-            <li>Tailwind</li>
-          </ul>
-          <p className="mt-3">
-            <b>Backend 🔬</b>
-          </p>
-          <ul className="leading-9">
-            <li>NodeJS</li>
-            <li>tRPC</li>
-            <li>NestJS</li>
-            <li>PostgreSQL</li>
-          </ul>
-          <p className="animate-bounce  mt-6">↓</p>
-        </Section>
-        <Section opacity={opacityLastSection}>
-          <h1 className="font-semibold font-serif text-2xl">
-            🤙 Call me maybe?
-          </h1>
-          <p className="text-gray-500">
-            I'm very expensive but you won't regret it
-          </p>
-          <p className="mt-6 p-3 bg-slate-200 rounded-lg">
-            📞 <a href="tel:(+42) 4242-4242-424242">(+42) 4242-4242-424242</a>
-          </p>
-        </Section>
+        ))}
       </div>
-    </Scroll>
+    </Html>
   );
 };

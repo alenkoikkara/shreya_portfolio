@@ -8,7 +8,7 @@ export const THETA = Math.PI / 20;
 
 const NUM_CARDS = 6;
 
-export function Office(props) {
+export function Carousel3D(props) {
   const ref = useRef();
   const tl = useRef();
   const text1 = useRef();
@@ -140,9 +140,6 @@ export function Office(props) {
       <group rotation={[0, 0, 0]}>
         <Text ref={text1} maxWidth={41} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
           EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
-        </Text>
-        <Text position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
-          smalls
         </Text>
       </group>
       <group rotation={[-THETA, 0, 0]}>

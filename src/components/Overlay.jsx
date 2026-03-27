@@ -1,105 +1,149 @@
-import { Html, useScroll } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { PIN_DURATION } from "./Carousel3D";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const texts = [
+  {
+    title: "",
+    subTitle: ""
+  },
+  {
+    title: "Primary Reasearch",
+    subTitle: "I love the process of discovering the real problem statement it gives me purpose, and more importantly, it gives the team clarity and direction. When we understand the core issue, every design decision becomes more intentional, and the impact becomes more meaningful."
+  },
+  {
+    title: "Performance & optimization",
+    subTitle: "Designing and delivering a product is an incredibly fulfilling experience, but assuming users will engage with it exactly as intended is just wishful thinking."
+  },
+  {
+    title: "North Stars & Strategy",
+    subTitle: "As I gained more experience in product design, I realized that strategy isn’t optional it’s essential for a product’s success. A great design means little if it doesn’t align with business goals and user needs."
+  },
+  {
+    title: "Partnership & Collaboration",
+    subTitle: "My design work thrives through meaningful collaboration across teams. With Product Managers, I leverage deep product knowledge to define clear priorities and acceptance criteria. Engineering partnerships involve finding the optimal balance between design vision and technical feasibility without compromising user value"
+  },
+  {
+    title: "A foundation built on experience",
+    subTitle: "I love the process of discovering the real problem statement it gives me purpose, and more importantly, it gives the team clarity and direction. When we understand the core issue, every design decision becomes more intentional, and the impact becomes more meaningful."
+  }
+]
 
 export const Overlay = () => {
-  const scroll = useScroll();
   const subRefs = useRef([]);
-  const activeSubIndex = useRef(-1);
-  const smoothOffset = useRef(0);
   const [mounted, setMounted] = useState(false);
-  
-  const portalRef = useRef(null);
 
   useEffect(() => {
-    portalRef.current = document.body;
     setMounted(true);
   }, []);
 
-  const texts = [
-    "",
-    "Understanding users, markets & possibilities",
-    "Refining flows and maximizing performance",
-    "Defining clear goals and actionable roadmaps",
-    "Collaborating to build lasting value",
-    "A foundation built on experience"
-  ];
-
-  const showSub = (index) => {
-    const sRef = subRefs.current[index];
-    if (sRef) {
-      gsap.killTweensOf(sRef);
-      gsap.fromTo(sRef, 
-        { y: 10, opacity: 0 },
-        { y: -0, opacity: 1, duration: 1, ease: "power4.out" }
-      );
-      return true;
-    }
-    return false;
-  };
-
-  const hideSub = (index) => {
-    const sRef = subRefs.current[index];
-    if (sRef) {
-      gsap.killTweensOf(sRef);
-      gsap.to(sRef, { y: 30, opacity: 0, duration: 0.4, ease: "power3.in" });
-    }
-  };
-
-  useFrame(() => {
+  useEffect(() => {
     if (!mounted) return;
 
-    const raw = scroll.offset;
-    const NUM_CARDS = 6;
-    const LERP_SPEED = 0.055;
-    const step = 1 / (NUM_CARDS - 1);
-    
-    let nearest = Math.round(raw / step) * step;
-    let rawDist = Math.abs(raw - nearest);
+    // Initialize state
+    subRefs.current.forEach((el, i) => {
+      if (!el) return;
+      if (i === 0) {
+        gsap.set(el, { opacity: 1, y: 0 }); // First is visible
+      } else {
+        gsap.set(el, { opacity: 0, y: 10 }); // Others start hidden/displaced
+      }
+    });
 
-    let pullFactor = Math.max(0, 1 - (rawDist / (step / 2)));
-    pullFactor = Math.pow(pullFactor, 3);
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.5
+      }
+    });
 
-    let targetOffset = raw * (1 - pullFactor * 0.45) + nearest * (pullFactor * 0.45);
+    tl.to({}, { duration: 5 });
+    texts.forEach((_, i) => {
+      const el = subRefs.current[i];
+      if (!el) return;
 
-    smoothOffset.current += (targetOffset - smoothOffset.current) * LERP_SPEED;
-    smoothOffset.current = Math.max(0, Math.min(1, smoothOffset.current));
+      const peakTime = i;
 
-    const currentRender = smoothOffset.current;
-    const renderedIndex = Math.round(currentRender / step);
-    const dist = Math.abs(currentRender - (renderedIndex * step));
-    
-    if (dist < 0.015) {
-      if (activeSubIndex.current !== renderedIndex) {
-        if (activeSubIndex.current !== -1) hideSub(activeSubIndex.current);
-        if (showSub(renderedIndex)) {
-            activeSubIndex.current = renderedIndex;
+      // Animate In (except first which is already visible)
+      if (i > 0) {
+        const entryEndTime = peakTime - PIN_DURATION / 2;
+        const entryStartTime = peakTime - 0.4; // Starts well after previous card exits
+
+        if (entryStartTime < entryEndTime) {
+          const inDur = entryEndTime - entryStartTime;
+          tl.fromTo(
+            el,
+            { opacity: 0 },
+            { opacity: 1, duration: inDur, ease: "power2.out" },
+            entryStartTime
+          );
         }
       }
-    } else if (dist > 0.035) {
-      if (activeSubIndex.current !== -1) {
-        hideSub(activeSubIndex.current);
-        activeSubIndex.current = -1;
-      }
-    }
-  });
 
-  if (!mounted || !portalRef.current) return null;
+      // Animate Out (except the last one)
+      if (i < texts.length - 1) {
+        const exitStartTime = peakTime + PIN_DURATION / 2;
+        const exitEndTime = peakTime + 0.4; // Ends well before next card enters
+        const outDur = exitEndTime - exitStartTime;
+
+        tl.to(
+          el,
+          { opacity: 0, duration: outDur, ease: "power2.in" },
+          exitStartTime
+        );
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, [mounted]);
+
+  if (!mounted) return null;
 
   return (
-    <Html portal={portalRef} className="pointer-events-none z-[999]">
-      <div className="fixed top-[0vh] right-10 w-full flex justify-center text-center px-4 pointer-events-none">
-        {texts.map((txt, i) => (
-          <p 
-            key={i} 
-            ref={(el) => subRefs.current[i] = el}
-            className="absolute left-0 w-full text-lg md:text-xl font-medium text-gray-700 tracking-wide font-sans opacity-0 translate-y-[30px]"
-          >
-            {txt}
-          </p>
-        ))}
-      </div>
-    </Html>
+    <div className="fixed top-[60vh] right-0 w-full flex justify-end px-4 pointer-events-none z-[999]">
+      {texts.map((txt, i) => (
+        <div
+          key={i}
+          ref={(el) => subRefs.current[i] = el}
+          className="absolute right-0 text-[clamp(0.65rem,1vw,1.05rem)] tracking-wide font-sans flex items-end justify-between w-full"
+          style={{ transform: i === 0 ? 'translateY(0)' : 'translateY(20px)', opacity: i === 0 ? 1 : 0 }}
+        >
+          <div className="flex flex-col items-end max-w-sm opacity-0">
+            <div className="font-medium text-left w-full">
+              {txt.title}
+            </div>
+            <div className="font-normal max-w-sm">
+              {txt.subTitle}
+            </div>
+          </div>
+          {txt.title &&
+            <div
+              className="relative overflow-hidden rounded-full cursor-pointer pointer-events-auto group"
+              style={{ background: 'black' }}
+            >
+
+              <div className="relative z-10 px-5 py-3 text-[12px] font-light text-white group-hover:text-black transition-colors duration-300 whitespace-nowrap">
+                VIEW PROJECT →
+              </div>
+            </div>
+          }
+          <div className="flex flex-col items-end max-w-sm mr-10">
+            <div className="font-medium text-left w-full">
+              {txt.title}
+            </div>
+            <div className="font-light max-w-sm">
+              {txt.subTitle}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };

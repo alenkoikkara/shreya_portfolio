@@ -91,7 +91,7 @@ export function Carousel3D(props) {
         );
         tl.current.to(
           textRef.current.rotation,
-          { duration: outDur, z: exitUp ? -0.05 : 0.05, y: exitUp ? -0.05 : 0.05, ease: "sine.inOut" },
+          { duration: outDur, z: exitUp ? -0.05 : 0.05, y: 0.05, ease: "sine.inOut" },
           exitStartTime
         );
         tl.current.to(

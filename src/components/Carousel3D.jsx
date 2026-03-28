@@ -305,7 +305,7 @@ export function Carousel3D(props) {
             position={[25, 0, 0]}
             fontSize={.7}
             color="#1A1A1A"
-            font="./fonts/NeueMachina-Regular.otf"
+            font="sans"
             maxWidth={12}
             lineHeight={0.9}
             anchorX="left"

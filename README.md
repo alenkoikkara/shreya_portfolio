@@ -62,4 +62,4 @@ LinkedIn: [Shreya](https://www.linkedin.com/in/shreya-18/)
 
 ---
 
-Designed and developed with ❤️ for a premium user experience.
+Designed and developed with ❤️ by Alen Koikkara.

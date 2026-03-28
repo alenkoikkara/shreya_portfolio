@@ -25,7 +25,7 @@ function App() {
           <Experience />
         </Canvas>
       </div>
-      
+
       <Overlay />
 
       {/* Scroll area for GSAP ScrollTrigger (3D Carousel) */}

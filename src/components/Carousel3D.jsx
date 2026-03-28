@@ -14,22 +14,22 @@ const NUM_CARDS = 5;
 
 const SkillCard = ({ text, icon, index, setRef }) => {
   return (
-    <group 
+    <group
       ref={setRef}
       position={[-20, -10, -5]} // Initial off-screen
     >
-      <Html 
-        transform 
-        distanceFactor={10} 
+      <Html
+        transform
+        distanceFactor={10}
         portal={undefined}
         occlude={false}
       >
         <div style={{
-          background: "rgba(255, 255, 255, 0.1)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
+          background: "rgba(255, 255, 255, 0.6)",
+          backdropFilter: "blur(308px)",
+          WebkitBackdropFilter: "blur(308px)",
           border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: "16px",
+          borderRadius: "10px",
           padding: "12px 30px",
           display: "flex",
           alignItems: "center",
@@ -40,10 +40,11 @@ const SkillCard = ({ text, icon, index, setRef }) => {
           fontSize: "20px",
           fontWeight: "400",
           fontFamily: "NeueMachina-Regular, sans-serif",
-          userSelect: "none"
+          userSelect: "none",
+          zIndex: 100
         }}>
           <span style={{ fontSize: "1.2em", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>{icon}</span>
-          <span style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}>{text}</span>
+          <span style={{ fontSize: "1.2em", letterSpacing: "0.08em", textTransform: "uppercase" }}>{text}</span>
         </div>
       </Html>
     </group>
@@ -60,6 +61,8 @@ export function Carousel3D(props) {
   const text5 = useRef();
   const text5Group = useRef();
   const skillsTitleRef = useRef();
+  const skillsSubRef = useRef();
+  const skillsContentRef = useRef();
   const skillCardsRef = useRef([]);
   const skillsGroupRef = useRef();
 
@@ -156,69 +159,77 @@ export function Carousel3D(props) {
 
     // ── SKILLS SECTION ANIMATION (Starts at t=5) ───────────────────────────
     const skillsStart = 5;
-    const cardDuration = 1.0;
     const cardStagger = 0.4;
-    const cardHold = 1.2;
-    const cardExitDuration = 0.8;
-    
-    // 1. Skills Title Slide Up to Center
+
+    // 1. Skills Title & Subtitle Slide Up to Center
     tl.current.fromTo(
-      skillsTitleRef.current.position,
-      { y: -30, x: -12 },
-      { y: 0, x: -12, duration: 1, ease: "power2.out" },
+      skillsContentRef.current.position,
+      { y: -30 },
+      { y: 7, duration: 1, ease: "power2.out" },
       skillsStart
     );
 
-    // 2. Skill Cards Sequential Flow
+    // 2. Skill Cards Sequential Flow (Continuous Ferris-Wheel Motion)
+    const cardTravelDuration = 2.5; // Total time for one card to cross the screen
     let lastCardExitTime = skillsStart;
 
     skillCardsRef.current.forEach((card, i) => {
       if (!card) return;
-      
-      const entryTime = skillsStart + 0.8 + i * cardStagger;
-      const exitTime = entryTime + cardDuration + cardHold;
-      const finalX = 1.5 + i * 1.5; // More compact layout
-      const finalY = -5 + i * 1.2;
-      
-      lastCardExitTime = Math.max(lastCardExitTime, exitTime + cardExitDuration);
 
-      // Entry
+      const startTime = skillsStart + 1.2 + i * cardStagger;
+      const peakX = 3 + i * 0.5; // Mid-point offsets
+      const peakY = 2 + i * 0.6;
+      const endTime = startTime + cardTravelDuration;
+
+      lastCardExitTime = Math.max(lastCardExitTime, endTime);
+
+      // Entire Path: Bottom Right -> Peak -> Bottom Left
+      // We use two segments with no pause back-to-back
+      const segmentDuration = cardTravelDuration / 2;
+
+      // Segment 1: Bottom Right to Peak
       tl.current.fromTo(
         card.position,
-        { x: 30, y: finalY - 5, z: -10 },
-        { 
-          duration: cardDuration, 
-          x: finalX,
-          y: finalY,
+        { x: 30, y: -25, z: -10 },
+        {
+          duration: segmentDuration,
+          x: peakX,
+          y: 0,
           z: 0,
-          ease: "power2.out"
+          ease: "sine.inOut"
         },
-        entryTime
+        startTime
       );
-      
       tl.current.fromTo(
-        card.scale,
-        { x: 0, y: 0, z: 0 },
-        { duration: cardDuration, x: 1, y: 1, z: 1, ease: "back.out(1.5)" },
-        entryTime
+        card.rotation,
+        { z: -0.3, y: 0.4 },
+        { duration: segmentDuration, z: 0, y: 0, ease: "sine.inOut" },
+        startTime
       );
 
-      // Exit
+      // Segment 2: Peak to Bottom Left
       tl.current.to(
         card.position,
-        { 
-          duration: cardExitDuration, 
-          x: finalX - 40, 
-          y: finalY + 15, 
-          ease: "power2.in" 
+        {
+          duration: segmentDuration,
+          x: -30,
+          y: -25,
+          z: -10,
+          ease: "sine.inOut"
         },
-        exitTime
+        startTime + segmentDuration
+      );
+
+      tl.current.to(
+        card.rotation,
+        { duration: segmentDuration, z: 0.3, y: -0.4, ease: "sine.inOut" },
+        startTime + segmentDuration
       );
 
       tl.current.to(
         card.scale,
-        { duration: cardExitDuration, x: 0, y: 0, z: 0, ease: "power2.in" },
-        exitTime
+        { duration: segmentDuration, x: 0, y: 0, z: 0, ease: "sine.in" },
+        startTime + segmentDuration
       );
     });
 
@@ -230,7 +241,7 @@ export function Carousel3D(props) {
     );
 
     // Ensure the timeline has enough total duration
-    tl.current.to({}, { duration: 1 }, lastCardExitTime + 2); 
+    tl.current.to({}, { duration: 1 }, lastCardExitTime + 2);
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -275,20 +286,34 @@ export function Carousel3D(props) {
 
       {/* Skills Section */}
       <group ref={skillsGroupRef} position={[0, 0, 0]}>
-        <Text
-          ref={skillsTitleRef}
-          position={[-12, -30, 0]} 
-          fontSize={4.5}
-          color="#1A1A1A"
-          font="./fonts/NeueMachina-Regular.otf"
-          maxWidth={12}
-          lineHeight={0.8}
-          anchorX="left"
-          anchorY="middle"
-        >
-          SKILLS{"\n"}GATHERED{"\n"}OVER THE{"\n"}YEARS
-        </Text>
-
+        <group ref={skillsContentRef} position={[-18, 0, 0]}>
+          <Text
+            ref={skillsTitleRef}
+            position={[-3, 0, 0]}
+            fontSize={4.5}
+            color="#1A1A1A"
+            font="./fonts/NeueMachina-Regular.otf"
+            maxWidth={22}
+            lineHeight={0.8}
+            anchorX="left"
+            anchorY="top"
+          >
+            SKILLS GATHERED OVER THE YEARS
+          </Text>
+          <Text
+            ref={skillsSubRef}
+            position={[25, 0, 0]}
+            fontSize={.7}
+            color="#1A1A1A"
+            font="./fonts/NeueMachina-Regular.otf"
+            maxWidth={12}
+            lineHeight={0.9}
+            anchorX="left"
+            anchorY="top"
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+          </Text>
+        </group>
         <SkillCard index={0} text="DESIGN THINKING" icon="♛" setRef={el => skillCardsRef.current[0] = el} />
         <SkillCard index={1} text="DATA INSIGHT" icon="📊" setRef={el => skillCardsRef.current[1] = el} />
         <SkillCard index={2} text="SYSTEMS THINKING" icon="☰" setRef={el => skillCardsRef.current[2] = el} />

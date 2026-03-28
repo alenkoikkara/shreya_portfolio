@@ -25,6 +25,10 @@ const texts = [
   {
     title: "Partnership & Collaboration",
     subTitle: "My design work thrives through meaningful collaboration across teams. With Product Managers, I leverage deep product knowledge to define clear priorities and acceptance criteria. Engineering partnerships involve finding the optimal balance between design vision and technical feasibility without compromising user value"
+  },
+  {
+    title: "",
+    subTitle: ""
   }
 ]
 

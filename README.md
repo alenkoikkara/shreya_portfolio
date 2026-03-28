@@ -56,9 +56,9 @@ A high-fidelity, interactive 3D portfolio website built with **React**, **Three.
 
 ## 📧 Contact
 
-**Shreya**  
-Email: [ar.shreya18@gmail.com](mailto:ar.shreya18@gmail.com)  
-LinkedIn: [Shreya](https://www.linkedin.com/in/shreya-18/)
+**Alen Koikkara**  
+Email: [alendennis44@gmail.com](mailto:alendennis44@gmail.com)  
+LinkedIn: [Alen Koikkara](https://www.linkedin.com/in/alenkoikkara/)
 
 ---
 

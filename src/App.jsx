@@ -2,6 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import "./App.css";
 import { Experience } from "./components/Experience";
 import { Overlay } from "./components/Overlay";
+import { Navbar } from "./components/Navbar";
 import { useEffect } from "react";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         </Canvas>
       </div>
 
+      <Navbar />
       <Overlay />
 
       {/* Scroll area for GSAP ScrollTrigger (3D Carousel) */}

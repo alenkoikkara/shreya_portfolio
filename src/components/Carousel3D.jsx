@@ -1,8 +1,8 @@
 import { Text, Html } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,40 +14,122 @@ export const PIN_DURATION = 0.1;
 const NUM_CARDS = 5;
 
 const SkillCard = ({ text, icon, index, setRef }) => {
+  const floatingRef = useRef();
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+
+  const shearX = useRef(0);
+  const shearY = useRef(0);
+
+  useFrame(() => {
+    if (!floatingRef.current) return;
+    const targetX = hovered ? mouse.x * 0.05 : 0;
+    const targetY = hovered ? mouse.y * 0.05 : 0;
+    
+    shearX.current = THREE.MathUtils.lerp(shearX.current, targetX, 0.005);
+    shearY.current = THREE.MathUtils.lerp(shearY.current, targetY, 0.005);
+    
+    floatingRef.current.matrix.set(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      shearX.current, shearY.current, 1, 0,
+      0, 0, 0, 1
+    );
+    floatingRef.current.matrixAutoUpdate = false;
+  });
+
   return (
     <group
       ref={setRef}
       position={[-20, -10, -5]} // Initial off-screen
     >
-      <Html
-        transform
-        distanceFactor={10}
-        portal={undefined}
-        occlude={false}
+      <group ref={floatingRef}>
+        <mesh 
+          visible={false} 
+          onPointerMove={(e) => {
+            e.stopPropagation();
+            setMouse({ x: e.uv.x * 2 - 1, y: e.uv.y * 2 - 1 });
+            setHovered(true);
+          }}
+          onPointerLeave={() => setHovered(false)}
+        >
+          <planeGeometry args={[14, 4]} />
+        </mesh>
+        <Html
+          transform
+          distanceFactor={10}
+          portal={undefined}
+          occlude={false}
+          style={{ pointerEvents: 'none' }}
+        >
+          <div style={{
+            background: "rgba(255, 255, 255, 0.6)",
+            backdropFilter: "blur(308px)",
+            WebkitBackdropFilter: "blur(308px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            borderRadius: "10px",
+            padding: "12px 30px",
+            display: "flex",
+            alignItems: "center",
+            gap: "18px",
+            color: "black",
+            whiteSpace: "nowrap",
+            boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.1)",
+            fontSize: "20px",
+            fontWeight: "400",
+            fontFamily: "NeueMachina-Regular, sans-serif",
+            userSelect: "none",
+            zIndex: 100
+          }}>
+            <span style={{ fontSize: "1.2em", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>{icon}</span>
+            <span style={{ fontSize: "1.2em", letterSpacing: "0.08em", textTransform: "uppercase" }}>{text}</span>
+          </div>
+        </Html>
+      </group>
+    </group>
+  );
+};
+
+const DrumText = ({ children, floatingRef, textRef, ...props }) => {
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+
+  const shearX = useRef(0);
+  const shearY = useRef(0);
+
+  useFrame(() => {
+    if (!floatingRef.current) return;
+    const targetX = hovered ? mouse.x * 0.04 : 0;
+    const targetY = hovered ? mouse.y * 0.04 : 0;
+    
+    shearX.current = THREE.MathUtils.lerp(shearX.current, targetX, 0.009);
+    shearY.current = THREE.MathUtils.lerp(shearY.current, targetY, 0.009);
+    
+    floatingRef.current.matrix.set(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      shearX.current, shearY.current, 1, 0,
+      0, 0, 0, 1
+    );
+    floatingRef.current.matrixAutoUpdate = false;
+  });
+
+  return (
+    <group ref={floatingRef}>
+      <Text 
+        {...props} 
+        ref={textRef}
+        onPointerMove={(e) => {
+          e.stopPropagation();
+          if (e.uv) {
+            setMouse({ x: e.uv.x * 2 - 1, y: e.uv.y * 2 - 1 });
+            setHovered(true);
+          }
+        }}
+        onPointerLeave={() => setHovered(false)}
       >
-        <div style={{
-          background: "rgba(255, 255, 255, 0.6)",
-          backdropFilter: "blur(308px)",
-          WebkitBackdropFilter: "blur(308px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: "10px",
-          padding: "12px 30px",
-          display: "flex",
-          alignItems: "center",
-          gap: "18px",
-          color: "black",
-          whiteSpace: "nowrap",
-          boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.1)",
-          fontSize: "20px",
-          fontWeight: "400",
-          fontFamily: "NeueMachina-Regular, sans-serif",
-          userSelect: "none",
-          zIndex: 100
-        }}>
-          <span style={{ fontSize: "1.2em", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>{icon}</span>
-          <span style={{ fontSize: "1.2em", letterSpacing: "0.08em", textTransform: "uppercase" }}>{text}</span>
-        </div>
-      </Html>
+        {children}
+      </Text>
     </group>
   );
 };
@@ -78,6 +160,12 @@ export function Carousel3D({ bokehRef, ...props }) {
   const contactGroupRef = useRef();
   const contactTitleRef = useRef();
 
+  const text1Floating = useRef();
+  const text2Floating = useRef();
+  const text3Floating = useRef();
+  const text4Floating = useRef();
+  const text5Floating = useRef();
+
   const { size } = useThree();
   const responsiveScale = size.width / 1440;
 
@@ -91,48 +179,48 @@ export function Carousel3D({ bokehRef, ...props }) {
         scrub: 3,
       }
     });
-    
+
     // ── Bokeh Background Randomized 3D Path Scrolling ────────────────────────
     if (bokehRef.current && bokehRef.current.blobs) {
-        const fullTime = 30;
-        
-        // Blob 1: Spiral descent on the leftish side
-        tl.current.fromTo(bokehRef.current.blobs[0].group.position, 
-            { y: 25, z: -10 }, 
-            { y: -25, z: 10, duration: fullTime, ease: "none" }, 0
-        );
-        tl.current.fromTo(bokehRef.current.blobs[0].group.rotation, 
-            { z: 0 }, 
-            { z: Math.PI * 6, duration: fullTime, ease: "none" }, 0
-        );
+      const fullTime = 30;
 
-        // Blob 2: Spiral descent on the rightish side (opposite start)
-        tl.current.fromTo(bokehRef.current.blobs[1].group.position, 
-            { y: 30, z: 10 }, 
-            { y: -30, z: -10, duration: fullTime, ease: "none" }, 0
-        );
-        tl.current.fromTo(bokehRef.current.blobs[1].group.rotation, 
-            { z: Math.PI }, 
-            { z: Math.PI * 7, duration: fullTime, ease: "none" }, 0
-        );
+      // Blob 1: Spiral descent on the leftish side
+      tl.current.fromTo(bokehRef.current.blobs[0].group.position,
+        { y: 25, z: -10 },
+        { y: -25, z: 10, duration: fullTime, ease: "none" }, 0
+      );
+      tl.current.fromTo(bokehRef.current.blobs[0].group.rotation,
+        { z: 0 },
+        { z: Math.PI * 6, duration: fullTime, ease: "none" }, 0
+      );
+
+      // Blob 2: Spiral descent on the rightish side (opposite start)
+      tl.current.fromTo(bokehRef.current.blobs[1].group.position,
+        { y: 30, z: 10 },
+        { y: -30, z: -10, duration: fullTime, ease: "none" }, 0
+      );
+      tl.current.fromTo(bokehRef.current.blobs[1].group.rotation,
+        { z: Math.PI },
+        { z: Math.PI * 7, duration: fullTime, ease: "none" }, 0
+      );
     }
-    
+
     const peachPalette = { c1: "#FFCAB1", c2: "#FCD5CE", c3: "#FEC5BB" };
 
     function animateBokehColors(index, time) {
-        if (!bokehRef.current || !bokehRef.current.blobs) return;
-        const colors = peachPalette; // Always use peach palette
-        bokehRef.current.blobs.forEach((blob, i) => {
-            if (!blob) return;
-            const targetColor = i === 0 ? colors.c1 : colors.c2;
-            tl.current.to(blob.material.uniforms.uColor.value, {
-                r: new THREE.Color(targetColor).r,
-                g: new THREE.Color(targetColor).g,
-                b: new THREE.Color(targetColor).b,
-                duration: 1.5,
-                ease: "power2.inOut"
-            }, time);
-        });
+      if (!bokehRef.current || !bokehRef.current.blobs) return;
+      const colors = peachPalette; // Always use peach palette
+      bokehRef.current.blobs.forEach((blob, i) => {
+        if (!blob) return;
+        const targetColor = i === 0 ? colors.c1 : colors.c2;
+        tl.current.to(blob.material.uniforms.uColor.value, {
+          r: new THREE.Color(targetColor).r,
+          g: new THREE.Color(targetColor).g,
+          b: new THREE.Color(targetColor).b,
+          duration: 1.5,
+          ease: "power2.inOut"
+        }, time);
+      });
     }
 
     // Initial peach setup
@@ -420,29 +508,29 @@ export function Carousel3D({ bokehRef, ...props }) {
         position={[0, 0, -RADIUS]}
       >
         <group rotation={[0, 0, 0]}>
-          <Text ref={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
-          </Text>
+          </DrumText>
         </group>
         <group rotation={[-THETA, 0, 0]}>
-          <Text ref={text2} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          <DrumText floatingRef={text2Floating} textRef={text2} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             RESEARCH
-          </Text>
+          </DrumText>
         </group>
         <group rotation={[-THETA * 2, 0, 0]}>
-          <Text ref={text3} position={[0, 0, RADIUS]} fontSize={5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          <DrumText floatingRef={text3Floating} textRef={text3} position={[0, 0, RADIUS]} fontSize={5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             OPTIMISATION
-          </Text>
+          </DrumText>
         </group>
         <group rotation={[-THETA * 3, 0, 0]}>
-          <Text ref={text4} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          <DrumText floatingRef={text4Floating} textRef={text4} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             STRATEGY
-          </Text>
+          </DrumText>
         </group>
         <group ref={text5Group} rotation={[-THETA * 4, 0, 0]}>
-          <Text ref={text5} position={[0, 0, RADIUS]} fontSize={4.5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          <DrumText floatingRef={text5Floating} textRef={text5} position={[0, 0, RADIUS]} fontSize={4.5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             PARTNERSHIP
-          </Text>
+          </DrumText>
         </group>
       </group>
 
@@ -507,7 +595,7 @@ export function Carousel3D({ bokehRef, ...props }) {
             fontSize={.5}
             color="#1A1A1A"
             maxWidth={12}
-            lineHeight={1 }
+            lineHeight={1}
             anchorX="left"
             anchorY="top"
           >
@@ -547,7 +635,7 @@ export function Carousel3D({ bokehRef, ...props }) {
         <Text
           ref={contactTitleRef}
           position={[-3, 0, 0]}
-          fontSize={5}
+          fontSize={4.5}
           lineHeight={0.8}
           color="#1A1A1A"
           font="./fonts/NeueMachina-Regular.otf"
@@ -600,7 +688,7 @@ export function Carousel3D({ bokehRef, ...props }) {
         </Html> */}
 
         {/* Action Buttons Linkage */}
-        <Html position={[35, 0, 0]} transform distanceFactor={10}>
+        <Html position={[34, 0, 0]} transform distanceFactor={10}>
           <div style={{
             display: "flex",
             flexDirection: "column",
@@ -609,12 +697,12 @@ export function Carousel3D({ bokehRef, ...props }) {
             fontFamily: "sans-serif",
             color: "#1A1A1A"
           }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #1A1A1A", padding: "15px 0" }}>
-              <span style={{ fontSize: "14px", fontWeight: "300" }}>AR.SHREYA18@GMAIL.COM</span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #1A1A1A", padding: "35px 0" }}>
+              <span style={{ fontSize: "20px", fontWeight: "300" }}>AR.SHREYA18@GMAIL.COM</span>
               <div style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
             </div>
-            <div style={{ borderTop: "1px solid #1A1A1A", padding: "15px 0", fontSize: "14px", fontWeight: "300", cursor: "pointer" }}>LINKEDIN</div>
-            <div style={{ borderTop: "1px solid #1A1A1A", padding: "15px 0", fontSize: "14px", fontWeight: "300", cursor: "pointer" }}>DOWNLOAD RESUME</div>
+            <div style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>LINKEDIN</div>
+            <div style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>DOWNLOAD RESUME</div>
           </div>
         </Html>
 

@@ -1,0 +1,87 @@
+import { useMemo, useRef, forwardRef, useImperativeHandle } from "react";
+import { Float } from "@react-three/drei";
+import * as THREE from "three";
+
+const BokehBlob = forwardRef(({ offset, color, size, speed }, ref) => {
+  const groupRef = useRef();
+  const meshRef = useRef();
+  const colorObj = useMemo(() => new THREE.Color(color), []);
+
+  const shaderArgs = useMemo(() => ({
+    uniforms: {
+      uColor: { value: colorObj },
+      uOpacity: { value: 0.27 }, 
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+      uniform vec3 uColor;
+      uniform float uOpacity;
+      void main() {
+        float dist = distance(vUv, vec2(0.5));
+        float alpha = smoothstep(0.5, 0.0, dist);
+        gl_FragColor = vec4(uColor, alpha * uOpacity);
+      }
+    `,
+    transparent: true,
+    depthWrite: false,
+  }), []);
+
+  useImperativeHandle(ref, () => ({
+    setColor: (newColor) => {
+       meshRef.current.material.uniforms.uColor.value.lerp(new THREE.Color(newColor), 0.05);
+    },
+    get group() { return groupRef.current; },
+    get material() { return meshRef.current.material; }
+  }));
+
+  return (
+    <group ref={groupRef}>
+      <Float speed={speed} rotationIntensity={0.5} floatIntensity={1}>
+        <mesh ref={meshRef} position={offset}>
+          <circleGeometry args={[size, 64]} />
+          <shaderMaterial args={[shaderArgs]} />
+        </mesh>
+      </Float>
+    </group>
+  );
+});
+
+export const BokehBackground = forwardRef((props, ref) => {
+  const groupRef = useRef();
+  const blob1 = useRef();
+  const blob2 = useRef();
+
+  useImperativeHandle(ref, () => ({
+    get group() { return groupRef.current; },
+    // Direct access to blobs for GSAP
+    get blobs() {
+       return [blob1.current, blob2.current];
+    }
+  }));
+
+  return (
+    <group ref={groupRef} position={[0, 0, -50]}>
+      <BokehBlob 
+        ref={blob1}
+        offset={[-20, 0, 0]} 
+        color="#FFE5B4" 
+        size={35} 
+        speed={1}
+      />
+      <BokehBlob 
+        ref={blob2}
+        offset={[25, 0, 0]} 
+        color="#FFE5B4" 
+        size={45} 
+        speed={1.2}
+      />
+    </group>
+  );
+});

@@ -3,6 +3,7 @@ import { useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useLayoutEffect, useRef } from "react";
+import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,7 +52,7 @@ const SkillCard = ({ text, icon, index, setRef }) => {
   );
 };
 
-export function Carousel3D(props) {
+export function Carousel3D({ bokehRef, ...props }) {
   const ref = useRef();
   const tl = useRef();
   const text1 = useRef();
@@ -90,6 +91,52 @@ export function Carousel3D(props) {
         scrub: 3,
       }
     });
+    
+    // ── Bokeh Background Randomized 3D Path Scrolling ────────────────────────
+    if (bokehRef.current && bokehRef.current.blobs) {
+        const fullTime = 30;
+        
+        // Blob 1: Spiral descent on the leftish side
+        tl.current.fromTo(bokehRef.current.blobs[0].group.position, 
+            { y: 25, z: -10 }, 
+            { y: -25, z: 10, duration: fullTime, ease: "none" }, 0
+        );
+        tl.current.fromTo(bokehRef.current.blobs[0].group.rotation, 
+            { z: 0 }, 
+            { z: Math.PI * 6, duration: fullTime, ease: "none" }, 0
+        );
+
+        // Blob 2: Spiral descent on the rightish side (opposite start)
+        tl.current.fromTo(bokehRef.current.blobs[1].group.position, 
+            { y: 30, z: 10 }, 
+            { y: -30, z: -10, duration: fullTime, ease: "none" }, 0
+        );
+        tl.current.fromTo(bokehRef.current.blobs[1].group.rotation, 
+            { z: Math.PI }, 
+            { z: Math.PI * 7, duration: fullTime, ease: "none" }, 0
+        );
+    }
+    
+    const peachPalette = { c1: "#FFCAB1", c2: "#FCD5CE", c3: "#FEC5BB" };
+
+    function animateBokehColors(index, time) {
+        if (!bokehRef.current || !bokehRef.current.blobs) return;
+        const colors = peachPalette; // Always use peach palette
+        bokehRef.current.blobs.forEach((blob, i) => {
+            if (!blob) return;
+            const targetColor = i === 0 ? colors.c1 : colors.c2;
+            tl.current.to(blob.material.uniforms.uColor.value, {
+                r: new THREE.Color(targetColor).r,
+                g: new THREE.Color(targetColor).g,
+                b: new THREE.Color(targetColor).b,
+                duration: 1.5,
+                ease: "power2.inOut"
+            }, time);
+        });
+    }
+
+    // Initial peach setup
+    animateBokehColors(0, 0);
 
     // ── Ferris-wheel drum rotation (with flat spots for pinning) ───────────
     for (let i = 0; i < NUM_CARDS - 1; i++) {
@@ -170,6 +217,7 @@ export function Carousel3D(props) {
 
     // ── SKILLS SECTION ANIMATION (Starts at t=5) ───────────────────────────
     const skillsStart = 5;
+    animateBokehColors(1, skillsStart);
     const cardStagger = 0.4;
 
     // 1. Skills Title & Subtitle Slide Up to Center
@@ -253,6 +301,7 @@ export function Carousel3D(props) {
 
     // ── TOOLS SECTION ANIMATION (Starts after Skills) ────────────────────────
     const toolsStart = lastCardExitTime + 1.5;
+    animateBokehColors(2, toolsStart);
 
     // 1. Tools Title & Subtitle Slide Up to Center
     tl.current.fromTo(
@@ -274,6 +323,7 @@ export function Carousel3D(props) {
 
     // ── JOURNEY LIST ANIMATION (Starts after Tools) ────────────────────────
     const journeyStart = lastToolExitTime + 1.5;
+    animateBokehColors(3, journeyStart);
     const JOURNEY_ITEMS = [
       "AZUGA",
       "OPTUM",
@@ -335,7 +385,8 @@ export function Carousel3D(props) {
     });
 
     // ── CONTACT SECTION ANIMATION (Starts after Journey) ────────────────────
-    const contactStart = lastJourneyExitTime - 3.0; // Tighter overlap for zero perceived gap
+    const contactStart = lastJourneyExitTime - 2.0; // Tighter overlap for zero perceived gap
+    animateBokehColors(4, contactStart);
 
     tl.current.fromTo(
       contactGroupRef.current.position,
@@ -416,7 +467,6 @@ export function Carousel3D(props) {
             position={[25, 0, 0]}
             fontSize={.5}
             color="#1A1A1A"
-            font="sans"
             maxWidth={12}
             lineHeight={1}
             anchorX="left"
@@ -456,7 +506,6 @@ export function Carousel3D(props) {
             position={[25, 0, 0]}
             fontSize={.5}
             color="#1A1A1A"
-            font="sans"
             maxWidth={12}
             lineHeight={1 }
             anchorX="left"

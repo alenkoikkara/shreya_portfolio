@@ -65,6 +65,11 @@ export function Carousel3D(props) {
   const skillsContentRef = useRef();
   const skillCardsRef = useRef([]);
   const skillsGroupRef = useRef();
+  
+  const toolsTitleRef = useRef();
+  const toolsSubRef = useRef();
+  const toolsContentRef = useRef();
+  const toolsGroupRef = useRef();
 
   const { size } = useThree();
   const responsiveScale = size.width / 1440;
@@ -75,7 +80,7 @@ export function Carousel3D(props) {
       scrollTrigger: {
         trigger: document.body,
         start: "top top",
-        end: () => window.innerHeight * 12, // Adjusted for 3D animation only
+        end: () => window.innerHeight * 16, // Adjusted for Skills and simplified Tools sections
         scrub: 3,
       }
     });
@@ -240,8 +245,29 @@ export function Carousel3D(props) {
       lastCardExitTime + 0.5
     );
 
-    // Ensure the timeline has enough total duration
-    tl.current.to({}, { duration: 1 }, lastCardExitTime + 2);
+    // ── TOOLS SECTION ANIMATION (Starts after Skills) ────────────────────────
+    const toolsStart = lastCardExitTime + 1.5;
+
+    // 1. Tools Title & Subtitle Slide Up to Center
+    tl.current.fromTo(
+      toolsContentRef.current.position,
+      { y: -30 },
+      { y: 7, duration: 1, ease: "power2.out" },
+      toolsStart
+    );
+
+    // 2. Tool Cards Animation Removed
+    let lastToolExitTime = toolsStart + 1.5; // Text stays for 1.5 units
+
+    // 3. Final Exit (Tools title scrolls up)
+    tl.current.to(
+      toolsGroupRef.current.position,
+      { y: 40, duration: 1.5, ease: "power2.in" },
+      lastToolExitTime + 0.5
+    );
+
+    // Ensure the timeline has enough total duration for both sections
+    tl.current.to({}, { duration: 1 }, lastToolExitTime + 2);
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -322,6 +348,38 @@ export function Carousel3D(props) {
         <SkillCard index={5} text="OOUX" icon="⋮" setRef={el => skillCardsRef.current[5] = el} />
         <SkillCard index={6} text="UX MATRIX" icon="⋮" setRef={el => skillCardsRef.current[6] = el} />
         <SkillCard index={7} text="ARCHITECTURE" icon="⋮" setRef={el => skillCardsRef.current[7] = el} />
+      </group>
+
+      {/* Tools Section */}
+      <group ref={toolsGroupRef} position={[0, 0, 0]}>
+        <group ref={toolsContentRef} position={[-18, 0, 0]}>
+          <Text
+            ref={toolsTitleRef}
+            position={[-3, 0, 0]}
+            fontSize={4.5}
+            color="#1A1A1A"
+            font="./fonts/NeueMachina-Regular.otf"
+            maxWidth={22}
+            lineHeight={0.8}
+            anchorX="left"
+            anchorY="top"
+          >
+            CHAPTERS OF MY DESIGN JOURNEY
+          </Text>
+          <Text
+            ref={toolsSubRef}
+            position={[25, 0, 0]}
+            fontSize={.7}
+            color="#1A1A1A"
+            font="sans"
+            maxWidth={12}
+            lineHeight={0.9}
+            anchorX="left"
+            anchorY="top"
+          >
+            A curated selection of the software and frameworks I use to bring ideas to life. From design prototyping to high-performance 3D web experiences.
+          </Text>
+        </group>
       </group>
     </group>
   );

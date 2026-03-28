@@ -13,7 +13,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className="app-container">
       <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
         <Canvas
           camera={{
@@ -25,10 +25,12 @@ function App() {
           <Experience />
         </Canvas>
       </div>
+      
       <Overlay />
-      {/* Scroll area for GSAP ScrollTrigger */}
-      <div style={{ height: "600vh", width: "100%" }}></div>
-    </>
+
+      {/* Scroll area for GSAP ScrollTrigger (3D Carousel) */}
+      <div style={{ height: "1200vh", width: "100%" }}></div>
+    </div>
   );
 }
 

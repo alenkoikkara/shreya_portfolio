@@ -25,10 +25,6 @@ const texts = [
   {
     title: "Partnership & Collaboration",
     subTitle: "My design work thrives through meaningful collaboration across teams. With Product Managers, I leverage deep product knowledge to define clear priorities and acceptance criteria. Engineering partnerships involve finding the optimal balance between design vision and technical feasibility without compromising user value"
-  },
-  {
-    title: "A foundation built on experience",
-    subTitle: "I love the process of discovering the real problem statement it gives me purpose, and more importantly, it gives the team clarity and direction. When we understand the core issue, every design decision becomes more intentional, and the impact becomes more meaningful."
   }
 ]
 
@@ -57,12 +53,13 @@ export const Overlay = () => {
       scrollTrigger: {
         trigger: document.body,
         start: "top top",
-        end: "bottom bottom",
+        end: () => window.innerHeight * 5, // Ends when partnership card exits
         scrub: 1.5
       }
     });
 
-    tl.to({}, { duration: 5 });
+    // Each 'unit' in this timeline is 1 window height.
+    // The drum roll cards are at t=0,1,2,3,4.
     texts.forEach((_, i) => {
       const el = subRefs.current[i];
       if (!el) return;
@@ -85,10 +82,10 @@ export const Overlay = () => {
         }
       }
 
-      // Animate Out (except the last one)
-      if (i < texts.length - 1) {
+      // Animate Out (all items including last)
+      {
         const exitStartTime = peakTime + PIN_DURATION / 2;
-        const exitEndTime = peakTime + 0.4; // Ends well before next card enters
+        const exitEndTime = peakTime + 0.4;
         const outDur = exitEndTime - exitStartTime;
 
         tl.to(
@@ -112,33 +109,36 @@ export const Overlay = () => {
         <div
           key={i}
           ref={(el) => subRefs.current[i] = el}
-          className="absolute right-0 text-[clamp(0.65rem,1vw,1.05rem)] tracking-wide font-sans flex items-end justify-between w-full"
+          className="absolute right-0 text-[clamp(0.65rem,1vw,1.05rem)] tracking-wide font-sans flex items-center justify-between w-full"
           style={{ transform: i === 0 ? 'translateY(0)' : 'translateY(20px)', opacity: i === 0 ? 1 : 0 }}
         >
-          <div className="flex flex-col items-end max-w-sm opacity-0">
-            <div className="font-medium text-left w-full">
+          {/* Corrected Text Block (Single instance) */}
+          <div className="flex flex-col items-end max-w-sm mr-12 text-black opacity-0">
+            <div className="font-bold text-left w-full uppercase mb-1">
               {txt.title}
             </div>
-            <div className="font-normal max-w-sm">
+            <div className="font-light max-w-[320px] text-right">
               {txt.subTitle}
             </div>
           </div>
-          {txt.title &&
+          
+          {txt.title && (
             <div
-              className="relative overflow-hidden rounded-full cursor-pointer pointer-events-auto group"
+              className="relative overflow-hidden rounded-full cursor-pointer pointer-events-auto group mr-10"
               style={{ background: 'black' }}
             >
-
-              <div className="relative z-10 px-5 py-3 text-[12px] font-light text-white group-hover:text-black transition-colors duration-300 whitespace-nowrap">
+              <div className="relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-300 whitespace-nowrap">
                 VIEW PROJECT →
               </div>
             </div>
-          }
-          <div className="flex flex-col items-end max-w-sm mr-10">
-            <div className="font-medium text-left w-full">
+          )}
+
+          {/* Corrected Text Block (Single instance) */}
+          <div className="flex flex-col items-end max-w-sm mr-12 text-black">
+            <div className="font-bold text-left w-full uppercase mb-1">
               {txt.title}
             </div>
-            <div className="font-light max-w-sm">
+            <div className="font-light max-w-[320px] text-left">
               {txt.subTitle}
             </div>
           </div>

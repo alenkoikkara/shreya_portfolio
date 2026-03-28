@@ -29,7 +29,7 @@ function App() {
       <Overlay />
 
       {/* Scroll area for GSAP ScrollTrigger (3D Carousel) */}
-      <div style={{ height: "1600vh", width: "100%" }}></div>
+      <div style={{ height: "2000vh", width: "100%" }}></div>
     </div>
   );
 }

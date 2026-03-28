@@ -65,11 +65,17 @@ export function Carousel3D(props) {
   const skillsContentRef = useRef();
   const skillCardsRef = useRef([]);
   const skillsGroupRef = useRef();
-  
+
   const toolsTitleRef = useRef();
   const toolsSubRef = useRef();
   const toolsContentRef = useRef();
   const toolsGroupRef = useRef();
+
+  const journeyGroupRef = useRef();
+  const journeyItemsRef = useRef([]);
+
+  const contactGroupRef = useRef();
+  const contactTitleRef = useRef();
 
   const { size } = useThree();
   const responsiveScale = size.width / 1440;
@@ -80,7 +86,7 @@ export function Carousel3D(props) {
       scrollTrigger: {
         trigger: document.body,
         start: "top top",
-        end: () => window.innerHeight * 16, // Adjusted for Skills and simplified Tools sections
+        end: () => window.innerHeight * 20, // Tightened scroll length
         scrub: 3,
       }
     });
@@ -266,8 +272,87 @@ export function Carousel3D(props) {
       lastToolExitTime + 0.5
     );
 
-    // Ensure the timeline has enough total duration for both sections
-    tl.current.to({}, { duration: 1 }, lastToolExitTime + 2);
+    // ── JOURNEY LIST ANIMATION (Starts after Tools) ────────────────────────
+    const journeyStart = lastToolExitTime + 1.5;
+    const JOURNEY_ITEMS = [
+      "AZUGA",
+      "OPTUM",
+      "TML",
+      "ISRO",
+    ];
+
+    let lastJourneyExitTime = journeyStart;
+
+    JOURNEY_ITEMS.forEach((_, i) => {
+      const itemRef = journeyItemsRef.current[i];
+      if (!itemRef) return;
+
+      const startTime = journeyStart + i * 1.5;
+      const duration = 4;
+      const endTime = startTime + duration;
+
+      lastJourneyExitTime = Math.max(lastJourneyExitTime, endTime);
+
+      // Continuous vertical scroll and subtle Z-rotation
+      tl.current.fromTo(
+        itemRef.position,
+        { y: -25, },
+        { y: 25, duration: duration, ease: "none" },
+        startTime
+      );
+      tl.current.fromTo(
+        itemRef.rotation,
+        { y: 1.15 },
+        { y: -1.15, duration: duration, ease: "none" },
+        startTime
+      );
+
+      // Scale and opacity peak at center
+      tl.current.fromTo(
+        itemRef.scale,
+        { x: 0.6, y: 0.6, z: 0.6 },
+        { x: 1.2, y: 1.2, z: 1.2, duration: duration / 2, ease: "power2.out" },
+        startTime
+      );
+      tl.current.to(
+        itemRef.scale,
+        { x: 0.6, y: 0.6, z: 0.6, duration: duration / 2, ease: "power2.in" },
+        startTime + duration / 2
+      );
+
+      // Opacity fade in and out
+      tl.current.fromTo(
+        itemRef.material,
+        { opacity: 0 },
+        { opacity: 1, duration: duration / 4, ease: "power1.in" },
+        startTime
+      );
+      tl.current.to(
+        itemRef.material,
+        { opacity: 0, duration: duration / 4, ease: "power1.out" },
+        endTime - duration / 4
+      );
+    });
+
+    // ── CONTACT SECTION ANIMATION (Starts after Journey) ────────────────────
+    const contactStart = lastJourneyExitTime - 3.0; // Tighter overlap for zero perceived gap
+
+    tl.current.fromTo(
+      contactGroupRef.current.position,
+      { y: -40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 2, ease: "power2.out" },
+      contactStart
+    );
+
+    tl.current.fromTo(
+      contactGroupRef.current.scale,
+      { x: 0.8, y: 0.8, z: 0.8 },
+      { x: 1, y: 1, z: 1, duration: 2, ease: "power2.out" },
+      contactStart
+    );
+
+    // Final buffer
+    tl.current.to({}, { duration: 2 }, contactStart + 4);
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -329,11 +414,11 @@ export function Carousel3D(props) {
           <Text
             ref={skillsSubRef}
             position={[25, 0, 0]}
-            fontSize={.7}
+            fontSize={.5}
             color="#1A1A1A"
             font="sans"
             maxWidth={12}
-            lineHeight={0.9}
+            lineHeight={1}
             anchorX="left"
             anchorY="top"
           >
@@ -369,17 +454,155 @@ export function Carousel3D(props) {
           <Text
             ref={toolsSubRef}
             position={[25, 0, 0]}
-            fontSize={.7}
+            fontSize={.5}
             color="#1A1A1A"
             font="sans"
             maxWidth={12}
-            lineHeight={0.9}
+            lineHeight={1 }
             anchorX="left"
             anchorY="top"
           >
             A curated selection of the software and frameworks I use to bring ideas to life. From design prototyping to high-performance 3D web experiences.
           </Text>
         </group>
+      </group>
+
+      {/* Design Journey List */}
+      <group ref={journeyGroupRef}>
+        {[
+          "AZUGA",
+          "OPTUM",
+          "TML",
+          "ISRO",
+        ].map((role, i) => (
+          <Text
+            key={i}
+            ref={el => journeyItemsRef.current[i] = el}
+            position={[0, -30, 0]}
+            fontSize={4}
+            color="#1A1A1A"
+            font="./fonts/NeueMachina-Regular.otf"
+            anchorX="center"
+            anchorY="middle"
+            transparent
+            opacity={0}
+          >
+            {role}
+          </Text>
+        ))}
+      </group>
+
+      {/* Contact Section */}
+      <group ref={contactGroupRef} position={[-18, 0, 0]}>
+        {/* Main Title */}
+        <Text
+          ref={contactTitleRef}
+          position={[-3, 0, 0]}
+          fontSize={5}
+          lineHeight={0.8}
+          color="#1A1A1A"
+          font="./fonts/NeueMachina-Regular.otf"
+          anchorX="left"
+          anchorY="middle"
+          maxWidth={25}
+        >
+          LET'S TALK DESIGN
+        </Text>
+
+        {/* Overlaid Floating Icons */}
+        {/* <Html position={[-6, 12, 0.5]} transform distanceFactor={10}>
+          <div style={{
+            background: "rgba(255, 255, 255, 0.2)",
+            backdropFilter: "blur(20px)",
+            borderRadius: "15px",
+            padding: "15px",
+            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
+            border: "1px solid rgba(255, 255, 255, 0.18)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "60px",
+            height: "60px"
+          }}>
+            <svg viewBox="0 0 24 24" fill="#0077B5" width="40" height="40">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </div>
+        </Html> */}
+
+        {/* <Html position={[-4, 2, 0.8]} transform distanceFactor={10}>
+          <div style={{
+            background: "rgba(255, 255, 255, 0.2)",
+            backdropFilter: "blur(20px)",
+            borderRadius: "15px",
+            padding: "15px",
+            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
+            border: "1px solid rgba(255, 255, 255, 0.18)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "60px",
+            height: "60px"
+          }}>
+            <svg viewBox="0 0 24 24" fill="#1A1A1A" width="40" height="40">
+              <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 8.817h-18.779l5.513-8.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
+            </svg>
+          </div>
+        </Html> */}
+
+        {/* Action Buttons Linkage */}
+        <Html position={[35, 0, 0]} transform distanceFactor={10}>
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+            width: "350px",
+            fontFamily: "sans-serif",
+            color: "#1A1A1A"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #1A1A1A", padding: "15px 0" }}>
+              <span style={{ fontSize: "14px", fontWeight: "300" }}>AR.SHREYA18@GMAIL.COM</span>
+              <div style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+            </div>
+            <div style={{ borderTop: "1px solid #1A1A1A", padding: "15px 0", fontSize: "14px", fontWeight: "300", cursor: "pointer" }}>LINKEDIN</div>
+            <div style={{ borderTop: "1px solid #1A1A1A", padding: "15px 0", fontSize: "14px", fontWeight: "300", cursor: "pointer" }}>DOWNLOAD RESUME</div>
+          </div>
+        </Html>
+
+        {/* Bottom center buttons using absolute to sit above/fixed context */}
+        <Html position={[18, -9, 0]} transform distanceFactor={10} center>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", marginTop: "20px" }}>
+            <button style={{
+              background: "black",
+              color: "white",
+              border: "none",
+              borderRadius: "30px",
+              padding: "12px 30px",
+              fontSize: "14px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px"
+            }}>
+              Next Page →
+            </button>
+            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{
+              background: "rgba(208, 221, 243, 0.8)",
+              color: "#1A1A1A",
+              border: "1px solid rgba(255,255,255,0.4)",
+              borderRadius: "30px",
+              padding: "10px 25px",
+              fontSize: "14px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              backdropFilter: "blur(10px)"
+            }}>
+              Go to the top ↑
+            </button>
+          </div>
+        </Html>
       </group>
     </group>
   );

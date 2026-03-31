@@ -2,7 +2,8 @@ import { Text, Html } from "@react-three/drei";
 import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -169,7 +170,7 @@ export function Carousel3D({ bokehRef, ...props }) {
   const { size } = useThree();
   const responsiveScale = size.width / 1440;
 
-  useLayoutEffect(() => {
+  useGSAP(() => {
     // ─── Setup GSAP Timeline with ScrollTrigger ─────────────────────────────
     tl.current = gsap.timeline({
       scrollTrigger: {
@@ -492,11 +493,8 @@ export function Carousel3D({ bokehRef, ...props }) {
 
     // Final buffer
     tl.current.to({}, { duration: 2 }, contactStart + 4);
-
-    return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
-    };
   }, []);
+
 
   return (
     <group scale={responsiveScale}>

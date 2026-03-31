@@ -1,6 +1,7 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { PIN_DURATION } from "./Carousel3D";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,7 +12,7 @@ const texts = [
     subTitle: ""
   },
   {
-    title: "Primary Reasearch",
+    title: "Primary Research",
     subTitle: "I love the process of discovering the real problem statement it gives me purpose, and more importantly, it gives the team clarity and direction. When we understand the core issue, every design decision becomes more intentional, and the impact becomes more meaningful."
   },
   {
@@ -41,16 +42,10 @@ const texts = [
 ]
 
 export const Overlay = () => {
+  const container = useRef();
   const subRefs = useRef([]);
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
+  useGSAP(() => {
     // Initialize state
     subRefs.current.forEach((el, i) => {
       if (!el) return;
@@ -71,7 +66,6 @@ export const Overlay = () => {
     });
 
     // Each 'unit' in this timeline is 1 window height.
-    // The drum roll cards are at t=0,1,2,3,4.
     texts.forEach((_, i) => {
       const el = subRefs.current[i];
       if (!el) return;
@@ -81,7 +75,7 @@ export const Overlay = () => {
       // Animate In (except first which is already visible)
       if (i > 0) {
         const entryEndTime = peakTime - PIN_DURATION / 2;
-        const entryStartTime = peakTime - 0.4; // Starts well after previous card exits
+        const entryStartTime = peakTime - 0.4;
 
         if (entryStartTime < entryEndTime) {
           const inDur = entryEndTime - entryStartTime;
@@ -108,7 +102,7 @@ export const Overlay = () => {
       }
     });
 
-    // ── Scroll Indicator Animation ──────────────────────────────────────────
+    // Scroll Indicator Animation
     gsap.to(".scroll-indicator-arrow", {
       y: 8,
       repeat: -1,
@@ -127,16 +121,10 @@ export const Overlay = () => {
         scrub: true
       }
     });
-
-    return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
-    };
-  }, [mounted]);
-
-  if (!mounted) return null;
+  }, { scope: container });
 
   return (
-    <div className="fixed top-[60vh] right-0 w-full flex justify-end px-4 pointer-events-none z-[999]">
+    <div ref={container} className="fixed top-[60vh] right-0 w-full flex justify-end px-4 pointer-events-none z-[999]">
       {texts.map((txt, i) => (
         <div
           key={i}
@@ -170,18 +158,18 @@ export const Overlay = () => {
             <div className="font-bold text-left w-full uppercase mb-1">
               {txt.title}
             </div>
-            <div className="font-light max-w-[320px] text-left">
+            <div className="font-light  max-w-[320px] text-left">
               {txt.subTitle}
             </div>
           </div>
         </div>
       ))}
+      
       {/* Scroll Indicator */}
       <div className="scroll-indicator fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 pointer-events-none z-[1000]">
         <span className="opacity-0 text-[10px] font-light tracking-[0.3em] uppercase">Scroll to explore</span>
         <div className="scroll-indicator-arrow">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ shapeRendering: 'crispEdges' }}>
-            {/* Pixelated Chevron Down */}
             <path d="M4 8h2v2H4V8zM6 10h2v2H6v-2zM8 12h2v2H8v-2zM10 14h4v2h-4v-2zM14 12h2v2h-2v-2zM16 10h2v2h-2v-2zM18 8h2v2h-2V8z" fill="black" fillOpacity="1" />
           </svg>
         </div>
@@ -189,3 +177,4 @@ export const Overlay = () => {
     </div>
   );
 };
+

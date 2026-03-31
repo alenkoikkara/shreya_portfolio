@@ -108,6 +108,26 @@ export const Overlay = () => {
       }
     });
 
+    // ── Scroll Indicator Animation ──────────────────────────────────────────
+    gsap.to(".scroll-indicator-arrow", {
+      y: 8,
+      repeat: -1,
+      yoyo: true,
+      duration: 1.2,
+      ease: "power1.inOut"
+    });
+
+    gsap.to(".scroll-indicator", {
+      opacity: 0,
+      y: 20,
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "2% top",
+        scrub: true
+      }
+    });
+
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
@@ -156,6 +176,16 @@ export const Overlay = () => {
           </div>
         </div>
       ))}
+      {/* Scroll Indicator */}
+      <div className="scroll-indicator fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 pointer-events-none z-[1000]">
+        <span className="opacity-0 text-[10px] font-light tracking-[0.3em] uppercase">Scroll to explore</span>
+        <div className="scroll-indicator-arrow">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ shapeRendering: 'crispEdges' }}>
+            {/* Pixelated Chevron Down */}
+            <path d="M4 8h2v2H4V8zM6 10h2v2H6v-2zM8 12h2v2H8v-2zM10 14h4v2h-4v-2zM14 12h2v2h-2v-2zM16 10h2v2h-2v-2zM18 8h2v2h-2V8z" fill="black" fillOpacity="1" />
+          </svg>
+        </div>
+      </div>
     </div>
   );
 };

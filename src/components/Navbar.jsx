@@ -35,7 +35,7 @@ export const Navbar = () => {
 
       {/* Branding */}
       <div className="relative z-10 flex items-center space-x-2 cursor-pointer group">
-        <span className="text-md font-normal tracking-[0.2em] transition-all duration-300 group-hover:tracking-[0.3em]">
+        <span className="text-md font-normal tracking-[0.2em] transition-all duration-300">
           <b>Design.</b>Shreya
         </span>
       </div>
@@ -45,7 +45,7 @@ export const Navbar = () => {
         {['Home', 'Expertise', 'Work', 'About'].map((item) => (
           <div 
             key={item} 
-            className="text-[14px] font-normal uppercase tracking-widest cursor-pointer opacity-60 hover:opacity-100 transition-opacity duration-300"
+            className="text-[14px] font-normal tracking-widest cursor-pointer opacity-60 hover:opacity-100 transition-opacity duration-300"
           >
             {item}
           </div>

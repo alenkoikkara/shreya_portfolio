@@ -1,9 +1,9 @@
-import { Text, Html } from "@react-three/drei";
+import { Text, Html, useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -26,10 +26,10 @@ const SkillCard = ({ text, icon, index, setRef }) => {
     if (!floatingRef.current) return;
     const targetX = hovered ? mouse.x * 0.05 : 0;
     const targetY = hovered ? mouse.y * 0.05 : 0;
-    
+
     shearX.current = THREE.MathUtils.lerp(shearX.current, targetX, 0.005);
     shearY.current = THREE.MathUtils.lerp(shearY.current, targetY, 0.005);
-    
+
     floatingRef.current.matrix.set(
       1, 0, 0, 0,
       0, 1, 0, 0,
@@ -45,8 +45,8 @@ const SkillCard = ({ text, icon, index, setRef }) => {
       position={[-20, -10, -5]} // Initial off-screen
     >
       <group ref={floatingRef}>
-        <mesh 
-          visible={false} 
+        <mesh
+          visible={false}
           onPointerMove={(e) => {
             e.stopPropagation();
             setMouse({ x: e.uv.x * 2 - 1, y: e.uv.y * 2 - 1 });
@@ -102,10 +102,10 @@ const DrumText = ({ children, floatingRef, textRef, ...props }) => {
     if (!floatingRef.current) return;
     const targetX = hovered ? mouse.x * 0.04 : 0;
     const targetY = hovered ? mouse.y * 0.04 : 0;
-    
+
     shearX.current = THREE.MathUtils.lerp(shearX.current, targetX, 0.009);
     shearY.current = THREE.MathUtils.lerp(shearY.current, targetY, 0.009);
-    
+
     floatingRef.current.matrix.set(
       1, 0, 0, 0,
       0, 1, 0, 0,
@@ -117,8 +117,8 @@ const DrumText = ({ children, floatingRef, textRef, ...props }) => {
 
   return (
     <group ref={floatingRef}>
-      <Text 
-        {...props} 
+      <Text
+        {...props}
         ref={textRef}
         onPointerMove={(e) => {
           e.stopPropagation();
@@ -131,6 +131,64 @@ const DrumText = ({ children, floatingRef, textRef, ...props }) => {
       >
         {children}
       </Text>
+    </group>
+  );
+};
+
+const LightningModel = ({ position }) => {
+  const { nodes } = useGLTF("/models/O.glb");
+  const lightningRef = useRef();
+
+  useFrame((state) => {
+    if (lightningRef.current) {
+      lightningRef.current.rotation.y += 0.0021;
+      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
+    }
+  });
+
+  return (
+    <group 
+      ref={lightningRef} 
+      position={position} 
+      scale={0.1} 
+      renderOrder={50}
+    >
+      {/* Target all meshes in the O.glb to apply high-quality Transmission Material */}
+      {Object.values(nodes).map((node, i) => {
+        if (node.isMesh) {
+          return (
+            <mesh 
+              key={i} 
+              geometry={node.geometry}
+              position={node.position}
+              rotation={node.rotation}
+              scale={node.scale}
+            >
+              <MeshTransmissionMaterial
+                transmission={1}
+                roughness={0.09}
+                thickness={1}
+                ior={1.6}
+                chromaticAberration={0}
+                anisotropicBlur={0.01}
+                backside={true}
+                samples={6}
+                resolution={1024}
+                color="#ffffff"
+              />
+            </mesh>
+          );
+        }
+        return null;
+      })}
+      
+      <pointLight
+        color="#ffffff"
+        intensity={10000}
+        distance={100}
+        decay={2}
+        position={[0, 0, -15]} // Lights up from within/behind
+      />
     </group>
   );
 };
@@ -509,6 +567,7 @@ export function Carousel3D({ bokehRef, ...props }) {
           <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
           </DrumText>
+          <LightningModel position={[0, 0, RADIUS + 18]} />
         </group>
         <group rotation={[-THETA, 0, 0]}>
           <DrumText floatingRef={text2Floating} textRef={text2} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">

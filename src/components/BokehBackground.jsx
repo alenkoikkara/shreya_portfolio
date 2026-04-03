@@ -47,6 +47,15 @@ const BokehBlob = forwardRef(({ offset, color, size, speed }, ref) => {
         <mesh ref={meshRef} position={offset}>
           <circleGeometry args={[size, 64]} />
           <shaderMaterial args={[shaderArgs]} />
+          <spotLight 
+            color={color} 
+            intensity={8500 * (size / 35)} 
+            distance={250} 
+            angle={Math.PI / 4} 
+            penumbra={0.5} 
+            decay={1.2}
+            target-position={[0, 0, 50]} // Pointing towards the text/model area
+          />
         </mesh>
       </Float>
     </group>

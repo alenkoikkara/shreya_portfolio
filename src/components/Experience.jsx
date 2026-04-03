@@ -8,9 +8,8 @@ export const Experience = () => {
 
   return (
     <>
-      <Environment preset="city" blur={0.1} />
+      <Environment preset="city" blur={1.1} />
       <ambientLight intensity={0.4} />
-      <OrbitControls enableZoom={false} />
       <BokehBackground ref={bokehRef} />
       <Carousel3D bokehRef={bokehRef} />
     </>

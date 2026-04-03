@@ -1,4 +1,7 @@
-import { Text, Html, useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
+import { Text, Html } from "@react-three/drei";
+import { ArrowModel } from "../models/ArrowModel";
+import { BulbModel } from "../models/BulbModel";
+import { BrainModel } from "../models/BrainModel";
 import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -135,63 +138,6 @@ const DrumText = ({ children, floatingRef, textRef, ...props }) => {
   );
 };
 
-const LightningModel = ({ position }) => {
-  const { nodes } = useGLTF("/models/O.glb");
-  const lightningRef = useRef();
-
-  useFrame((state) => {
-    if (lightningRef.current) {
-      lightningRef.current.rotation.y += 0.0021;
-      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
-    }
-  });
-
-  return (
-    <group 
-      ref={lightningRef} 
-      position={position} 
-      scale={0.1} 
-      renderOrder={50}
-    >
-      {/* Target all meshes in the O.glb to apply high-quality Transmission Material */}
-      {Object.values(nodes).map((node, i) => {
-        if (node.isMesh) {
-          return (
-            <mesh 
-              key={i} 
-              geometry={node.geometry}
-              position={node.position}
-              rotation={node.rotation}
-              scale={node.scale}
-            >
-              <MeshTransmissionMaterial
-                transmission={1}
-                roughness={0.09}
-                thickness={1}
-                ior={1.6}
-                chromaticAberration={0}
-                anisotropicBlur={0.01}
-                backside={true}
-                samples={6}
-                resolution={1024}
-                color="#ffffff"
-              />
-            </mesh>
-          );
-        }
-        return null;
-      })}
-      
-      <pointLight
-        color="#ffffff"
-        intensity={10000}
-        distance={100}
-        decay={2}
-        position={[0, 0, -15]} // Lights up from within/behind
-      />
-    </group>
-  );
-};
 
 export function Carousel3D({ bokehRef, ...props }) {
   const ref = useRef();
@@ -564,15 +510,32 @@ export function Carousel3D({ bokehRef, ...props }) {
         position={[0, 0, -RADIUS]}
       >
         <group rotation={[0, 0, 0]}>
+          <BulbModel
+            position={[-7, -2, RADIUS + 10]}
+            scale={3}
+            intensity={8000}
+            lightColor="#fff4cc"
+          />
           <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
           </DrumText>
-          <LightningModel position={[0, 0, RADIUS + 18]} />
+          <ArrowModel
+            position={[13, 4, RADIUS + 5]}
+            scale={2}
+            intensity={5000}
+            lightColor="#ffffff"
+          />
         </group>
         <group rotation={[-THETA, 0, 0]}>
           <DrumText floatingRef={text2Floating} textRef={text2} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             RESEARCH
           </DrumText>
+          <BrainModel
+            position={[4, 2, RADIUS + 12]}
+            intensity={5000}
+            scale={3}
+            lightColor="#ffffff"
+          />
         </group>
         <group rotation={[-THETA * 2, 0, 0]}>
           <DrumText floatingRef={text3Floating} textRef={text3} position={[0, 0, RADIUS]} fontSize={5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">

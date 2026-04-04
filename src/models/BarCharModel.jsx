@@ -2,30 +2,29 @@ import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
-export const BrainModel = ({
+export const BarCharModel = ({
   position,
-  path = "/models/brain.glb",
+  path = "/models/barchart.glb",
   scale = 3,
-  intensity = 35000,
+  intensity = 5000,
   lightColor = "#ffffff",
-  transmission = 1,
-  roughness = 0,
-  thickness = 0.8,
-  ior = 1.2
+  transmission = .6,
+  roughness = 0.1,
+  thickness = 0.1,
+  ior = 1.1
 }) => {
   const { nodes } = useGLTF(path);
-  const bulbRef = useRef();
+  const lightningRef = useRef();
 
   useFrame((state) => {
-    if (bulbRef.current) {
-      bulbRef.current.rotation.y = state.clock.elapsedTime * 0.1;
-      bulbRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
+    if (lightningRef.current) {
+      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
     }
   });
 
   return (
     <group
-      ref={bulbRef}
+      ref={lightningRef}
       position={position}
       scale={scale}
       renderOrder={50}

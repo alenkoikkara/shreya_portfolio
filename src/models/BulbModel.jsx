@@ -5,13 +5,13 @@ import { useRef } from "react";
 export const BulbModel = ({
   position,
   path = "/models/bulb.glb",
-  scale = 3,
+  scale = 3.9,
   intensity = 5000,
   lightColor = "#ffffff",
   transmission = 1,
-  roughness = 0.25,
-  thickness = 0.5,
-  ior = 1.2
+  roughness = 0.1,
+  thickness = 0.1,
+  ior = 1.1
 }) => {
   const { nodes } = useGLTF(path);
   const bulbRef = useRef();

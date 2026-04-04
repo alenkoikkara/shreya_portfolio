@@ -49,12 +49,12 @@ const BokehBlob = forwardRef(({ offset, color, size, speed }, ref) => {
           <shaderMaterial args={[shaderArgs]} />
           <spotLight 
             color={color} 
-            intensity={8500 * (size / 35)} 
-            distance={250} 
+            intensity={35500 * (size / 35)} 
+            distance={950} 
             angle={Math.PI / 4} 
             penumbra={0.5} 
             decay={1.2}
-            target-position={[0, 0, 50]} // Pointing towards the text/model area
+            target-position={[0, 40, 50]} // Pointing towards the text/model area
           />
         </mesh>
       </Float>
@@ -79,14 +79,14 @@ export const BokehBackground = forwardRef((props, ref) => {
     <group ref={groupRef} position={[0, 0, -50]}>
       <BokehBlob 
         ref={blob1}
-        offset={[-20, 0, 0]} 
+        offset={[20, -20, 0]} 
         color="#FFE5B4" 
         size={35} 
         speed={1}
       />
       <BokehBlob 
         ref={blob2}
-        offset={[25, 0, 0]} 
+        offset={[45, 20, 0]} 
         color="#FFE5B4" 
         size={45} 
         speed={1.2}

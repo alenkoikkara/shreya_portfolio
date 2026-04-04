@@ -1,7 +1,14 @@
 import { Text, Html } from "@react-three/drei";
+
 import { ArrowModel } from "../models/ArrowModel";
 import { BulbModel } from "../models/BulbModel";
 import { BrainModel } from "../models/BrainModel";
+import { MessageModel } from "../models/MessageModel";
+import { SettingModel } from "../models/SettingModel";
+import { BarCharModel } from "../models/BarCharModel";
+import { StarModel } from "../models/StarModel";
+import { CrownModel } from "../models/CrownModel";
+
 import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -210,7 +217,7 @@ export function Carousel3D({ bokehRef, ...props }) {
       );
     }
 
-    const peachPalette = { c1: "#FFCAB1", c2: "#FCD5CE", c3: "#FEC5BB" };
+    const peachPalette = { c1: "#FFCAB1", c2: "#FFCAB1", c3: "#FFCAB1" };
 
     function animateBokehColors(index, time) {
       if (!bokehRef.current || !bokehRef.current.blobs) return;
@@ -527,6 +534,12 @@ export function Carousel3D({ bokehRef, ...props }) {
           />
         </group>
         <group rotation={[-THETA, 0, 0]}>
+          <MessageModel
+            position={[-7, -1, RADIUS + 10]}
+            scale={3}
+            intensity={8000}
+            lightColor="#fff4cc"
+          />
           <DrumText floatingRef={text2Floating} textRef={text2} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             RESEARCH
           </DrumText>
@@ -538,14 +551,38 @@ export function Carousel3D({ bokehRef, ...props }) {
           />
         </group>
         <group rotation={[-THETA * 2, 0, 0]}>
+          <SettingModel
+            position={[-7, -1, RADIUS + 10]}
+            scale={3}
+            intensity={8000}
+            lightColor="#ffffff"
+          />  
           <DrumText floatingRef={text3Floating} textRef={text3} position={[0, 0, RADIUS]} fontSize={5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             OPTIMISATION
           </DrumText>
+          <BarCharModel
+            position={[4, 2, RADIUS + 10]}
+            scale={3}
+            intensity={3000}
+            lightColor="#ffffff"
+          />
         </group>
         <group rotation={[-THETA * 3, 0, 0]}>
+          <StarModel
+            position={[-7, -1, RADIUS + 10]}
+            scale={3}
+            intensity={8000}
+            lightColor="#ffffff"
+          />
           <DrumText floatingRef={text4Floating} textRef={text4} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             STRATEGY
           </DrumText>
+          <CrownModel
+            position={[4, 2, RADIUS + 10]}
+            scale={3}
+            intensity={8000}
+            lightColor="#ffffff"
+          />
         </group>
         <group ref={text5Group} rotation={[-THETA * 4, 0, 0]}>
           <DrumText floatingRef={text5Floating} textRef={text5} position={[0, 0, RADIUS]} fontSize={4.5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">

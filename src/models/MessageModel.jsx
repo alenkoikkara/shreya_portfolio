@@ -2,30 +2,29 @@ import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
-export const BrainModel = ({
+export const MessageModel = ({
   position,
-  path = "/models/brain.glb",
-  scale = 3,
-  intensity = 35000,
-  lightColor = "#ffffff",
-  transmission = 1,
-  roughness = 0,
-  thickness = 0.8,
-  ior = 1.2
+  path = "/models/message.glb",
+  scale = 4 ,
+  intensity = 25000,
+  lightColor = "#000000",
+  transmission = 0.99,
+  roughness = 0.1,
+  thickness = 0.1,
+  ior = 1.3
 }) => {
   const { nodes } = useGLTF(path);
-  const bulbRef = useRef();
+  const lightningRef = useRef();
 
   useFrame((state) => {
-    if (bulbRef.current) {
-      bulbRef.current.rotation.y = state.clock.elapsedTime * 0.1;
-      bulbRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
+    if (lightningRef.current) {
+      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .05;
     }
   });
 
   return (
     <group
-      ref={bulbRef}
+      ref={lightningRef}
       position={position}
       scale={scale}
       renderOrder={50}
@@ -63,9 +62,9 @@ export const BrainModel = ({
       <pointLight
         color={lightColor}
         intensity={intensity}
-        distance={20}
-        decay={2}
-        position={[0, 20, 0]}
+        distance={1}
+        decay={0}
+        position={[20, 20, 0]}
       />
     </group>
   );

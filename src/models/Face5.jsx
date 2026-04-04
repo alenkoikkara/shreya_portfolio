@@ -2,15 +2,15 @@ import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
-export const Face1Model = ({
+export const Face5Model = ({
   position,
-  path = "/models/face1.glb",
+  path = "/models/face5.glb",
   scale = 3,
   intensity = 5000,
-  lightColor = "#ffffff",
-  transmission = .99,
+  lightColor = "#000000",
+  transmission = .95,
   roughness = 0.1,
-  thickness = 0.19,
+  thickness = 0.2,
   ior = 1.4
 }) => {
   const { nodes } = useGLTF(path);
@@ -26,7 +26,6 @@ export const Face1Model = ({
     <group
       ref={lightningRef}
       position={position}
-      rotation={[97 * (Math.PI / 180), -2 * (Math.PI / 180), -22 * (Math.PI / 180)]}
       scale={scale}
       renderOrder={50}
     >

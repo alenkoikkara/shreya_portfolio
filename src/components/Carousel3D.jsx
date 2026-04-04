@@ -9,6 +9,10 @@ import { BarCharModel } from "../models/BarCharModel";
 import { StarModel } from "../models/StarModel";
 import { CrownModel } from "../models/CrownModel";
 import { Face1Model } from "../models/Face1";
+import { Face2Model } from "../models/Face2";
+import { Face3Model } from "../models/Face3";
+import { Face4Model } from "../models/Face4";
+import { Face5Model } from "../models/Face5";
 
 import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
@@ -178,6 +182,7 @@ export function Carousel3D({ bokehRef, ...props }) {
   const text3Floating = useRef();
   const text4Floating = useRef();
   const text5Floating = useRef();
+  const face1ModelRef = useRef();
 
   const { size } = useThree();
   const responsiveScale = size.width / 1440;
@@ -253,7 +258,7 @@ export function Carousel3D({ bokehRef, ...props }) {
     }
 
     // ── Unified entry/exit helper ─────────────────────────
-    function animateCard(textRef, peakTime, exitTime, exitUp = false) {
+    function animateCard(textRef, peakTime, exitTime, exitUp = false, extraRef = null) {
       const entryEndTime = peakTime - PIN_DURATION / 2;
       const entryStartTime = Math.max(0, entryEndTime - 1.2);
 
@@ -298,6 +303,19 @@ export function Carousel3D({ bokehRef, ...props }) {
           { duration: outDur, x: -2, y: exitUp ? 20 : -0.2, ease: exitUp ? "power2.in" : "back.in(2.5)" },
           exitStartTime
         );
+
+        if (extraRef && extraRef.current) {
+          tl.current.to(
+            extraRef.current.scale,
+            { duration: outDur, x: 1.8, y: 1.8, z: 1.8, ease: "sine.in" },
+            exitStartTime
+          );
+          tl.current.to(
+            extraRef.current.position,
+            { duration: outDur, x: -2, y: exitUp ? 20 : -0.2, ease: exitUp ? "power2.in" : "back.in(2.5)" },
+            exitStartTime
+          );
+        }
       }
     }
 
@@ -306,15 +324,7 @@ export function Carousel3D({ bokehRef, ...props }) {
     animateCard(text2, 1, 2);
     animateCard(text3, 2, 3);
     animateCard(text4, 3, 4);
-    animateCard(text5, 4, 5, true);
-
-    const exit5Start = 4 + PIN_DURATION / 2;
-    const exit5Dur = 5 - exit5Start;
-    tl.current.to(
-      text5Group.current.rotation,
-      { duration: exit5Dur, x: -THETA * 4, y: -0, ease: "power2.inOut" },
-      exit5Start
-    );
+    animateCard(text5, 4, 5, true, face1ModelRef);
 
     // ── SKILLS SECTION ANIMATION (Starts at t=5) ───────────────────────────
     const skillsStart = 5;
@@ -586,15 +596,41 @@ export function Carousel3D({ bokehRef, ...props }) {
           />
         </group>
         <group ref={text5Group} rotation={[-THETA * 4, 0, 0]}>
-          <DrumText floatingRef={text5Floating} textRef={text5} position={[0, 0, RADIUS]} fontSize={4.5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          <DrumText floatingRef={text5Floating} textRef={text5} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             PARTNERSHIP
           </DrumText>
-          <Face1Model
-            position={[4, 2, RADIUS + 10]}
-            scale={4}
-            intensity={8000}
-            lightColor="#ffffff"
-          />
+          <group ref={face1ModelRef}>
+            <Face1Model
+              position={[-9, 2, RADIUS + 10]}
+              scale={1.5}
+              intensity={8000}
+              lightColor="#ffffff"
+            />
+            <Face2Model
+              position={[-3, -2, RADIUS + 10]}
+              scale={2}
+              intensity={8000}
+              lightColor="#ffffff"
+            />
+            <Face3Model
+              position={[-0, 2, RADIUS + 10]}
+              scale={1.5}
+              intensity={8000}
+              lightColor="#ffffff"
+            />
+            <Face4Model
+              position={[4, 2, RADIUS + 10]}
+              scale={2}
+              intensity={8000}
+              lightColor="#ffffff"
+            />
+            <Face5Model
+              position={[8, 2, RADIUS + 10]}
+              scale={1.5}
+              intensity={8000}
+              lightColor="#ffffff"
+            />
+          </group>
         </group>
       </group>
 

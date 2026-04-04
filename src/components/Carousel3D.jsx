@@ -8,6 +8,7 @@ import { SettingModel } from "../models/SettingModel";
 import { BarCharModel } from "../models/BarCharModel";
 import { StarModel } from "../models/StarModel";
 import { CrownModel } from "../models/CrownModel";
+import { Face1Model } from "../models/Face1";
 
 import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
@@ -553,16 +554,16 @@ export function Carousel3D({ bokehRef, ...props }) {
         <group rotation={[-THETA * 2, 0, 0]}>
           <SettingModel
             position={[-7, -1, RADIUS + 10]}
-            scale={3}
+            scale={3.5}
             intensity={8000}
             lightColor="#ffffff"
-          />  
+          />
           <DrumText floatingRef={text3Floating} textRef={text3} position={[0, 0, RADIUS]} fontSize={5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             OPTIMISATION
           </DrumText>
           <BarCharModel
             position={[4, 2, RADIUS + 10]}
-            scale={3}
+            scale={3.5}
             intensity={3000}
             lightColor="#ffffff"
           />
@@ -570,7 +571,7 @@ export function Carousel3D({ bokehRef, ...props }) {
         <group rotation={[-THETA * 3, 0, 0]}>
           <StarModel
             position={[-7, -1, RADIUS + 10]}
-            scale={3}
+            scale={4}
             intensity={8000}
             lightColor="#ffffff"
           />
@@ -579,7 +580,7 @@ export function Carousel3D({ bokehRef, ...props }) {
           </DrumText>
           <CrownModel
             position={[4, 2, RADIUS + 10]}
-            scale={3}
+            scale={4}
             intensity={8000}
             lightColor="#ffffff"
           />
@@ -588,6 +589,12 @@ export function Carousel3D({ bokehRef, ...props }) {
           <DrumText floatingRef={text5Floating} textRef={text5} position={[0, 0, RADIUS]} fontSize={4.5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             PARTNERSHIP
           </DrumText>
+          <Face1Model
+            position={[4, 2, RADIUS + 10]}
+            scale={4}
+            intensity={8000}
+            lightColor="#ffffff"
+          />
         </group>
       </group>
 

@@ -2,16 +2,16 @@ import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
-export const CrownModel = ({
+export const Face1Model = ({
   position,
-  path = "/models/crown.glb",
+  path = "/models/face1.glb",
   scale = 3,
   intensity = 5000,
   lightColor = "#ffffff",
-  transmission = .98,
+  transmission = 1,
   roughness = 0.1,
-  thickness = 0.6 ,
-  ior = 1.4
+  thickness = 0.1,
+  ior = 1
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();

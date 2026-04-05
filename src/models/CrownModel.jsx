@@ -1,13 +1,12 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import crownModel from "../assets/models/crown.glb";
 
 export const CrownModel = ({
   position,
-  path = "/models/crown.glb",
+  path = crownModel,
   scale = 3,
-  intensity = 5000,
-  lightColor = "#ffffff",
   transmission = .98,
   roughness = 0.1,
   thickness = 0.6 ,
@@ -58,14 +57,6 @@ export const CrownModel = ({
         }
         return null;
       })}
-
-      <pointLight
-        color={lightColor}
-        intensity={intensity}
-        distance={20}
-        decay={2}
-        position={[0, 20, 0]}
-      />
     </group>
   );
 };

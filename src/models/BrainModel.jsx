@@ -1,10 +1,11 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import brainModel from "../assets/models/brain.glb";
 
 export const BrainModel = ({
   position,
-  path = "/models/brain.glb",
+  path = brainModel,
   scale = 3,
   intensity = 35000,
   lightColor = "#ffffff",
@@ -59,14 +60,6 @@ export const BrainModel = ({
         }
         return null;
       })}
-
-      <pointLight
-        color={lightColor}
-        intensity={intensity}
-        distance={20}
-        decay={2}
-        position={[0, 20, 0]}
-      />
     </group>
   );
 };

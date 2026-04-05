@@ -1,13 +1,12 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import starModel from "../assets/models/star.glb";
 
 export const StarModel = ({
   position,
-  path = "/models/star.glb",
+  path = starModel,
   scale = 3,
-  intensity = 5000,
-  lightColor = "#ffffff",
   transmission = .93,
   roughness = 0.25,
   thickness = 0.5,
@@ -58,14 +57,6 @@ export const StarModel = ({
         }
         return null;
       })}
-
-      <pointLight
-        color={lightColor}
-        intensity={intensity}
-        distance={20}
-        decay={2}
-        position={[0, 20, 0]}
-      />
     </group>
   );
 };

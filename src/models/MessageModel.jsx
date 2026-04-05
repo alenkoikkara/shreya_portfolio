@@ -1,13 +1,12 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import messageModel from "../assets/models/message.glb";
 
 export const MessageModel = ({
   position,
-  path = "/models/message.glb",
+  path = messageModel,
   scale = 4 ,
-  intensity = 25000,
-  lightColor = "#000000",
   transmission = 0.99,
   roughness = 0.1,
   thickness = 0.1,
@@ -59,13 +58,6 @@ export const MessageModel = ({
         return null;
       })}
 
-      <pointLight
-        color={lightColor}
-        intensity={intensity}
-        distance={1}
-        decay={0}
-        position={[20, 20, 0]}
-      />
     </group>
   );
 };

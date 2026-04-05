@@ -1,13 +1,12 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import bulbModel from "../assets/models/bulb.glb";
 
 export const BulbModel = ({
   position,
-  path = "/models/bulb.glb",
+  path = bulbModel,
   scale = 3.9,
-  intensity = 5000,
-  lightColor = "#ffffff",
   transmission = 1,
   roughness = 0.1,
   thickness = 0.1,
@@ -58,14 +57,6 @@ export const BulbModel = ({
         }
         return null;
       })}
-
-      <pointLight
-        color={lightColor}
-        intensity={intensity}
-        distance={20}
-        decay={2}
-        position={[0, 20, 0]}
-      />
     </group>
   );
 };

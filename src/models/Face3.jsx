@@ -1,13 +1,12 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import face3Model from "../assets/models/face3.glb";
 
 export const Face3Model = ({
   position,
-  path = "/models/face3.glb",
+  path = face3Model,
   scale = 3,
-  intensity = 5000,
-  lightColor = "#ffffff",
   transmission = .99,
   roughness = 0.1,
   thickness = 0.19,
@@ -58,14 +57,6 @@ export const Face3Model = ({
         }
         return null;
       })}
-
-      <pointLight
-        color={lightColor}
-        intensity={intensity}
-        distance={20}
-        decay={2}
-        position={[0, 20, 0]}
-      />
     </group>
   );
 };

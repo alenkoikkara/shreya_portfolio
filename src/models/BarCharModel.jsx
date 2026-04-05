@@ -1,10 +1,11 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import barchartModel from "../assets/models/barchart.glb";
 
 export const BarCharModel = ({
   position,
-  path = "/models/barchart.glb",
+  path = barchartModel,
   scale = 3,
   intensity = 5000,
   lightColor = "#ffffff",
@@ -58,14 +59,6 @@ export const BarCharModel = ({
         }
         return null;
       })}
-
-      <pointLight
-        color={lightColor}
-        intensity={intensity}
-        distance={20}
-        decay={2}
-        position={[0, 20, 0]}
-      />
     </group>
   );
 };

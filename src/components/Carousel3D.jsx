@@ -529,25 +529,21 @@ export function Carousel3D({ bokehRef, ...props }) {
       >
         <group rotation={[0, 0, 0]}>
           <BulbModel
-            position={[-7, -2, RADIUS + 10]}
-            scale={3}
-            intensity={8000}
-            lightColor="#fff4cc"
+            position={[-1.5, 0, RADIUS + 17]}
+            scale={.8}
           />
           <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
           </DrumText>
           <ArrowModel
-            position={[13, 4, RADIUS + 5]}
-            scale={2}
-            intensity={5000}
-            lightColor="#ffffff"
+            position={[5, 2, RADIUS + 13]}
+            scale={.8}
           />
         </group>
         <group rotation={[-THETA, 0, 0]}>
           <MessageModel
-            position={[-7, -1, RADIUS + 10]}
-            scale={3}
+            position={[-2, 0, RADIUS + 16]}
+            scale={.8}
             intensity={8000}
             lightColor="#fff4cc"
           />
@@ -555,16 +551,16 @@ export function Carousel3D({ bokehRef, ...props }) {
             RESEARCH
           </DrumText>
           <BrainModel
-            position={[4, 2, RADIUS + 12]}
+            position={[1, 1, RADIUS + 17]}
             intensity={5000}
-            scale={3}
+            scale={.8}
             lightColor="#ffffff"
           />
         </group>
         <group rotation={[-THETA * 2, 0, 0]}>
           <SettingModel
-            position={[-7, -1, RADIUS + 10]}
-            scale={3.5}
+            position={[-2, 0, RADIUS + 16.5]}
+            scale={.8}
             intensity={8000}
             lightColor="#ffffff"
           />
@@ -572,16 +568,16 @@ export function Carousel3D({ bokehRef, ...props }) {
             OPTIMISATION
           </DrumText>
           <BarCharModel
-            position={[4, 2, RADIUS + 10]}
-            scale={3.5}
+            position={[2, 1, RADIUS + 17]}
+            scale={.8}
             intensity={3000}
             lightColor="#ffffff"
           />
         </group>
         <group rotation={[-THETA * 3, 0, 0]}>
           <StarModel
-            position={[-7, -1, RADIUS + 10]}
-            scale={4}
+            position={[-1, 0, RADIUS + 17]}
+            scale={.8}
             intensity={8000}
             lightColor="#ffffff"
           />
@@ -589,8 +585,8 @@ export function Carousel3D({ bokehRef, ...props }) {
             STRATEGY
           </DrumText>
           <CrownModel
-            position={[4, 2, RADIUS + 10]}
-            scale={4}
+            position={[1, 0.5, RADIUS + 17]}
+            scale={.8}
             intensity={8000}
             lightColor="#ffffff"
           />
@@ -601,32 +597,32 @@ export function Carousel3D({ bokehRef, ...props }) {
           </DrumText>
           <group ref={face1ModelRef}>
             <Face1Model
-              position={[-9, 2, RADIUS + 10]}
-              scale={1.5}
+              position={[-4, 1, RADIUS + 14.5]}
+              scale={.8}
               intensity={8000}
               lightColor="#ffffff"
             />
             <Face2Model
-              position={[-3, -2, RADIUS + 10]}
-              scale={2}
+              position={[-1, -.5, RADIUS + 14.5]}
+              scale={.8}
               intensity={8000}
               lightColor="#ffffff"
             />
             <Face3Model
-              position={[-0, 2, RADIUS + 10]}
-              scale={1.5}
+              position={[0, 1.5, RADIUS + 14.5]}
+              scale={.8}
               intensity={8000}
               lightColor="#ffffff"
             />
             <Face4Model
-              position={[4, 2, RADIUS + 10]}
-              scale={2}
+              position={[2, -.2, RADIUS + 14.5]}
+              scale={.8}
               intensity={8000}
               lightColor="#ffffff"
             />
             <Face5Model
-              position={[8, 2, RADIUS + 10]}
-              scale={1.5}
+              position={[4, 2, RADIUS + 14.5]}
+              scale={.8}
               intensity={8000}
               lightColor="#ffffff"
             />

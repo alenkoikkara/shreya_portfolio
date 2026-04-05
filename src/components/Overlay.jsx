@@ -151,7 +151,7 @@ export const Overlay = () => {
               className="relative overflow-hidden rounded-full cursor-pointer pointer-events-auto group mr-10"
               style={{ background: 'black' }}
             >
-              <div onClick={() => window.open('https://www.behance.net/shreyadubey', '_blank')} className="relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-300 whitespace-nowrap">
+              <div onClick={() => window.location.href = txt.link} className="relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-300 whitespace-nowrap">
                 VIEW PROJECT →
               </div>
             </div>

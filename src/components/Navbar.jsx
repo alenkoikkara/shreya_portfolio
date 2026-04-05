@@ -17,7 +17,7 @@ export const Navbar = () => {
       const currentScrollY = window.scrollY;
       
       // Determine scroll direction
-      if (currentScrollY > lastScrollY.current && currentScrollY > 100 && !isMenuOpen) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 10 && !isMenuOpen) {
         // Scrolling down - Hide (but don't hide if menu is open)
         setIsVisible(false);
       } else {

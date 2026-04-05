@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 
 const NAV_ITEMS = [
   { name: 'Home', url: '/' },
-  { name: 'Expertise', url: 'https://www.net.shreyauxfolio.com/expertise_v1' },
-  { name: 'Work', url: 'https://www.net.shreyauxfolio.com/work_v1' },
-  { name: 'About', url: 'https://www.net.shreyauxfolio.com/about_v1' },
+  { name: 'Expertise', url: 'https://www.pages.shreyauxfolio.net/expertise_v1' },
+  { name: 'Work', url: 'https://www.pages.shreyauxfolio.net/work_v1' },
+  { name: 'About', url: 'https://www.pages.shreyauxfolio.net/about_v1' },
 ];
 
 export const Navbar = () => {

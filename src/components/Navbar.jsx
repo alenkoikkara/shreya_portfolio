@@ -43,8 +43,9 @@ export const Navbar = () => {
         {/* Mobile: Branding Left | Menu Right */}
         <div className="flex w-full items-center justify-between md:hidden">
           <div className="relative z-10 flex items-center space-x-2 cursor-pointer group">
-            <span className="text-[16px] font-normal transition-all duration-300">
-              <b>Design.</b>Shreya
+            <span className="text-[16px] transition-all duration-300">
+              <span className="font-bold group-hover:font-normal transition-all duration-300">Design.</span>
+              <span className="font-normal group-hover:font-bold transition-all duration-300">Shreya</span>
             </span>
           </div>
           <div 
@@ -57,8 +58,9 @@ export const Navbar = () => {
 
         {/* Desktop View */}
         <div className="hidden md:flex items-center space-x-2 cursor-pointer group relative z-10">
-          <span className="text-2xl font-normal transition-all duration-300">
-            <b>Design.</b>Shreya
+          <span className="text-2xl transition-all duration-300">
+            <span className="font-[600] group-hover:font-[200] transition-all duration-300">Design.</span>
+            <span className="font-[200] group-hover:font-[600] transition-all duration-300">Shreya</span>
           </span>
         </div>
 
@@ -68,7 +70,7 @@ export const Navbar = () => {
             <a 
               href={item.url}
               key={item.name} 
-              className="group relative text-[24px] font-normal cursor-pointer opacity-100 py-1 no-underline text-inherit"
+              className="group relative text-[24px] uppercase font-[200] cursor-pointer opacity-100 py-1 no-underline text-inherit"
             >
               {item.name}
               <div 

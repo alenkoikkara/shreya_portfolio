@@ -58,7 +58,7 @@ export const Navbar = () => {
 
         {/* Desktop View */}
         <div className="hidden md:flex items-center space-x-2 cursor-pointer group relative z-10">
-          <span className="text-2xl transition-all duration-300">
+          <span className="text-[18px] transition-all duration-300">
             <span className="font-[600] group-hover:font-[200] transition-all duration-300">Design.</span>
             <span className="font-[200] group-hover:font-[600] transition-all duration-300">Shreya</span>
           </span>
@@ -70,11 +70,11 @@ export const Navbar = () => {
             <a 
               href={item.url}
               key={item.name} 
-              className="group relative text-[24px] uppercase font-[200] cursor-pointer opacity-100 py-1 no-underline text-inherit"
+              className="group relative text-[14px] hover:text-[#475569] hover:font-[400] transition-all duration-300 ease-in-out uppercase font-[200] cursor-pointer text-inherit"
             >
               {item.name}
               <div 
-                className={`absolute bottom-0 left-0 w-full h-[2px] bg-[#1A1A1A] transition-transform duration-300 ease-out ${
+                className={`absolute bottom-0 left-0 w-full h-[2px] bg-[#1A1A1A] transition-transform duration-300 ease-in-out ${
                   item.name === 'Home' 
                     ? 'scale-x-100 origin-left' 
                     : 'origin-right scale-x-0 group-hover:origin-left group-hover:scale-x-100'

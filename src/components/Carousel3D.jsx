@@ -343,7 +343,7 @@ export function Carousel3D({ bokehRef, ...props }) {
     // ── SKILLS SECTION ANIMATION (Starts at t=5) ───────────────────────────
     const skillsStart = 5;
     animateBokehColors(1, skillsStart);
-    const cardStagger = 0.4;
+    const cardStagger = 1;
 
     // 1. Skills Title & Subtitle Slide Up to Center
     tl.current.fromTo(
@@ -361,8 +361,7 @@ export function Carousel3D({ bokehRef, ...props }) {
       if (!card) return;
 
       const startTime = skillsStart + 1.2 + i * cardStagger;
-      const peakX = 3 + i * 0.5; // Mid-point offsets
-      const peakY = 2 + i * 0.6;
+      const peakX = 3 + i * 1.5; // Mid-point offsets
       const endTime = startTime + cardTravelDuration;
 
       lastCardExitTime = Math.max(lastCardExitTime, endTime);

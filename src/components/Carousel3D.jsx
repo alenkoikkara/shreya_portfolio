@@ -1,4 +1,4 @@
-import { Text, Html } from "@react-three/drei";
+import { Text, Html, Float, Image } from "@react-three/drei";
 
 import { ArrowModel } from "../models/ArrowModel";
 import { BulbModel } from "../models/BulbModel";
@@ -13,6 +13,18 @@ import { Face2Model } from "../models/Face2";
 import { Face3Model } from "../models/Face3";
 import { Face4Model } from "../models/Face4";
 import { Face5Model } from "../models/Face5";
+
+import azugaLogo from '../assets/logo/azugalogo.png';
+import optumLogo from '../assets/logo/optumlogo.png';
+import tmlLogo from '../assets/logo/techmachinerylogo.png';
+import isroLogo from '../assets/logo/isrologo.png';
+
+const JOURNEY_DATA = [
+  { role: "AZUGA", logo: azugaLogo },
+  { role: "OPTUM", logo: optumLogo },
+  { role: "TML", logo: tmlLogo },
+  { role: "ISRO", logo: isroLogo },
+];
 
 import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
@@ -173,6 +185,8 @@ export function Carousel3D({ bokehRef, ...props }) {
 
   const journeyGroupRef = useRef();
   const journeyItemsRef = useRef([]);
+  const journeyLogosWrapperRef = useRef([]);
+  const journeyLogosRef = useRef([]);
 
   const contactGroupRef = useRef();
   const contactTitleRef = useRef();
@@ -435,18 +449,14 @@ export function Carousel3D({ bokehRef, ...props }) {
     // ── JOURNEY LIST ANIMATION (Starts after Tools) ────────────────────────
     const journeyStart = lastToolExitTime + 1.5;
     animateBokehColors(3, journeyStart);
-    const JOURNEY_ITEMS = [
-      "AZUGA",
-      "OPTUM",
-      "TML",
-      "ISRO",
-    ];
 
     let lastJourneyExitTime = journeyStart;
 
-    JOURNEY_ITEMS.forEach((_, i) => {
+    JOURNEY_DATA.forEach((_, i) => {
       const itemRef = journeyItemsRef.current[i];
-      if (!itemRef) return;
+      const logoWrapRef = journeyLogosWrapperRef.current[i];
+      const logoMatRef = journeyLogosRef.current[i];
+      if (!itemRef || !logoWrapRef || !logoMatRef) return;
 
       const startTime = journeyStart + i * 1.5;
       const duration = 4;
@@ -454,10 +464,10 @@ export function Carousel3D({ bokehRef, ...props }) {
 
       lastJourneyExitTime = Math.max(lastJourneyExitTime, endTime);
 
-      // Continuous vertical scroll and subtle Z-rotation
+      // Continuous vertical scroll and subtle Z-rotation for TEXT
       tl.current.fromTo(
         itemRef.position,
-        { y: -25, },
+        { y: -25 },
         { y: 25, duration: duration, ease: "none" },
         startTime
       );
@@ -468,7 +478,7 @@ export function Carousel3D({ bokehRef, ...props }) {
         startTime
       );
 
-      // Scale and opacity peak at center
+      // Scale and opacity peak at center for TEXT
       tl.current.fromTo(
         itemRef.scale,
         { x: 0.6, y: 0.6, z: 0.6 },
@@ -481,7 +491,6 @@ export function Carousel3D({ bokehRef, ...props }) {
         startTime + duration / 2
       );
 
-      // Opacity fade in and out
       tl.current.fromTo(
         itemRef.material,
         { opacity: 0 },
@@ -490,6 +499,41 @@ export function Carousel3D({ bokehRef, ...props }) {
       );
       tl.current.to(
         itemRef.material,
+        { opacity: 0, duration: duration / 4, ease: "power1.out" },
+        endTime - duration / 4
+      );
+
+      // LOGO ANIMATIONS
+      // Logo moves vertically with the text (bring to front with z: 2)
+      tl.current.fromTo(
+        logoWrapRef.position,
+        { y: -25, z: 2 }, // In front of text
+        { y: 25, z: 2, duration: duration, ease: "none" },
+        startTime
+      );
+
+      // Logo scales in from center, leaps up
+      tl.current.fromTo(
+        logoWrapRef.scale,
+        { x: 0, y: 0, z: 0 },
+        { x: 7, y: 7, z: 7, duration: duration / 2, ease: "back.out(2)" },
+        startTime
+      );
+      tl.current.to(
+        logoWrapRef.scale,
+        { x: 0, y: 0, z: 0, duration: duration / 2, ease: "power2.in" },
+        startTime + duration / 2
+      );
+
+      // Logo fade
+      tl.current.fromTo(
+        logoMatRef.material,
+        { opacity: 0 },
+        { opacity: 0.6, duration: duration / 6, ease: "power1.in" },
+        startTime
+      );
+      tl.current.to(
+        logoMatRef.material,
         { opacity: 0, duration: duration / 4, ease: "power1.out" },
         endTime - duration / 4
       );
@@ -702,26 +746,35 @@ export function Carousel3D({ bokehRef, ...props }) {
 
       {/* Design Journey List */}
       <group ref={journeyGroupRef}>
-        {[
-          "AZUGA",
-          "OPTUM",
-          "TML",
-          "ISRO",
-        ].map((role, i) => (
-          <Text
-            key={i}
-            ref={el => journeyItemsRef.current[i] = el}
-            position={[0, -30, 0]}
-            fontSize={4}
-            color="#1A1A1A"
-            font="./fonts/NeueMachina-Regular.otf"
-            anchorX="center"
-            anchorY="middle"
-            transparent
-            opacity={0}
-          >
-            {role}
-          </Text>
+        {JOURNEY_DATA.map((journey, i) => (
+          <group key={i}>
+            <Text
+              ref={el => journeyItemsRef.current[i] = el}
+              position={[0, -30, 0]}
+              fontSize={4}
+              color="#1A1A1A"
+              font="./fonts/NeueMachina-Regular.otf"
+              anchorX="center"
+              anchorY="middle"
+              transparent
+              opacity={0}
+            >
+              {journey.role}
+            </Text>
+
+            <group ref={el => journeyLogosWrapperRef.current[i] = el} position={[0, -30, 2]}>
+              <Float floatIntensity={.5} speed={.5} rotationIntensity={.5}>
+                <Image
+                  ref={el => journeyLogosRef.current[i] = el}
+                  url={journey.logo}
+                  transparent
+                  opacity={1}
+                  scale={[2.5, 1]}
+                  fit="contain"
+                />
+              </Float>
+            </group>
+          </group>
         ))}
       </group>
 

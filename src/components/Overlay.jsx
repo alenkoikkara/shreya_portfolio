@@ -13,19 +13,23 @@ const texts = [
   },
   {
     title: "Primary Research",
-    subTitle: "I love the process of discovering the real problem statement it gives me purpose, and more importantly, it gives the team clarity and direction. When we understand the core issue, every design decision becomes more intentional, and the impact becomes more meaningful."
+    subTitle: "I love the process of discovering the real problem statement it gives me purpose, and more importantly, it gives the team clarity and direction. When we understand the core issue, every design decision becomes more intentional, and the impact becomes more meaningful.",
+    link: "https://pages.shreyauxfolio.net/expertise_v1#section1"
   },
   {
     title: "Performance & optimization",
-    subTitle: "Designing and delivering a product is an incredibly fulfilling experience, but assuming users will engage with it exactly as intended is just wishful thinking."
+    subTitle: "Designing and delivering a product is an incredibly fulfilling experience, but assuming users will engage with it exactly as intended is just wishful thinking.",
+    link: "https://pages.shreyauxfolio.net/expertise_v1#section2"
   },
   {
     title: "North Stars & Strategy",
-    subTitle: "As I gained more experience in product design, I realized that strategy isn’t optional it’s essential for a product’s success. A great design means little if it doesn’t align with business goals and user needs."
+    subTitle: "As I gained more experience in product design, I realized that strategy isn’t optional it’s essential for a product’s success. A great design means little if it doesn’t align with business goals and user needs.",
+    link: "https://pages.shreyauxfolio.net/expertise_v1#section3"
   },
   {
     title: "Partnership & Collaboration",
-    subTitle: "My design work thrives through meaningful collaboration across teams. With Product Managers, I leverage deep product knowledge to define clear priorities and acceptance criteria. Engineering partnerships involve finding the optimal balance between design vision and technical feasibility without compromising user value"
+    subTitle: "My design work thrives through meaningful collaboration across teams. With Product Managers, I leverage deep product knowledge to define clear priorities and acceptance criteria. Engineering partnerships involve finding the optimal balance between design vision and technical feasibility without compromising user value",
+    link: "https://pages.shreyauxfolio.net/expertise_v1#section4"
   },
   {
     title: "",
@@ -147,7 +151,7 @@ export const Overlay = () => {
               className="relative overflow-hidden rounded-full cursor-pointer pointer-events-auto group mr-10"
               style={{ background: 'black' }}
             >
-              <div className="relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-300 whitespace-nowrap">
+              <div onClick={() => window.open('https://www.behance.net/shreyadubey', '_blank')} className="relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-300 whitespace-nowrap">
                 VIEW PROJECT →
               </div>
             </div>

@@ -481,7 +481,7 @@ export function Carousel3D({ bokehRef, ...props }) {
       tl.current.fromTo(
         itemRef.scale,
         { x: 0.6, y: 0.6, z: 0.6 },
-        { x: 1.2, y: 1.2, z: 1.2, duration: duration / 2, ease: "power2.out" },
+        { x: 1, y: 1, z: 1, duration: duration / 2, ease: "power2.out" },
         startTime
       );
       tl.current.to(
@@ -498,7 +498,7 @@ export function Carousel3D({ bokehRef, ...props }) {
       );
       tl.current.to(
         itemRef.material,
-        { opacity: 0, duration: duration / 4, ease: "power1.out" },
+        { opacity: 1, duration: duration / 4, ease: "power1.out" },
         endTime - duration / 4
       );
 
@@ -507,7 +507,7 @@ export function Carousel3D({ bokehRef, ...props }) {
       tl.current.fromTo(
         logoWrapRef.position,
         { y: -25, z: 2 }, // In front of text
-        { y: 25, z: 2, duration: duration, ease: "none" },
+        { y: 35, z: 2, duration: duration, ease: "none" },
         startTime
       );
 
@@ -515,7 +515,7 @@ export function Carousel3D({ bokehRef, ...props }) {
       tl.current.fromTo(
         logoWrapRef.scale,
         { x: 0, y: 0, z: 0 },
-        { x: 7, y: 7, z: 7, duration: duration / 2, ease: "back.out(2)" },
+        { x: 3, y: 3, z: 3, duration: duration / 2, ease: "back.out(2)" },
         startTime
       );
       tl.current.to(
@@ -528,12 +528,12 @@ export function Carousel3D({ bokehRef, ...props }) {
       tl.current.fromTo(
         logoMatRef.material,
         { opacity: 0 },
-        { opacity: 0.6, duration: duration / 6, ease: "power1.in" },
+        { opacity: 1, duration: duration / 6, ease: "power1.in" },
         startTime
       );
       tl.current.to(
         logoMatRef.material,
-        { opacity: 0, duration: duration / 4, ease: "power1.out" },
+        { opacity: 1, duration: duration / 4, ease: "power1.out" },
         endTime - duration / 4
       );
     });
@@ -750,7 +750,7 @@ export function Carousel3D({ bokehRef, ...props }) {
             <Text
               ref={el => journeyItemsRef.current[i] = el}
               position={[0, -30, 0]}
-              fontSize={4}
+              fontSize={3.5}
               color="#1A1A1A"
               font="./fonts/NeueMachina-Regular.otf"
               anchorX="center"
@@ -761,7 +761,7 @@ export function Carousel3D({ bokehRef, ...props }) {
               {journey.role}
             </Text>
 
-            <group ref={el => journeyLogosWrapperRef.current[i] = el} position={[0, -30, 2]}>
+            <group ref={el => journeyLogosWrapperRef.current[i] = el} position={[0, 40, 2]}>
               <Float floatIntensity={.5} speed={.5} rotationIntensity={.5}>
                 <Image
                   ref={el => journeyLogosRef.current[i] = el}
@@ -845,31 +845,42 @@ export function Carousel3D({ bokehRef, ...props }) {
             fontFamily: "sans-serif",
             color: "#1A1A1A"
           }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #1A1A1A", padding: "35px 0" }}>
+            <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "35px 0" }}>
               <span style={{ fontSize: "20px", fontWeight: "300" }}>AR.SHREYA18@GMAIL.COM</span>
-              <div style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
             </div>
-            <div style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>LINKEDIN</div>
-            <div style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>DOWNLOAD RESUME</div>
+            <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
+              <span>LINKEDIN</span>
+              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+            </div>
+            <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
+              <span>DOWNLOAD RESUME</span>
+              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+            </div>
           </div>
         </Html>
 
         {/* Bottom center buttons using absolute to sit above/fixed context */}
         <Html position={[18, -9, 0]} transform distanceFactor={10} center>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", marginTop: "20px" }}>
-            <button style={{
-              background: "black",
-              color: "white",
-              border: "none",
-              borderRadius: "30px",
-              padding: "12px 30px",
-              fontSize: "14px",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "10px"
-            }}>
-              Next Page →
+            <button
+              className="hover-mask-button group"
+              style={{
+                background: "black",
+                color: "white",
+                border: "none",
+                borderRadius: "30px",
+                padding: "0", // Handled by inner container for easier z-index management
+                fontSize: "14px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                overflow: "hidden"
+              }}
+            >
+              <div className="relative z-10 px-[30px] py-[12px] flex items-center gap-[10px] group-hover:text-black transition-colors duration-700">
+                Next Page →
+              </div>
             </button>
             <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{
               background: "rgba(208, 221, 243, 0.8)",

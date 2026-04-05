@@ -2,13 +2,13 @@ import React from "react";
 
 export const MobileCarousel = () => {
   return (
-    <div 
+    <div
       className="w-full bg-transparent text-[#1A1A1A] flex flex-col items-center justify-center px-8 z-10 relative pb-32"
       style={{ fontFamily: "'NeueMachina-Regular', sans-serif" }}
     >
       {/* Fixed SVG Bokeh Background */}
-      <svg 
-        className="fixed inset-0 z-[-1] w-full h-full pointer-events-none" 
+      <svg
+        className="fixed inset-0 z-[-1] w-full h-full pointer-events-none"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="xMidYMid slice"
       >
@@ -102,9 +102,9 @@ export const MobileCarousel = () => {
         </p>
         <div className="flex flex-col gap-4 w-full">
           {["DESIGN THINKING", "DATA INSIGHT", "SYSTEMS THINKING", "BRAINSTORMING", "EMPATHY", "OOUX", "UX MATRIX", "ARCHITECTURE"].map((skill, i) => (
-             <div key={i} className="bg-white/60 backdrop-blur-md border border-white/20 rounded-[10px] p-[15px_30px] flex items-center gap-[18px] text-black shadow-lg shadow-black/5 text-xl">
-               <span className="uppercase tracking-wider font-bold">{skill}</span>
-             </div>
+            <div key={i} className="bg-white/60 backdrop-blur-md border border-white/20 rounded-[10px] p-[15px_30px] flex items-center gap-[18px] text-black shadow-lg shadow-black/5 text-xl">
+              <span className="uppercase tracking-wider font-bold">{skill}</span>
+            </div>
           ))}
         </div>
       </div>
@@ -131,33 +131,37 @@ export const MobileCarousel = () => {
         <h2 className="text-5xl leading-tight mb-8">
           LET'S TALK DESIGN
         </h2>
-        
+
         <div className="flex flex-col gap-2 w-full font-sans">
-          <div className="flex justify-between items-center border-b border-[#1A1A1A] py-8">
-             <span className="text-xl font-light">AR.SHREYA18@GMAIL.COM</span>
-             <div className="bg-black rounded-full w-8 h-8 flex items-center justify-center text-white">→</div>
+          <div className="linkage-item flex justify-between items-center border-b border-[#1A1A1A] py-8 cursor-pointer">
+            <span className="text-xl font-light text-left">AR.SHREYA18@GMAIL.COM</span>
+            <div className="linkage-arrow bg-black rounded-full w-8 h-8 flex-shrink-0 flex items-center justify-center text-white">→</div>
           </div>
-          <div className="flex justify-between items-center border-b border-[#1A1A1A] py-8">
-             <span className="text-xl font-light">LINKEDIN</span>
+          <div className="linkage-item flex justify-between items-center border-b border-[#1A1A1A] py-8 cursor-pointer">
+            <span className="text-xl font-light">LINKEDIN</span>
+            <div className="linkage-arrow bg-black rounded-full w-8 h-8 flex-shrink-0 flex items-center justify-center text-white">→</div>
           </div>
-          <div className="flex justify-between items-center border-b border-[#1A1A1A] py-8">
-             <span className="text-xl font-light">DOWNLOAD RESUME</span>
+          <div className="linkage-item flex justify-between items-center border-b border-[#1A1A1A] py-8 cursor-pointer">
+            <span className="text-xl font-light">DOWNLOAD RESUME</span>
+            <div className="linkage-arrow bg-black rounded-full w-8 h-8 flex-shrink-0 flex items-center justify-center text-white">→</div>
           </div>
         </div>
-        
+
         <div className="flex flex-col items-center mt-12 gap-4">
-          <button className="bg-black text-white border-none rounded-[30px] px-[30px] py-[12px] text-sm cursor-pointer flex items-center gap-2">
-            Next Page →
+          <button className="hover-mask-button group bg-black text-white border-none rounded-[30px] p-0 text-sm cursor-pointer overflow-hidden">
+            <div className="relative z-10 px-[30px] py-[12px] flex items-center gap-2 group-hover:text-black transition-colors duration-700">
+              Next Page →
+            </div>
           </button>
-          <button 
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} 
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="bg-[#D0DDF3]/80 text-[#1A1A1A] border border-white/40 rounded-[30px] px-[25px] py-[10px] text-sm cursor-pointer flex items-center gap-2 backdrop-blur-md"
           >
             Go to the top ↑
           </button>
         </div>
       </div>
-      
+
     </div>
   );
 };

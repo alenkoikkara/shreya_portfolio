@@ -7,16 +7,17 @@ export const StarModel = ({
   position,
   path = starModel,
   scale = 3,
-  transmission = .93,
-  roughness = 0.25,
-  thickness = 0.5,
-  ior = 1.2
+  transmission = 1.5,
+  roughness = 0.1,
+  thickness = 0.3,
+  ior = 2
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
 
   useFrame((state) => {
     if (lightningRef.current) {
+      // lightningRef.current.rotation.y = state.clock.elapsedTime * 0.1;
       lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
     }
   });
@@ -43,11 +44,6 @@ export const StarModel = ({
                 roughness={roughness}
                 thickness={thickness}
                 ior={ior}
-                chromaticAberration={0.0}
-                anisotropicBlur={0.1}
-                distortion={0.5}
-                distortionScale={0.5}
-                backside={true}
                 samples={10}
                 resolution={1024}
                 color="#ffffff"

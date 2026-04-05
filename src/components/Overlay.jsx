@@ -148,10 +148,10 @@ export const Overlay = () => {
           
           {txt.title && (
             <div
-              className="relative overflow-hidden rounded-full cursor-pointer pointer-events-auto group mr-10"
-              style={{ background: 'black' }}
+              className="hover-mask-button relative overflow-hidden rounded-full cursor-pointer pointer-events-auto mr-10 group"
+              onClick={() => window.location.href = txt.link}
             >
-              <div onClick={() => window.location.href = txt.link} className="relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-300 whitespace-nowrap">
+              <div className="relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-1000 whitespace-nowrap">
                 VIEW PROJECT →
               </div>
             </div>

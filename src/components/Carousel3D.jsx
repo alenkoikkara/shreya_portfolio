@@ -572,15 +572,15 @@ export function Carousel3D({ bokehRef, ...props }) {
       >
         <group rotation={[0, 0, 0]}>
           <BulbModel
-            position={[-1.5, 0, RADIUS + 17]}
-            scale={.8}
+            position={[-2.5, -.5, RADIUS + 17]}
+            scale={15}
           />
           <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
           </DrumText>
           <ArrowModel
-            position={[5, 2, RADIUS + 13]}
-            scale={.8}
+            position={[2, 1, RADIUS + 13]}
+            scale={40}
           />
         </group>
         <group rotation={[-THETA, 0, 0]}>

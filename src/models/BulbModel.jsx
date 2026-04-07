@@ -1,7 +1,7 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import bulbModel from "../assets/models/bulb.glb";
+import bulbModel from "../assets/models/bulb.gltf";
 
 export const BulbModel = ({
   position,

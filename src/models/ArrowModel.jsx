@@ -1,7 +1,7 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import arrowModel from "../assets/models/arrow.glb";
+import arrowModel from "../assets/models/arrow.gltf";
 
 export const ArrowModel = ({
   position,
@@ -9,8 +9,8 @@ export const ArrowModel = ({
   scale = 3,
   transmission = 1,
   roughness = 0,
-  thickness = 0.9,
-  ior = 1.4
+  thickness = 0.009,
+  ior = 1.1
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();

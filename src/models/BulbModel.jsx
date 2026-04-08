@@ -1,4 +1,4 @@
-import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
+import { useGLTF, MeshTransmissionMaterial, Center } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import bulbModel from "../assets/models/bulb.gltf";
@@ -8,16 +8,17 @@ export const BulbModel = ({
   path = bulbModel,
   scale = 3.9,
   transmission = 1,
-  roughness = 0.1,
-  thickness = 0.1,
-  ior = 1.1
+  roughness = 0,
+  thickness = 20,
+  ior = 1.4
 }) => {
   const { nodes } = useGLTF(path);
   const bulbRef = useRef();
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (bulbRef.current) {
-      bulbRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
+      bulbRef.current.rotation.y += delta * 0.2;
+      bulbRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .05;
     }
   });
 
@@ -28,6 +29,8 @@ export const BulbModel = ({
       scale={scale}
       renderOrder={50}
     >
+      <Center>
+
       {Object.values(nodes).map((node, i) => {
         if (node.isMesh) {
           return (
@@ -44,9 +47,8 @@ export const BulbModel = ({
                 thickness={thickness}
                 ior={ior}
                 chromaticAberration={0.0}
-                anisotropicBlur={0.1}
+                anisotropicBlur={1.5}
                 distortion={0.5}
-                distortionScale={0.5}
                 backside={true}
                 samples={10}
                 resolution={1024}
@@ -57,6 +59,7 @@ export const BulbModel = ({
         }
         return null;
       })}
+      </Center>
     </group>
   );
 };

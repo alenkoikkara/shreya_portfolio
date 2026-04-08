@@ -1,16 +1,16 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import crownModel from "../assets/models/crown.glb";
+import crownModel from "../assets/models/crown.gltf";
 
 export const CrownModel = ({
   position,
-  path = crownModel,
-  scale = 3,
-  transmission = .98,
-  roughness = 0.1,
-  thickness = 0.6 ,
-  ior = 1.4
+    path = crownModel,
+    scale = 3,
+    transmission = 1,
+    roughness = 0.04,
+    thickness = 0.05,
+    ior = 1.4
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
@@ -42,13 +42,10 @@ export const CrownModel = ({
                 transmission={transmission}
                 roughness={roughness}
                 thickness={thickness}
+                chromaticAberration={0}
+                anisotropicBlur={.6}
                 ior={ior}
-                chromaticAberration={0.0}
-                anisotropicBlur={0.1}
-                distortion={0.5}
-                distortionScale={0.5}
-                backside={true}
-                samples={10}
+                samples={16}
                 resolution={1024}
                 color="#ffffff"
               />

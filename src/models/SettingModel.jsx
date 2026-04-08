@@ -1,23 +1,23 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import settingModel from "../assets/models/setting.glb";
+import settingModel from "../assets/models/setting.gltf";
 
 export const SettingModel = ({
   position,
   path = settingModel,
   scale = 3,
-  transmission = .92,
-  roughness = 0.1,
-  thickness = 0.1,
-  ior = 1.4
+  transmission = 1,
+  roughness = 0.04,
+  thickness = 0.05,
+  ior = 1.1
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
 
   useFrame((state) => {
     if (lightningRef.current) {
-      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
+      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .05;
     }
   });
 
@@ -42,13 +42,10 @@ export const SettingModel = ({
                 transmission={transmission}
                 roughness={roughness}
                 thickness={thickness}
+                chromaticAberration={0}
+                anisotropicBlur={.6}
                 ior={ior}
-                chromaticAberration={0.0}
-                anisotropicBlur={0.1}
-                distortion={0.5}
-                distortionScale={0.5}
-                backside={true}
-                samples={10}
+                samples={16}
                 resolution={1024}
                 color="#ffffff"
               />

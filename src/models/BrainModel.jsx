@@ -1,7 +1,7 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import brainModel from "../assets/models/brain.glb";
+import brainModel from "../assets/models/brain.gltf";
 
 export const BrainModel = ({
   position,

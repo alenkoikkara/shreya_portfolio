@@ -10,7 +10,7 @@ const BokehBlob = forwardRef(({ offset, color, size, speed }, ref) => {
   const shaderArgs = useMemo(() => ({
     uniforms: {
       uColor: { value: colorObj },
-      uOpacity: { value: 0.27 }, 
+      uOpacity: { value: 0.27 },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -35,7 +35,7 @@ const BokehBlob = forwardRef(({ offset, color, size, speed }, ref) => {
 
   useImperativeHandle(ref, () => ({
     setColor: (newColor) => {
-       meshRef.current.material.uniforms.uColor.value.lerp(new THREE.Color(newColor), 0.05);
+      meshRef.current.material.uniforms.uColor.value.lerp(new THREE.Color(newColor), 0.05);
     },
     get group() { return groupRef.current; },
     get material() { return meshRef.current.material; }
@@ -47,13 +47,11 @@ const BokehBlob = forwardRef(({ offset, color, size, speed }, ref) => {
         <mesh ref={meshRef} position={offset}>
           <circleGeometry args={[size, 64]} />
           <shaderMaterial args={[shaderArgs]} />
-          <spotLight 
-            color={color} 
-            intensity={9000 * (size / 1)} 
-            distance={150} 
-            angle={Math.PI / 10} 
-            penumbra={0} 
-            decay={0}
+          <pointLight
+            color={color}
+            intensity={10000 * (size / 1)}
+            distance={150}
+            decay={0.3}
           />
         </mesh>
       </Float>
@@ -70,24 +68,26 @@ export const BokehBackground = forwardRef((props, ref) => {
     get group() { return groupRef.current; },
     // Direct access to blobs for GSAP
     get blobs() {
-       return [blob1.current, blob2.current];
+      return [blob1.current, blob2.current];
     }
   }));
 
   return (
-    <group ref={groupRef} position={[0, 0, -50]}>
-      <BokehBlob 
+    <group ref={groupRef} position={[30, -30, -50]}>
+      {/* Stationary point lights that don't move with scroll */}
+
+      <BokehBlob
         ref={blob1}
-        offset={[20, -20, 0]} 
-        color="#FFE5B4" 
-        size={35} 
+        offset={[-68, -2, 0]}
+        color="#FFE5B4"
+        size={15}
         speed={1}
       />
-      <BokehBlob 
+      <BokehBlob
         ref={blob2}
-        offset={[45, 20, 0]} 
-        color="#FFE5B4" 
-        size={45} 
+        offset={[8, 5, 0]}
+        color="#FFE5B4"
+        size={10}
         speed={1.2}
       />
     </group>

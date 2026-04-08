@@ -1,15 +1,15 @@
 import { useGLTF, MeshTransmissionMaterial, Center } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import messageModel from "../assets/models/message.gltf";
+import quoteModel from "../assets/models/quote.gltf";
 
-export const MessageModel = ({
+export const QuoteModel = ({
   position,
-  path = messageModel,
-  scale = 3.9,
-  transmission = 1,
-  roughness = 0,
-  thickness = 20,
+    path = quoteModel,
+   scale = 3,
+  transmission = 0.4,
+  roughness = 0.01,
+  thickness = 3,
   ior = 1.4
 }) => {
   const { nodes } = useGLTF(path);
@@ -17,7 +17,8 @@ export const MessageModel = ({
 
   useFrame((state, delta) => {
     if (lightningRef.current) {
-      lightningRef.current.rotation.y += delta * 0.2;
+      lightningRef.current.rotation.y += delta * 0.5;
+      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
     }
   });
 
@@ -41,15 +42,17 @@ export const MessageModel = ({
               >
                 <MeshTransmissionMaterial
                   transmission={transmission}
-                  roughness={roughness}
-                  thickness={thickness}
-                  ior={ior}
-                  chromaticAberration={0.0}
-                  anisotropicBlur={.5}
-                  distortion={0.1}
-                  backside={true}
-                  resolution={1024}
-                  color="#ffffff"
+                roughness={roughness}
+                thickness={thickness}
+                ior={ior}
+                chromaticAberration={0.0}
+                anisotropicBlur={0}
+                distortion={0}
+                distortionScale={0}
+                backside={true}
+                samples={10}
+                resolution={1024}
+                color="#ffffff"
                 />
               </mesh>
             );
@@ -57,7 +60,6 @@ export const MessageModel = ({
           return null;
         })}
       </Center>
-
     </group>
   );
 };

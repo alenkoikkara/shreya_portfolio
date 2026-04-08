@@ -32,12 +32,13 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useRef, useState, useMemo } from "react";
 import * as THREE from "three";
+import { QuoteModel } from "../models/QuoteModel";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const RADIUS = 200;
 export const THETA = Math.PI / 20;
-export const PIN_DURATION = 0.1;
+export const PIN_DURATION = 0.01;
 
 const NUM_CARDS = 5;
 
@@ -563,6 +564,10 @@ export function Carousel3D({ bokehRef, ...props }) {
 
   return (
     <group scale={responsiveScale}>
+      {/* Global lighting for models */}
+      {/* <pointLight position={[0, 10, 20]} intensity={50300} color="#ffffff" />
+      <pointLight position={[0, 10, 20]} intensity={50300} color="#ffffff" /> */}
+
       {/* Drum Wheel */}
       <group
         {...props}
@@ -572,64 +577,64 @@ export function Carousel3D({ bokehRef, ...props }) {
       >
         <group rotation={[0, 0, 0]}>
           <BulbModel
-            position={[-2.5, -.5, RADIUS + 17]}
-            scale={15}
+            position={[-2, -.2, RADIUS + 17]}
+            scale={10}
           />
           <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
           </DrumText>
           <ArrowModel
             position={[2, 1, RADIUS + 13]}
-            scale={40}
+            scale={30}
           />
         </group>
         <group rotation={[-THETA, 0, 0]}>
           <MessageModel
-            position={[-2, 0, RADIUS + 16]}
-            scale={.8}
+            position={[-2, -0.3, RADIUS + 16]}
+            scale={50}
             intensity={8000}
             lightColor="#fff4cc"
           />
           <DrumText floatingRef={text2Floating} textRef={text2} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             RESEARCH
           </DrumText>
-          <BrainModel
+          {/* <BrainModel
             position={[1, 1, RADIUS + 17]}
             intensity={5000}
             scale={.8}
             lightColor="#ffffff"
-          />
+          /> */}
         </group>
         <group rotation={[-THETA * 2, 0, 0]}>
           <SettingModel
-            position={[-2, 0, RADIUS + 16.5]}
-            scale={.8}
+            position={[1.9, 0.2, RADIUS + 16.5]}
+            scale={14}
             intensity={8000}
             lightColor="#ffffff"
           />
           <DrumText floatingRef={text3Floating} textRef={text3} position={[0, 0, RADIUS]} fontSize={5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             OPTIMISATION
           </DrumText>
-          <BarCharModel
+          {/* <BarCharModel
             position={[2, 1, RADIUS + 17]}
             scale={.8}
             intensity={3000}
             lightColor="#ffffff"
-          />
+          /> */}
         </group>
         <group rotation={[-THETA * 3, 0, 0]}>
-          <StarModel
+          {/* <StarModel
             position={[-1, 0, RADIUS + 17]}
             scale={.8}
             intensity={8000}
             lightColor="#ffffff"
-          />
+          /> */}
           <DrumText floatingRef={text4Floating} textRef={text4} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             STRATEGY
           </DrumText>
           <CrownModel
             position={[1, 0.5, RADIUS + 17]}
-            scale={.8}
+            scale={28}
             intensity={8000}
             lightColor="#ffffff"
           />
@@ -639,7 +644,7 @@ export function Carousel3D({ bokehRef, ...props }) {
             PARTNERSHIP
           </DrumText>
           <group ref={face1ModelRef}>
-            <Face1Model
+            {/* <Face1Model
               position={[-4, 1, RADIUS + 14.5]}
               scale={.8}
               intensity={8000}
@@ -662,10 +667,10 @@ export function Carousel3D({ bokehRef, ...props }) {
               scale={.8}
               intensity={8000}
               lightColor="#ffffff"
-            />
-            <Face5Model
-              position={[4, 2, RADIUS + 14.5]}
-              scale={.8}
+            /> */}
+            <QuoteModel
+              position={[3, -.5, RADIUS + 13.5]}
+              scale={70}
               intensity={8000}
               lightColor="#ffffff"
             />

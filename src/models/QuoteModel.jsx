@@ -5,12 +5,12 @@ import quoteModel from "../assets/models/quote.gltf";
 
 export const QuoteModel = ({
   position,
-    path = quoteModel,
-   scale = 3,
-  transmission = 0.4,
-  roughness = 0.01,
-  thickness = 3,
-  ior = 1.4
+  path = quoteModel,
+  scale = 3,
+  transmission = 1,
+  roughness = 0.05,
+  thickness = 0.8,
+  ior = 1.5
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
@@ -42,17 +42,17 @@ export const QuoteModel = ({
               >
                 <MeshTransmissionMaterial
                   transmission={transmission}
-                roughness={roughness}
-                thickness={thickness}
-                ior={ior}
-                chromaticAberration={0.0}
-                anisotropicBlur={0}
-                distortion={0}
-                distortionScale={0}
-                backside={true}
-                samples={10}
-                resolution={1024}
-                color="#ffffff"
+                  roughness={roughness}
+                  thickness={thickness}
+                  ior={ior}
+                  chromaticAberration={0}
+                  anisotropicBlur={0.1}
+                  distortion={0.1}
+                  distortionScale={0.1}
+                  backside={true}
+                  samples={16}
+                  resolution={1024}
+                  color="#ffffff"
                 />
               </mesh>
             );

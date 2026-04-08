@@ -7,10 +7,10 @@ export const StarModel = ({
   position,
   path = starModel,
   scale = 3,
-  transmission = 1.5,
-  roughness = 0.1,
-  thickness = 0.3,
-  ior = 2
+  transmission = 1,
+  roughness = 0.05,
+  thickness = 0.8,
+  ior = 1.5
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
@@ -44,7 +44,11 @@ export const StarModel = ({
                 roughness={roughness}
                 thickness={thickness}
                 ior={ior}
-                samples={10}
+                chromaticAberration={0.03}
+                anisotropicBlur={0.1}
+                distortion={0.1}
+                backside={true}
+                samples={16}
                 resolution={1024}
                 color="#ffffff"
               />

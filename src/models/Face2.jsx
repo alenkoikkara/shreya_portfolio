@@ -6,11 +6,11 @@ import face2Model from "../assets/models/face2.glb";
 export const Face2Model = ({
   position,
   path = face2Model,
-  scale = 3,  
-  transmission = .99,
-  roughness = 0.1,
-  thickness = 0.19, 
-  ior = 1.4
+  scale = 3,
+  transmission = 1,
+  roughness = 0.05,
+  thickness = 0.8,
+  ior = 1.5
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
@@ -43,12 +43,12 @@ export const Face2Model = ({
                 roughness={roughness}
                 thickness={thickness}
                 ior={ior}
-                chromaticAberration={0.0}
+                chromaticAberration={0.03}
                 anisotropicBlur={0.1}
-                distortion={0.5}
-                distortionScale={0.5}
+                distortion={0.1}
+                distortionScale={0.1}
                 backside={true}
-                samples={10}
+                samples={16}
                 resolution={1024}
                 color="#ffffff"
               />

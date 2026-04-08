@@ -75,6 +75,18 @@ export const BokehBackground = forwardRef((props, ref) => {
   return (
     <group ref={groupRef} position={[30, -30, -50]}>
       {/* Stationary point lights that don't move with scroll */}
+      <pointLight
+        color="#FFE5B4"
+        intensity={10000}
+        distance={150}
+        decay={0.3}
+      />
+      <pointLight
+        color="#FFE5B4"
+        intensity={10000}
+        distance={150}
+        decay={0.3}
+      />
 
       <BokehBlob
         ref={blob1}
@@ -85,7 +97,7 @@ export const BokehBackground = forwardRef((props, ref) => {
       />
       <BokehBlob
         ref={blob2}
-        offset={[8, 5, 0]}
+        offset={[8, 5, 0]}  
         color="#FFE5B4"
         size={10}
         speed={1.2}

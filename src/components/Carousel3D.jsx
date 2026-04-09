@@ -585,7 +585,7 @@ export function Carousel3D({ bokehRef, ...props }) {
           </DrumText>
           <ArrowModel
             position={[3, 2, RADIUS + 13]}
-            scale={.2}
+            scale={55}
           />
         </group>
         <group rotation={[-THETA, 0, 0]}>

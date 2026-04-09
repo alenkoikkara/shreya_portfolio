@@ -1,22 +1,23 @@
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import arrowModel from "../assets/models/arrow.gltf";
+import arrowModel from "../assets/models/M.glb";
 
 export const ArrowModel = ({
   position,
   path = arrowModel,
   scale = 3,
   transmission = 1,
-  roughness = 0.05,
-  thickness = 0.8,
-  ior = 1.5
+  roughness = 0,
+  thickness = 0.5,
+  ior = 1.1
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
 
   useFrame((state) => {
     if (lightningRef.current) {
+      lightningRef.current.rotation.y = state.clock.elapsedTime * 0.4;
       lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .05;
     }
   });
@@ -44,9 +45,9 @@ export const ArrowModel = ({
                 thickness={thickness}
                 ior={ior}
                 chromaticAberration={0}
-                anisotropicBlur={0}
+                anisotropicBlur={2}
                 distortion={0}
-                backside={true}
+                // backside={true}
                 samples={16}
                 resolution={1024}
                 color="#ffffff"

@@ -47,7 +47,7 @@ export const MobileCarousel = () => {
       {/* OPTIMISATION SECTION */}
       <div className="w-full flex flex-col items-center justify-center py-12 border-black/10">
         <h2 className="text-4xl text-center leading-tight mb-4">
-          OPTIMISATION
+          OPTIMISATIONs
         </h2>
         <h3 className="text-xl font-bold uppercase mb-4 text-center">
           Performance & optimization

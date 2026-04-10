@@ -1,4 +1,4 @@
-import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
+import { useGLTF, MeshTransmissionMaterial, Center } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import crownModel from "../assets/models/crown.gltf";
@@ -27,9 +27,9 @@ export const CrownModel = ({
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (lightningRef.current) {
-      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
+      lightningRef.current.rotation.y += delta * 0.15;
     }
   });
 
@@ -40,6 +40,7 @@ export const CrownModel = ({
       scale={scale}
       renderOrder={50}
     >
+      <Center>
       {Object.values(nodes).map((node, i) => {
         if (node.isMesh) {
           return (
@@ -69,6 +70,7 @@ export const CrownModel = ({
         }
         return null;
       })}
+      </Center>
     </group>
   );
 };

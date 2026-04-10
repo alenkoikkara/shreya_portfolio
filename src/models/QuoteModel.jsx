@@ -29,8 +29,7 @@ export const QuoteModel = ({
 
   useFrame((state, delta) => {
     if (lightningRef.current) {
-      lightningRef.current.rotation.y += delta * 0.5;
-      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
+      lightningRef.current.rotation.y += delta * 0.15;
     }
   });
 

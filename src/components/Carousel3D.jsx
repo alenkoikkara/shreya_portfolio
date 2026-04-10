@@ -14,6 +14,19 @@ import { Face3Model } from "../models/Face3";
 import { Face4Model } from "../models/Face4";
 import { Face5Model } from "../models/Face5";
 
+import barchart from '../assets/icons/bar_chart.png';
+import braille from '../assets/icons/braille.png';
+import braincircuit from '../assets/icons/brain-circuit.png';
+import chess from '../assets/icons/chess.png';
+import circlesext from '../assets/icons/circles_ext.png';
+import database from '../assets/icons/database.png';
+import diagramproject from '../assets/icons/diagram-project.png';
+import lightbulb from '../assets/icons/lightbulb.png';
+import qrcode from '../assets/icons/qrcode.png';
+import solarsystem from '../assets/icons/solar-system.png';
+import sparkle from '../assets/icons/sparkle.png';
+import table from '../assets/icons/table.png';
+
 import azugaLogo from '../assets/logo/azugalogo.png';
 import optumLogo from '../assets/logo/optumlogo.png';
 import tmlLogo from '../assets/logo/techmachinerylogo.png';
@@ -30,7 +43,7 @@ import { useThree, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, ud } from "react";
 import * as THREE from "three";
 import { QuoteModel } from "../models/QuoteModel";
 
@@ -42,7 +55,7 @@ export const PIN_DURATION = 0.01;
 
 const NUM_CARDS = 5;
 
-const SkillCard = ({ text, icon, index, setRef }) => {
+const SkillCard = ({ text, icon, index, width, setRef }) => {
   const floatingRef = useRef();
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
@@ -82,7 +95,7 @@ const SkillCard = ({ text, icon, index, setRef }) => {
           }}
           onPointerLeave={() => setHovered(false)}
         >
-          <planeGeometry args={[14, 4]} />
+          <planeGeometry args={[width * 0.0266, 2]} />
         </mesh>
         <Html
           transform
@@ -92,6 +105,7 @@ const SkillCard = ({ text, icon, index, setRef }) => {
           style={{ pointerEvents: 'none' }}
         >
           <div style={{
+            width: `${width}px`,
             background: "rgba(255, 255, 255, 0.6)",
             backdropFilter: "blur(308px)",
             WebkitBackdropFilter: "blur(308px)",
@@ -100,17 +114,18 @@ const SkillCard = ({ text, icon, index, setRef }) => {
             padding: "12px 30px",
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             gap: "18px",
             color: "black",
             whiteSpace: "nowrap",
             boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.1)",
-            fontSize: "20px",
+            fontSize: "16px",
             fontWeight: "400",
             fontFamily: "NeueMachina-Regular, sans-serif",
             userSelect: "none",
             zIndex: 100
           }}>
-            <span style={{ fontSize: "1.2em", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>{icon}</span>
+            <img src={icon} alt="icon" style={{ width: "1.2em", height: "1.2em", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }} />
             <span style={{ fontSize: "1.2em", letterSpacing: "0.08em", textTransform: "uppercase" }}>{text}</span>
           </div>
         </Html>
@@ -354,68 +369,51 @@ export function Carousel3D({ bokehRef, ...props }) {
       skillsStart
     );
 
-    // 2. Skill Cards Sequential Flow (Continuous Ferris-Wheel Motion)
-    const cardTravelDuration = 2.5; // Total time for one card to cross the screen
+    // 2. Skill Cards Stacking Flow (3x4 Grid)
+    const cardTravelDuration = 1.5;
     let lastCardExitTime = skillsStart;
 
     skillCardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      const startTime = skillsStart + 1.2 + i * cardStagger;
-      const peakX = 3 + i * 1.5; // Mid-point offsets
+      const startTime = skillsStart + 0.5 + i * 0.6; // Stagger them in quickly
       const endTime = startTime + cardTravelDuration;
 
       lastCardExitTime = Math.max(lastCardExitTime, endTime);
 
-      // Entire Path: Bottom Right -> Peak -> Bottom Left
-      // We use two segments with no pause back-to-back
-      const segmentDuration = cardTravelDuration / 2;
+      const actualCardWidth = 400 * 0.0266;
 
-      // Segment 1: Bottom Right to Peak
+      const cols = 4;
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+
+      const gapX = 0.3;
+      const gapY = 0.5;
+
+      const startX = -18; // Adjusted startX for full 400px width uniformity
+      const targetX = startX + col * (actualCardWidth + gapX) + (actualCardWidth / 2);
+
+      const cardHeight = 1.5;
+      const ySpacing = cardHeight + gapY;
+      const targetY = 1.5 - row * ySpacing;
+
+      // Move into Grid Position
       tl.current.fromTo(
         card.position,
         { x: 30, y: -25, z: -10 },
         {
-          duration: segmentDuration,
-          x: peakX,
-          y: 0,
+          duration: cardTravelDuration,
+          x: targetX,
+          y: targetY,
           z: 0,
-          ease: "sine.inOut"
+          ease: "power2.out"
         },
         startTime
-      );
-      tl.current.fromTo(
-        card.rotation,
-        { z: -0.3, y: 0.4 },
-        { duration: segmentDuration, z: 0, y: 0, ease: "sine.inOut" },
-        startTime
-      );
-
-      // Segment 2: Peak to Bottom Left
-      tl.current.to(
-        card.position,
-        {
-          duration: segmentDuration,
-          x: -30,
-          y: -25,
-          z: -10,
-          ease: "sine.inOut"
-        },
-        startTime + segmentDuration
-      );
-
-      tl.current.to(
-        card.rotation,
-        { duration: segmentDuration, z: 0.3, y: -0.4, ease: "sine.inOut" },
-        startTime + segmentDuration
-      );
-
-      tl.current.to(
-        card.scale,
-        { duration: segmentDuration, x: 0, y: 0, z: 0, ease: "sine.in" },
-        startTime + segmentDuration
       );
     });
+
+    // Add extra time to appreciate the stacked grid before tools start
+    lastCardExitTime += 1;
 
     // 3. Final Exit (Title scrolls up after last card)
     tl.current.to(
@@ -684,7 +682,7 @@ export function Carousel3D({ bokehRef, ...props }) {
           <Text
             ref={skillsTitleRef}
             position={[-3, 0, 0]}
-            fontSize={4.5}
+            fontSize={3}
             color="#1A1A1A"
             font="./fonts/NeueMachina-Regular.otf"
             maxWidth={22}
@@ -707,14 +705,20 @@ export function Carousel3D({ bokehRef, ...props }) {
             Over the years, I’ve learned that great design isn’t just about screens, it’s about truly understanding people, questioning what’s given, and reshaping complexity into something that feels simple, intuitive, and genuinely useful in the real world.
           </Text>
         </group>
-        <SkillCard index={0} text="DESIGN THINKING" icon="♛" setRef={el => skillCardsRef.current[0] = el} />
-        <SkillCard index={1} text="DATA INSIGHT" icon="📊" setRef={el => skillCardsRef.current[1] = el} />
-        <SkillCard index={2} text="SYSTEMS THINKING" icon="☰" setRef={el => skillCardsRef.current[2] = el} />
-        <SkillCard index={3} text="BRAINSTORMING" icon="⋮" setRef={el => skillCardsRef.current[3] = el} />
-        <SkillCard index={4} text="EMPATHY" icon="⋮" setRef={el => skillCardsRef.current[4] = el} />
-        <SkillCard index={5} text="OOUX" icon="⋮" setRef={el => skillCardsRef.current[5] = el} />
-        <SkillCard index={6} text="UX MATRIX" icon="⋮" setRef={el => skillCardsRef.current[6] = el} />
-        <SkillCard index={7} text="ARCHITECTURE" icon="⋮" setRef={el => skillCardsRef.current[7] = el} />
+        <group position={[-3.5, -6.5, 0]}>
+          <SkillCard index={0} width={400} text="DESIGN THINKING" icon={chess} setRef={el => skillCardsRef.current[0] = el} />
+          <SkillCard index={1} width={400} text="DATA INSIGHT" icon={barchart} setRef={el => skillCardsRef.current[1] = el} />
+          <SkillCard index={2} width={400} text="SYSTEMS THINKING" icon={database} setRef={el => skillCardsRef.current[2] = el} />
+          <SkillCard index={3} width={400} text="EMPATHY" icon={circlesext} setRef={el => skillCardsRef.current[3] = el} />
+          <SkillCard index={4} width={400} text="BRAINSTORMING" icon={braincircuit} setRef={el => skillCardsRef.current[4] = el} />
+          <SkillCard index={5} width={400} text="OOUX" icon={braille} setRef={el => skillCardsRef.current[5] = el} />
+          <SkillCard index={6} width={400} text="UX MATRIX" icon={qrcode} setRef={el => skillCardsRef.current[6] = el} />
+          <SkillCard index={7} width={400} text="INFORMATION ARCHITECTURE" icon={diagramproject} setRef={el => skillCardsRef.current[7] = el} />
+          <SkillCard index={8} width={400} text="SYSTEM DESIGN" icon={solarsystem} setRef={el => skillCardsRef.current[8] = el} />
+          <SkillCard index={9} width={400} text="INNOVATION" icon={lightbulb} setRef={el => skillCardsRef.current[9] = el} />
+          <SkillCard index={10} width={400} text="JOURNEY MAPPING" icon={table} setRef={el => skillCardsRef.current[10] = el} />
+          <SkillCard index={11} width={400} text="THOUGHT LEADERSHIP" icon={sparkle} setRef={el => skillCardsRef.current[11] = el} />
+        </group>
       </group>
 
       {/* Tools Section */}
@@ -765,6 +769,7 @@ export function Carousel3D({ bokehRef, ...props }) {
             >
               {journey.role}
             </Text>
+            
 
             <group ref={el => journeyLogosWrapperRef.current[i] = el} position={[0, 40, 2]}>
               <Float floatIntensity={.5} speed={.5} rotationIntensity={.5}>

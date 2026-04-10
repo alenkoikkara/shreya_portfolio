@@ -58,7 +58,7 @@ function App() {
             position: [0, 0.5, 20],
           }}
         >
-          <color attach="background" args={["#D0DDF3"]} />
+          <color attach="background" args={["#E4D1F8"]} />
           <Experience />
         </Canvas>
       </div>

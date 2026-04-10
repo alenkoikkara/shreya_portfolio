@@ -2,22 +2,33 @@ import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import starModel from "../assets/models/star.glb";
+import { DEFAULT_MATERIAL_CONFIG, MODELS_CONFIG } from "../config/modelsConfig";
+
+const MODEL_NAME = "Star";
+const config = { ...DEFAULT_MATERIAL_CONFIG, ...MODELS_CONFIG[MODEL_NAME] };
 
 export const StarModel = ({
   position,
   path = starModel,
-  scale = 3,
-  transmission = 1,
-  roughness = 0.05,
-  thickness = 0.8,
-  ior = 1.5
+  scale = config.scale,
+  transmission = config.transmission,
+  roughness = config.roughness,
+  thickness = config.thickness,
+  ior = config.ior,
+  color = config.color,
+  chromaticAberration = config.chromaticAberration,
+  anisotropicBlur = config.anisotropicBlur,
+  distortion = config.distortion,
+  distortionScale = config.distortionScale,
+  samples = config.samples,
+  resolution = config.resolution,
+  backside = config.backside,
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
 
   useFrame((state) => {
     if (lightningRef.current) {
-      // lightningRef.current.rotation.y = state.clock.elapsedTime * 0.1;
       lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .005;
     }
   });
@@ -26,6 +37,7 @@ export const StarModel = ({
     <group
       ref={lightningRef}
       position={position}
+      rotation={config.groupRotation || [0, 0, 0]}
       scale={scale}
       renderOrder={50}
     >
@@ -44,13 +56,14 @@ export const StarModel = ({
                 roughness={roughness}
                 thickness={thickness}
                 ior={ior}
-                chromaticAberration={0.03}
-                anisotropicBlur={0.1}
-                distortion={0.1}
-                backside={true}
-                samples={16}
-                resolution={1024}
-                color="#ffffff"
+                chromaticAberration={chromaticAberration}
+                anisotropicBlur={anisotropicBlur}
+                distortion={distortion}
+                distortionScale={distortionScale}
+                backside={backside}
+                samples={samples}
+                resolution={resolution}
+                color={color}
               />
             </mesh>
           );

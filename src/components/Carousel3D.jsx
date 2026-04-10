@@ -578,14 +578,14 @@ export function Carousel3D({ bokehRef, ...props }) {
         <group rotation={[0, 0, 0]}>
           <BulbModel
             position={[-2, -.2, RADIUS + 17]}
-            scale={10}
+            scale={8}
           />
-          <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
+          <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="left" font="./fonts/NeueMachina-Regular.otf">
             EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
           </DrumText>
           <ArrowModel
             position={[3, 2, RADIUS + 13]}
-            scale={55}
+            scale={20}
           />
         </group>
         <group rotation={[-THETA, 0, 0]}>
@@ -704,7 +704,7 @@ export function Carousel3D({ bokehRef, ...props }) {
             anchorX="left"
             anchorY="top"
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+            Over the years, I’ve learned that great design isn’t just about screens, it’s about truly understanding people, questioning what’s given, and reshaping complexity into something that feels simple, intuitive, and genuinely useful in the real world.
           </Text>
         </group>
         <SkillCard index={0} text="DESIGN THINKING" icon="♛" setRef={el => skillCardsRef.current[0] = el} />

@@ -2,17 +2,27 @@ import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import barchartModel from "../assets/models/barchart.glb";
+import { DEFAULT_MATERIAL_CONFIG, MODELS_CONFIG } from "../config/modelsConfig";
+
+const MODEL_NAME = "BarChar";
+const config = { ...DEFAULT_MATERIAL_CONFIG, ...MODELS_CONFIG[MODEL_NAME] };
 
 export const BarCharModel = ({
   position,
   path = barchartModel,
-  scale = 3,
-  intensity = 5000,
-  lightColor = "#ffffff",
-  transmission = 1,
-  roughness = 0.05,
-  thickness = 0.8,
-  ior = 1.5
+  scale = config.scale,
+  transmission = config.transmission,
+  roughness = config.roughness,
+  thickness = config.thickness,
+  ior = config.ior,
+  color = config.color,
+  chromaticAberration = config.chromaticAberration,
+  anisotropicBlur = config.anisotropicBlur,
+  distortion = config.distortion,
+  distortionScale = config.distortionScale,
+  samples = config.samples,
+  resolution = config.resolution,
+  backside = config.backside,
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
@@ -45,14 +55,14 @@ export const BarCharModel = ({
                 roughness={roughness}
                 thickness={thickness}
                 ior={ior}
-                chromaticAberration={0.03}
-                anisotropicBlur={0.1}
-                distortion={0.1}
-                distortionScale={0.1}
-                backside={true}
-                samples={16}
-                resolution={1024}
-                color="#ffffff"
+                chromaticAberration={chromaticAberration}
+                anisotropicBlur={anisotropicBlur}
+                distortion={distortion}
+                distortionScale={distortionScale}
+                backside={backside}
+                samples={samples}
+                resolution={resolution}
+                color={color}
               />
             </mesh>
           );

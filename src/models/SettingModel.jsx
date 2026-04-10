@@ -2,15 +2,27 @@ import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import settingModel from "../assets/models/setting.gltf";
+import { DEFAULT_MATERIAL_CONFIG, MODELS_CONFIG } from "../config/modelsConfig";
+
+const MODEL_NAME = "Setting";
+const config = { ...DEFAULT_MATERIAL_CONFIG, ...MODELS_CONFIG[MODEL_NAME] };
 
 export const SettingModel = ({
   position,
   path = settingModel,
-  scale = 3,
-  transmission = 1,
-  roughness = 0.04,
-  thickness = 0.05,
-  ior = 1.1
+  scale = config.scale,
+  transmission = config.transmission,
+  roughness = config.roughness,
+  thickness = config.thickness,
+  ior = config.ior,
+  color = config.color,
+  chromaticAberration = config.chromaticAberration,
+  anisotropicBlur = config.anisotropicBlur,
+  distortion = config.distortion,
+  distortionScale = config.distortionScale,
+  samples = config.samples,
+  resolution = config.resolution,
+  backside = config.backside,
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
@@ -25,6 +37,7 @@ export const SettingModel = ({
     <group
       ref={lightningRef}
       position={position}
+      rotation={config.groupRotation || [0, 0, 0]}
       scale={scale}
       renderOrder={50}
     >
@@ -42,19 +55,21 @@ export const SettingModel = ({
                 transmission={transmission}
                 roughness={roughness}
                 thickness={thickness}
-                chromaticAberration={0}
-                anisotropicBlur={.6}
                 ior={ior}
-                samples={16}
-                resolution={1024}
-                color="#ffffff"
+                chromaticAberration={chromaticAberration}
+                anisotropicBlur={anisotropicBlur}
+                distortion={distortion}
+                distortionScale={distortionScale}
+                backside={backside}
+                samples={samples}
+                resolution={resolution}
+                color={color}
               />
             </mesh>
           );
         }
         return null;
       })}
-
     </group>
   );
 };

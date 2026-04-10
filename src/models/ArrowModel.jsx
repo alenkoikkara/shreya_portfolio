@@ -1,24 +1,35 @@
 import { useGLTF, MeshTransmissionMaterial, Center } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import arrowModel from "../assets/models/msg.glb";
+import arrowModel from "../assets/models/arrow.gltf";
+import { DEFAULT_MATERIAL_CONFIG, MODELS_CONFIG } from "../config/modelsConfig";
+
+const MODEL_NAME = "Arrow";
+const config = { ...DEFAULT_MATERIAL_CONFIG, ...MODELS_CONFIG[MODEL_NAME] };
 
 export const ArrowModel = ({
   position,
   path = arrowModel,
-  scale = 3,
-  transmission = 1,
-  roughness = 0.09,
-  thickness = 8.9,
-  ior = 1.2
+  scale = config.scale,
+  transmission = config.transmission,
+  roughness = config.roughness,
+  thickness = config.thickness,
+  ior = config.ior,
+  color = config.color,
+  chromaticAberration = config.chromaticAberration,
+  anisotropicBlur = config.anisotropicBlur,
+  distortion = config.distortion,
+  distortionScale = config.distortionScale,
+  samples = config.samples,
+  resolution = config.resolution,
+  backside = config.backside,
 }) => {
   const { nodes } = useGLTF(path);
   const lightningRef = useRef();
 
   useFrame((state, delta) => {
     if (lightningRef.current) {
-      lightningRef.current.rotation.y += delta * 0.4;
-      lightningRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * .05;
+      lightningRef.current.rotation.x += delta * 0.15;
     }
   });
 
@@ -31,34 +42,34 @@ export const ArrowModel = ({
     >
       <Center>
         {Object.values(nodes).map((node, i) => {
-          if (node.isMesh) {
+          if (node?.isMesh) {
             return (
               <mesh
                 key={i}
-              geometry={node.geometry}
-              position={node.position}
-              rotation={[90 * (Math.PI / 180), -2 * (Math.PI / 180), 0 * (Math.PI / 180)]}
-              scale={node.scale}
-            >
-              <MeshTransmissionMaterial
-                transmission={transmission}
-                roughness={roughness}
-                thickness={thickness}
-                ior={ior}
-                chromaticAberration={0}
-                anisotropicBlur={1}
-                distortion={0}
-                temporalDistortion={3}
-                // backside={true}
-                samples={16}
-                resolution={1024}
-                color="#ffffff"
-              />
-            </mesh>
-          );
-        }
-        return null;
-      })}
+                geometry={node.geometry}
+                position={node.position}
+                rotation={config.meshRotation || node.rotation}
+                scale={node.scale}
+              >
+                <MeshTransmissionMaterial
+                  transmission={transmission}
+                  roughness={roughness}
+                  thickness={thickness}
+                  ior={ior}
+                  chromaticAberration={chromaticAberration}
+                  anisotropicBlur={anisotropicBlur}
+                  distortion={distortion}
+                  distortionScale={distortionScale}
+                  backside={backside}
+                  samples={samples}
+                  resolution={resolution}
+                  color={color}
+                />
+              </mesh>
+            );
+          }
+          return null;
+        })}
       </Center>
     </group>
   );

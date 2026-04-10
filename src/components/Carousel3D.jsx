@@ -472,17 +472,11 @@ export function Carousel3D({ bokehRef, ...props }) {
 
       lastJourneyExitTime = Math.max(lastJourneyExitTime, endTime);
 
-      // Continuous vertical scroll and subtle Z-rotation for the FULL TITLE GROUP
+      // Continuous vertical scroll for the FULL TITLE GROUP
       tl.current.fromTo(
         grpRef.position,
         { y: -25 },
         { y: 25, duration: duration, ease: "none" },
-        startTime
-      );
-      tl.current.fromTo(
-        grpRef.rotation,
-        { y: 1.15 },
-        { y: -1.15, duration: duration, ease: "none" },
         startTime
       );
 

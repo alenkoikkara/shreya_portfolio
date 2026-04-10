@@ -32,11 +32,15 @@ import optumLogo from '../assets/logo/optumlogo.png';
 import tmlLogo from '../assets/logo/techmachinerylogo.png';
 import isroLogo from '../assets/logo/isrologo.png';
 
+import bridgeston from '../assets/icons/bridgestone.png';
+import unitedhealthcare from '../assets/icons/uhc.png';
+
+
 const JOURNEY_DATA = [
-  { role: "AZUGA", logo: azugaLogo },
-  { role: "OPTUM", logo: optumLogo },
-  { role: "TML", logo: tmlLogo },
-  { role: "ISRO", logo: isroLogo },
+  { role: "AZUGA", subtext: "BY BRIDGESTONE", logo: azugaLogo, subIcon: bridgeston, position: [4.5, 0, 0], logoScale: [3.26 * 1.2, 1.2], subIconScale: [0.8, 0.8] },
+  { role: "OPTUM", subtext: "UNITED HEALTHCARE", logo: optumLogo, subIcon: unitedhealthcare, position: [5.5, 0, 0], logoScale: [3.43 * 1.2, 1.2], subIconScale: [1.57 * 0.8, 0.8] },
+  { role: "TML", subtext: "TECH MACHINERY LABS", logo: tmlLogo, subIcon: '', position: [0, 0, 0], logoScale: [2.2, 2.2], subIconScale: [0.8, 0.8] },
+  { role: "ISRO", subtext: "INDIAN SPACE RESEARCH ORGANISATION", logo: isroLogo, subIcon: '', position: [0, 0, 0], logoScale: [2.2, 2.2], subIconScale: [0.8, 0.8] },
 ];
 
 import { useThree, useFrame } from "@react-three/fiber";
@@ -200,7 +204,10 @@ export function Carousel3D({ bokehRef, ...props }) {
   const toolsGroupRef = useRef();
 
   const journeyGroupRef = useRef();
+  const journeyGroupsRef = useRef([]);
   const journeyItemsRef = useRef([]);
+  const journeySubRefs = useRef([]);
+  const journeySubLogosRef = useRef([]);
   const journeyLogosWrapperRef = useRef([]);
   const journeyLogosRef = useRef([]);
 
@@ -451,10 +458,13 @@ export function Carousel3D({ bokehRef, ...props }) {
     let lastJourneyExitTime = journeyStart;
 
     JOURNEY_DATA.forEach((_, i) => {
+      const grpRef = journeyGroupsRef.current[i];
       const itemRef = journeyItemsRef.current[i];
+      const subRef = journeySubRefs.current[i];
+      const subLogoRef = journeySubLogosRef.current[i];
       const logoWrapRef = journeyLogosWrapperRef.current[i];
       const logoMatRef = journeyLogosRef.current[i];
-      if (!itemRef || !logoWrapRef || !logoMatRef) return;
+      if (!grpRef || !itemRef || !subRef || !logoWrapRef || !logoMatRef) return;
 
       const startTime = journeyStart + i * 1.5;
       const duration = 4;
@@ -462,55 +472,59 @@ export function Carousel3D({ bokehRef, ...props }) {
 
       lastJourneyExitTime = Math.max(lastJourneyExitTime, endTime);
 
-      // Continuous vertical scroll and subtle Z-rotation for TEXT
+      // Continuous vertical scroll and subtle Z-rotation for the FULL TITLE GROUP
       tl.current.fromTo(
-        itemRef.position,
+        grpRef.position,
         { y: -25 },
         { y: 25, duration: duration, ease: "none" },
         startTime
       );
       tl.current.fromTo(
-        itemRef.rotation,
+        grpRef.rotation,
         { y: 1.15 },
         { y: -1.15, duration: duration, ease: "none" },
         startTime
       );
 
-      // Scale and opacity peak at center for TEXT
+      // Scale up and down for the FULL TITLE GROUP
       tl.current.fromTo(
-        itemRef.scale,
+        grpRef.scale,
         { x: 0.6, y: 0.6, z: 0.6 },
         { x: 1, y: 1, z: 1, duration: duration / 2, ease: "power2.out" },
         startTime
       );
       tl.current.to(
-        itemRef.scale,
+        grpRef.scale,
         { x: 0.6, y: 0.6, z: 0.6, duration: duration / 2, ease: "power2.in" },
         startTime + duration / 2
       );
 
-      tl.current.fromTo(
-        itemRef.material,
-        { opacity: 0 },
-        { opacity: 1, duration: duration / 4, ease: "power1.in" },
-        startTime
-      );
-      tl.current.to(
-        itemRef.material,
-        { opacity: 1, duration: duration / 4, ease: "power1.out" },
-        endTime - duration / 4
-      );
+      // Fade in/out for text materials & subLogo
+      [itemRef, subRef, subLogoRef].forEach(ref => {
+        if (!ref) return;
+        tl.current.fromTo(
+          ref.material,
+          { opacity: 0 },
+          { opacity: 1, duration: duration / 4, ease: "power1.in" },
+          startTime
+        );
+        tl.current.to(
+          ref.material,
+          { opacity: 1, duration: duration / 4, ease: "power1.out" },
+          endTime - duration / 4
+        );
+      });
 
-      // LOGO ANIMATIONS
-      // Logo moves vertically with the text (bring to front with z: 2)
+      // RESTORED BIG LOGO ANIMATIONS
+      // Moves vertically independently, drifting above the text
       tl.current.fromTo(
         logoWrapRef.position,
-        { y: -25, z: 2 }, // In front of text
+        { y: -25, z: 2 },
         { y: 35, z: 2, duration: duration, ease: "none" },
         startTime
       );
 
-      // Logo scales in from center, leaps up
+      // Giant logo scale pop
       tl.current.fromTo(
         logoWrapRef.scale,
         { x: 0, y: 0, z: 0 },
@@ -523,7 +537,7 @@ export function Carousel3D({ bokehRef, ...props }) {
         startTime + duration / 2
       );
 
-      // Logo fade
+      // Giant logo fade
       tl.current.fromTo(
         logoMatRef.material,
         { opacity: 0 },
@@ -756,29 +770,58 @@ export function Carousel3D({ bokehRef, ...props }) {
       <group ref={journeyGroupRef}>
         {JOURNEY_DATA.map((journey, i) => (
           <group key={i}>
-            <Text
-              ref={el => journeyItemsRef.current[i] = el}
-              position={[0, -30, 0]}
-              fontSize={3.5}
-              color="#1A1A1A"
-              font="./fonts/NeueMachina-Regular.otf"
-              anchorX="center"
-              anchorY="middle"
-              transparent
-              opacity={0}
-            >
-              {journey.role}
-            </Text>
-            
+            <group ref={el => journeyGroupsRef.current[i] = el} position={[0, -30, 0]}>
+              <Text
+                ref={el => journeyItemsRef.current[i] = el}
+                position={[0, 0, 0]}
+                fontSize={3.5}
+                color="#1A1A1A"
+                font="./fonts/NeueMachina-Regular.otf"
+                anchorX="center"
+                anchorY="middle"
+                transparent
+                opacity={0}
+              >
+                {journey.role}
+              </Text>
 
-            <group ref={el => journeyLogosWrapperRef.current[i] = el} position={[0, 40, 2]}>
+              <group position={[0, -2.5, 0]}>
+                <Text
+                  ref={el => journeySubRefs.current[i] = el}
+                  position={[-0.5, 0, 0]}
+                  fontSize={1}
+                  color="#666666"
+                  font="./fonts/NeueMachina-Light.otf"
+                  anchorX="center"
+                  anchorY="middle"
+                  transparent
+                  opacity={0}
+                >
+                  {journey.subtext}
+                </Text>
+                {journey?.subIcon && (
+                  <Image
+                    ref={el => journeySubLogosRef.current[i] = el}
+                    url={journey?.subIcon}
+                    transparent
+                    opacity={0}
+                    scale={journey.subIconScale}
+                    position={journey.position}
+                    fit="contain"
+                  />
+                )}
+              </group>
+            </group>
+
+            {/* RESTORED BIG LOGO Wrapper */}
+            <group ref={el => journeyLogosWrapperRef.current[i] = el} position={[0, 30, 2]}>
               <Float floatIntensity={.5} speed={.5} rotationIntensity={.5}>
                 <Image
                   ref={el => journeyLogosRef.current[i] = el}
                   url={journey.logo}
                   transparent
                   opacity={1}
-                  scale={[2.5, 1]}
+                  scale={journey.logoScale}
                   fit="contain"
                 />
               </Float>

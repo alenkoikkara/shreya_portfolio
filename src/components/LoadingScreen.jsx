@@ -18,7 +18,7 @@ export const LoadingScreen = ({ isFinished }) => {
 
   return (
     <div 
-      className={`fixed inset-0 z-[2000] bg-[#E4D1F8] flex items-center justify-center transition-opacity duration-1000 ease-in-out ${
+      className={`fixed inset-0 z-[2000] bg-[#FDECFF] flex items-center justify-center transition-opacity duration-1000 ease-in-out ${
         isFinished ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
       style={{ fontFamily: "'Outfit', sans-serif" }}

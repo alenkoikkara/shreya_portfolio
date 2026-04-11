@@ -13,6 +13,7 @@ import { LinkModel } from "../models/LinkModel";
 import { BoyGirlModel } from "../models/BoyGirlModel";
 import { HashModel } from "../models/HashModel";
 import { LinkedinModel } from "../models/LinkedinModel";
+import { EmailModel } from "../models/EmailModel";
 
 import barchart from '../assets/icons/bar_chart.png';
 import braille from '../assets/icons/braille.png';
@@ -596,9 +597,9 @@ export function Carousel3D({ bokehRef, ...props }) {
           />
         </group>
         <group rotation={[-THETA, 0, 0]}>
-          <MessageModel
+          <EmailModel
             position={[-8, -1, RADIUS + 6]}
-            scale={.2}
+            scale={.4}
             intensity={8000}
             lightColor="#fff4cc"
           />
@@ -647,7 +648,7 @@ export function Carousel3D({ bokehRef, ...props }) {
           <group ref={face1ModelRef}>
           <BoyGirlModel
             position={[-2, -.5, RADIUS + 15]}
-            scale={.7}
+            scale={.6}
           />
             <QuoteModel
               position={[3, .5, RADIUS + 13.5]}

@@ -9,7 +9,7 @@ export const Experience = () => {
   return (
     <>
       {/* <Environment preset="dawn" /> */}
-      <BokehBackground ref={bokehRef} />
+      {/* <BokehBackground ref={bokehRef} /> */}
       <Carousel3D bokehRef={bokehRef} />
     </>
   );

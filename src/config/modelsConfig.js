@@ -3,14 +3,14 @@
  */
 export const DEFAULT_MATERIAL_CONFIG = {
   transmission: 1,
-  roughness: 0.009,
+  roughness: 0.059,
   thickness: 1.5,
   ior: 1.3,
   chromaticAberration: 0,
   anisotropicBlur: 0.3,
   distortion: 0,
   distortionScale: 0,
-  backside: true,
+  // backside: true,
   samples: 16,
   resolution: 1024,
   color: "#ffffff",

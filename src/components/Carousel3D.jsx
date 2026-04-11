@@ -892,8 +892,8 @@ export function Carousel3D({ bokehRef, ...props }) {
             fontFamily: "sans-serif",
             color: "#1A1A1A"
           }}>
-            <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "35px 0" }}>
-              <span style={{ fontSize: "20px", fontWeight: "300" }}>AR.SHREYA18@GMAIL.COM</span>
+            <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "35px 0", cursor: "pointer" }}>
+              <span style={{ fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>AR.SHREYA18@GMAIL.COM</span>
               <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
             </div>
             <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>

@@ -1,4 +1,5 @@
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
+import * as THREE from "three";
 import "./App.css";
 import { Experience } from "./components/Experience";
 import { Overlay } from "./components/Overlay";
@@ -6,6 +7,39 @@ import { Navbar } from "./components/Navbar";
 import { MobileCarousel } from "./components/MobileCarousel";
 import { useEffect, useState } from "react";
 import { LoadingScreen } from "./components/LoadingScreen";
+
+function GradientBackground() {
+  const { scene } = useThree();
+  
+  useEffect(() => {
+    const canvas = document.createElement("canvas");
+    // Using a reliable size to prevent pixelation while mapping smoothly
+    canvas.width = 1024;
+    canvas.height = 1024;
+    const ctx = canvas.getContext("2d");
+    
+    // Diagonal gradient to match 135deg CSS angle
+    const gradient = ctx.createLinearGradient(0, 0, 1024, 1024);
+    gradient.addColorStop(0, "#FDECFF");
+    gradient.addColorStop(1, "#E4D1F8");
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 1024, 1024);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    if (THREE.SRGBColorSpace) texture.colorSpace = THREE.SRGBColorSpace;
+    else if (THREE.sRGBEncoding) texture.encoding = THREE.sRGBEncoding;
+    
+    scene.background = texture;
+    
+    return () => {
+      scene.background = null;
+      texture.dispose();
+    };
+  }, [scene]);
+
+  return null;
+}
 
 function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -40,7 +74,7 @@ function App() {
 
   if (isMobile) {
     return (
-      <div className="app-container" style={{ background: "#D0DDF3", minHeight: "100vh" }}>
+      <div className="app-container" style={{ background: "linear-gradient(135deg, #FDECFF, #E4D1F8)", minHeight: "100vh" }}>
         {isLoading && <LoadingScreen isFinished={isFinished} />}
         <Navbar />
         <MobileCarousel />
@@ -58,7 +92,7 @@ function App() {
             position: [0, 0.5, 20],
           }}
         >
-          <color attach="background" args={["#FDECFF"]} />
+          <GradientBackground />
           <Experience />
         </Canvas>
       </div>

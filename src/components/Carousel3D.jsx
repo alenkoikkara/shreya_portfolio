@@ -56,6 +56,7 @@ gsap.registerPlugin(ScrollTrigger);
 export const RADIUS = 200;
 export const THETA = Math.PI / 20;
 export const PIN_DURATION = 0.01;
+export const DRUM_SPEED = 1.5;
 
 const NUM_CARDS = 5;
 
@@ -230,7 +231,7 @@ export function Carousel3D({ bokehRef, ...props }) {
       scrollTrigger: {
         trigger: document.body,
         start: "top top",
-        end: () => window.innerHeight * 20, // Tightened scroll length
+        end: () => window.innerHeight * 35, // Lengthened scroll length to slow animations
         scrub: 3,
       }
     });
@@ -286,18 +287,18 @@ export function Carousel3D({ bokehRef, ...props }) {
       tl.current.to(
         ref.current.rotation,
         {
-          duration: 1 - PIN_DURATION,
+          duration: (1 - PIN_DURATION) * DRUM_SPEED,
           x: THETA * (i + 1),
           ease: "power2.inOut",
         },
-        i + PIN_DURATION / 2
+        i * DRUM_SPEED + (PIN_DURATION / 2) * DRUM_SPEED
       );
     }
 
     // ── Unified entry/exit helper ─────────────────────────
     function animateCard(textRef, peakTime, exitTime, exitUp = false, extraRef = null) {
-      const entryEndTime = peakTime - PIN_DURATION / 2;
-      const entryStartTime = Math.max(0, entryEndTime - 1.2);
+      const entryEndTime = peakTime - (PIN_DURATION / 2) * DRUM_SPEED;
+      const entryStartTime = Math.max(0, entryEndTime - 1.2 * DRUM_SPEED);
 
       if (entryStartTime >= 0 && entryStartTime < entryEndTime) {
         const inDur = entryEndTime - entryStartTime;
@@ -322,7 +323,7 @@ export function Carousel3D({ bokehRef, ...props }) {
       }
 
       if (exitTime !== null) {
-        const exitStartTime = peakTime + PIN_DURATION / 2;
+        const exitStartTime = peakTime + (PIN_DURATION / 2) * DRUM_SPEED;
         const outDur = exitTime - exitStartTime;
 
         tl.current.to(
@@ -357,14 +358,14 @@ export function Carousel3D({ bokehRef, ...props }) {
     }
 
     // ── Card timings ──────────────────────────────────────────────────────
-    animateCard(text1, 0, 1);
-    animateCard(text2, 1, 2);
-    animateCard(text3, 2, 3);
-    animateCard(text4, 3, 4);
-    animateCard(text5, 4, 5, true, face1ModelRef);
+    animateCard(text1, 0 * DRUM_SPEED, 1 * DRUM_SPEED);
+    animateCard(text2, 1 * DRUM_SPEED, 2 * DRUM_SPEED);
+    animateCard(text3, 2 * DRUM_SPEED, 3 * DRUM_SPEED);
+    animateCard(text4, 3 * DRUM_SPEED, 4 * DRUM_SPEED);
+    animateCard(text5, 4 * DRUM_SPEED, 5 * DRUM_SPEED, true, face1ModelRef);
 
-    // ── SKILLS SECTION ANIMATION (Starts at t=5) ───────────────────────────
-    const skillsStart = 5;
+    // ── SKILLS SECTION ANIMATION (Starts at t=5 * DRUM_SPEED) ───────────────
+    const skillsStart = 5 * DRUM_SPEED;
     animateBokehColors(1, skillsStart);
     const cardStagger = 1;
 

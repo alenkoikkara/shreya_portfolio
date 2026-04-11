@@ -2,7 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { PIN_DURATION } from "./Carousel3D";
+import { PIN_DURATION, DRUM_SPEED } from "./Carousel3D";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,14 +38,6 @@ const texts = [
   {
     title: "",
     subTitle: ""
-  },
-  {
-    title: "",
-    subTitle: ""
-  },
-  {
-    title: "",
-    subTitle: ""
   }
 ]
 
@@ -68,22 +60,22 @@ export const Overlay = () => {
       scrollTrigger: {
         trigger: document.body,
         start: "top top",
-        end: () => window.innerHeight * 5, // Ends when partnership card exits
+        end: () => window.innerHeight * 10, // Synced to proportional Carousel3D physical height mapping
         scrub: 1.5
       }
     });
 
-    // Each 'unit' in this timeline is 1 window height.
+    // Each 'unit' perfectly mirrors the Carousel3D Drum rotation scaling
     texts.forEach((_, i) => {
       const el = subRefs.current[i];
       if (!el) return;
 
-      const peakTime = i;
+      const peakTime = i * DRUM_SPEED;
 
       // Animate In (except first which is already visible)
       if (i > 0) {
-        const entryEndTime = peakTime - PIN_DURATION / 2;
-        const entryStartTime = peakTime - 0.4;
+        const entryEndTime = peakTime - (PIN_DURATION / 2) * DRUM_SPEED;
+        const entryStartTime = peakTime - 0.4 * DRUM_SPEED;
 
         if (entryStartTime < entryEndTime) {
           const inDur = entryEndTime - entryStartTime;
@@ -98,8 +90,8 @@ export const Overlay = () => {
 
       // Animate Out (all items including last)
       {
-        const exitStartTime = peakTime + PIN_DURATION / 2;
-        const exitEndTime = peakTime + 0.4;
+        const exitStartTime = peakTime + (PIN_DURATION / 2) * DRUM_SPEED;
+        const exitEndTime = peakTime + 0.4 * DRUM_SPEED;
         const outDur = exitEndTime - exitStartTime;
 
         tl.to(
@@ -156,7 +148,7 @@ export const Overlay = () => {
               onClick={() => window.location.href = txt.link}
             >
               <div className="relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-1000 whitespace-nowrap">
-                Read All →
+                Read All→
               </div>
             </div>
           )}

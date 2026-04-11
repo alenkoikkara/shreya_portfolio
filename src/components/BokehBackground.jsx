@@ -10,7 +10,7 @@ const BokehBlob = forwardRef(({ offset, color, size, speed }, ref) => {
   const shaderArgs = useMemo(() => ({
     uniforms: {
       uColor: { value: colorObj },
-      uOpacity: { value: 0.27 },
+      uOpacity: { value: 0.2 },
     },
     vertexShader: `
       varying vec2 vUv;
@@ -92,14 +92,14 @@ export const BokehBackground = forwardRef((props, ref) => {
         ref={blob1}
         offset={[-68, -2, 0]}
         color="#FFE5B4"
-        size={15}
+        size={25}
         speed={1}
       />
       <BokehBlob
         ref={blob2}
         offset={[8, 5, 0]}  
         color="#FFE5B4"
-        size={10}
+        size={15}
         speed={1.2}
       />
     </group>

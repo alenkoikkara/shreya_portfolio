@@ -1,15 +1,15 @@
 import { useGLTF, MeshTransmissionMaterial, Center } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import quoteModel from "../assets/models/quote.glb";
+import linkedinModel from "../assets/models/linkedin.glb";
 import { DEFAULT_MATERIAL_CONFIG, MODELS_CONFIG } from "../config/modelsConfig";
 
-const MODEL_NAME = "Quote";
+const MODEL_NAME = "Linkedin";
 const config = { ...DEFAULT_MATERIAL_CONFIG, ...MODELS_CONFIG[MODEL_NAME] };
 
-export const QuoteModel = ({
+export const LinkedinModel = ({
   position,
-  path = quoteModel,
+  path = linkedinModel,
   scale = config.scale,
   transmission = config.transmission,
   roughness = config.roughness,
@@ -29,7 +29,7 @@ export const QuoteModel = ({
 
   useFrame((state, delta) => {
     if (lightningRef.current) {
-      lightningRef.current.rotation.y += delta * 0.15;
+      lightningRef.current.rotation.y += delta * 0.2;
     }
   });
 

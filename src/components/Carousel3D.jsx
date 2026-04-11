@@ -2,17 +2,17 @@ import { Text, Html, Float, Image } from "@react-three/drei";
 
 import { ArrowModel } from "../models/ArrowModel";
 import { BulbModel } from "../models/BulbModel";
-import { BrainModel } from "../models/BrainModel";
 import { MessageModel } from "../models/MessageModel";
 import { SettingModel } from "../models/SettingModel";
-import { BarCharModel } from "../models/BarCharModel";
-import { StarModel } from "../models/StarModel";
 import { CrownModel } from "../models/CrownModel";
-import { Face1Model } from "../models/Face1";
-import { Face2Model } from "../models/Face2";
-import { Face3Model } from "../models/Face3";
-import { Face4Model } from "../models/Face4";
-import { Face5Model } from "../models/Face5";
+import { RocketModel } from "../models/RocketModel";
+import { LabModel } from "../models/LabModel";
+import { ChessModel } from "../models/ChessModel";
+import { FolderModel } from "../models/FolderModel";
+import { LinkModel } from "../models/LinkModel";
+import { BoyGirlModel } from "../models/BoyGirlModel";
+import { HashModel } from "../models/HashModel";
+import { LinkedinModel } from "../models/LinkedinModel";
 
 import barchart from '../assets/icons/bar_chart.png';
 import braille from '../assets/icons/braille.png';
@@ -111,7 +111,7 @@ const SkillCard = ({ text, icon, index, width, setRef }) => {
         >
           <div style={{
             width: `${width}px`,
-            background: "rgba(255, 255, 255, 0.6)",
+            background: "rgba(255, 255, 255, 0.5)",
             backdropFilter: "blur(308px)",
             WebkitBackdropFilter: "blur(308px)",
             border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -585,63 +585,57 @@ export function Carousel3D({ bokehRef, ...props }) {
         <group rotation={[0, 0, 0]}>
           <BulbModel
             position={[-2, -.2, RADIUS + 17]}
-            scale={8}
+            scale={.1}
           />
           <DrumText floatingRef={text1Floating} textRef={text1} lineHeight={.9} maxWidth={42} position={[0, 0, RADIUS]} fontSize={4} color="#000000" anchorX="center" anchorY="middle" textAlign="left" font="./fonts/NeueMachina-Regular.otf">
             EVERY MEANINGFUL DESIGN BEGINS WITH CURIOSITY
           </DrumText>
           <ArrowModel
             position={[3, 2, RADIUS + 13]}
-            scale={20}
+            scale={0.25}
           />
         </group>
         <group rotation={[-THETA, 0, 0]}>
           <MessageModel
-            position={[-2, -0.3, RADIUS + 16]}
-            scale={50}
+            position={[-8, -1, RADIUS + 6]}
+            scale={.2}
             intensity={8000}
             lightColor="#fff4cc"
           />
           <DrumText floatingRef={text2Floating} textRef={text2} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             RESEARCH
           </DrumText>
-          {/* <BrainModel
-            position={[1, 1, RADIUS + 17]}
-            intensity={5000}
-            scale={.8}
-            lightColor="#ffffff"
-          /> */}
+          <LabModel
+            position={[0, -.5, RADIUS + 14]}
+            scale={.7}
+          />
         </group>
         <group rotation={[-THETA * 2, 0, 0]}>
           <SettingModel
-            position={[1.9, 0.2, RADIUS + 16.5]}
-            scale={14}
+            position={[6.5, 0.2, RADIUS + 10]}
+            scale={.3}
             intensity={8000}
             lightColor="#ffffff"
           />
           <DrumText floatingRef={text3Floating} textRef={text3} position={[0, 0, RADIUS]} fontSize={5} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             OPTIMISATION
           </DrumText>
-          {/* <BarCharModel
-            position={[2, 1, RADIUS + 17]}
-            scale={.8}
-            intensity={3000}
-            lightColor="#ffffff"
-          /> */}
+          <RocketModel
+            position={[0, -.5, RADIUS + 15]}
+            scale={1}
+          />
         </group>
         <group rotation={[-THETA * 3, 0, 0]}>
-          {/* <StarModel
-            position={[-1, 0, RADIUS + 17]}
-            scale={.8}
-            intensity={8000}
-            lightColor="#ffffff"
-          /> */}
+          <ChessModel
+            position={[0, -.5, RADIUS + 15]}
+            scale={.7}
+          />
           <DrumText floatingRef={text4Floating} textRef={text4} position={[0, 0, RADIUS]} fontSize={6} color="#000000" anchorX="center" anchorY="middle" textAlign="justify" font="./fonts/NeueMachina-Regular.otf">
             STRATEGY
           </DrumText>
           <CrownModel
-            position={[1, 0.5, RADIUS + 17]}
-            scale={28}
+            position={[4, 1.5, RADIUS + 12]}
+            scale={.25}
             intensity={8000}
             lightColor="#ffffff"
           />
@@ -651,33 +645,13 @@ export function Carousel3D({ bokehRef, ...props }) {
             PARTNERSHIP
           </DrumText>
           <group ref={face1ModelRef}>
-            {/* <Face1Model
-              position={[-4, 1, RADIUS + 14.5]}
-              scale={.8}
-              intensity={8000}
-              lightColor="#ffffff"
-            />
-            <Face2Model
-              position={[-1, -.5, RADIUS + 14.5]}
-              scale={.8}
-              intensity={8000}
-              lightColor="#ffffff"
-            />
-            <Face3Model
-              position={[0, 1.5, RADIUS + 14.5]}
-              scale={.8}
-              intensity={8000}
-              lightColor="#ffffff"
-            />
-            <Face4Model
-              position={[2, -.2, RADIUS + 14.5]}
-              scale={.8}
-              intensity={8000}
-              lightColor="#ffffff"
-            /> */}
+          <BoyGirlModel
+            position={[-2, -.5, RADIUS + 15]}
+            scale={.7}
+          />
             <QuoteModel
-              position={[3, -.5, RADIUS + 13.5]}
-              scale={70}
+              position={[3, .5, RADIUS + 13.5]}
+              scale={.2}
               intensity={8000}
               lightColor="#ffffff"
             />
@@ -695,7 +669,7 @@ export function Carousel3D({ bokehRef, ...props }) {
             color="#1A1A1A"
             font="./fonts/NeueMachina-Regular.otf"
             maxWidth={22}
-            lineHeight={0.8}
+            lineHeight={.92}
             anchorX="left"
             anchorY="top"
           >
@@ -707,12 +681,16 @@ export function Carousel3D({ bokehRef, ...props }) {
             fontSize={.5}
             color="#1A1A1A"
             maxWidth={12}
-            lineHeight={1}
+            lineHeight={1.1}
             anchorX="left"
             anchorY="top"
           >
             Over the years, I’ve learned that great design isn’t just about screens, it’s about truly understanding people, questioning what’s given, and reshaping complexity into something that feels simple, intuitive, and genuinely useful in the real world.
           </Text>
+          <HashModel
+            position={[12, 0, 0]}
+            scale={3}
+          />
         </group>
         <group position={[-3.5, -6.5, 0]}>
           <SkillCard index={0} width={400} text="DESIGN THINKING" icon={chess} setRef={el => skillCardsRef.current[0] = el} />
@@ -736,11 +714,11 @@ export function Carousel3D({ bokehRef, ...props }) {
           <Text
             ref={toolsTitleRef}
             position={[-3, 0, 0]}
-            fontSize={4.5}
+            fontSize={4}
             color="#1A1A1A"
             font="./fonts/NeueMachina-Regular.otf"
             maxWidth={22}
-            lineHeight={0.8}
+            lineHeight={0.92}
             anchorX="left"
             anchorY="top"
           >
@@ -752,12 +730,16 @@ export function Carousel3D({ bokehRef, ...props }) {
             fontSize={.5}
             color="#1A1A1A"
             maxWidth={12}
-            lineHeight={1}
+            lineHeight={1.1}
             anchorX="left"
             anchorY="top"
           >
             A curated selection of the software and frameworks I use to bring ideas to life. From design prototyping to high-performance 3D web experiences.
           </Text>
+          <FolderModel
+            position={[15, -6, 0]}
+            scale={3}
+          />
         </group>
       </group>
 
@@ -841,47 +823,18 @@ export function Carousel3D({ bokehRef, ...props }) {
         >
           LET'S TALK DESIGN
         </Text>
-
-        {/* Overlaid Floating Icons */}
-        {/* <Html position={[-6, 12, 0.5]} transform distanceFactor={10}>
-          <div style={{
-            background: "rgba(255, 255, 255, 0.2)",
-            backdropFilter: "blur(20px)",
-            borderRadius: "15px",
-            padding: "15px",
-            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
-            border: "1px solid rgba(255, 255, 255, 0.18)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "60px",
-            height: "60px"
-          }}>
-            <svg viewBox="0 0 24 24" fill="#0077B5" width="40" height="40">
-              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-            </svg>
-          </div>
-        </Html> */}
-
-        {/* <Html position={[-4, 2, 0.8]} transform distanceFactor={10}>
-          <div style={{
-            background: "rgba(255, 255, 255, 0.2)",
-            backdropFilter: "blur(20px)",
-            borderRadius: "15px",
-            padding: "15px",
-            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
-            border: "1px solid rgba(255, 255, 255, 0.18)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "60px",
-            height: "60px"
-          }}>
-            <svg viewBox="0 0 24 24" fill="#1A1A1A" width="40" height="40">
-              <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 8.817h-18.779l5.513-8.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
-            </svg>
-          </div>
-        </Html> */}
+        <LinkModel
+          position={[10, -4, 0]}
+          scale={3}
+        />
+        <MessageModel
+          position={[16, -0, 10]}
+          scale={.15}
+        />
+        <LinkedinModel
+          position={[20, 1, 10]}
+          scale={.15}
+        />
 
         {/* Action Buttons Linkage */}
         <Html position={[34, 0, 0]} transform distanceFactor={10}>

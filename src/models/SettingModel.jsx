@@ -1,7 +1,7 @@
 import { useGLTF, MeshTransmissionMaterial, Center } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import settingModel from "../assets/models/setting.gltf";
+import settingModel from "../assets/models/setting.glb";
 import { DEFAULT_MATERIAL_CONFIG, MODELS_CONFIG } from "../config/modelsConfig";
 
 const MODEL_NAME = "Setting";

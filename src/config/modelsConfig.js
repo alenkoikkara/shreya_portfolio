@@ -3,16 +3,16 @@
  */
 export const DEFAULT_MATERIAL_CONFIG = {
   transmission: 1,
-  roughness: 0.059,
-  thickness: 1.5,
-  ior: 1.3,
+  roughness: 0.095,
+  thickness: 3,
+  ior: 1.1,
   chromaticAberration: 0,
-  anisotropicBlur: 0.3,
+  anisotropicBlur: 2,
   distortion: 0,
   distortionScale: 0,
   // backside: true,
-  samples: 16,
-  resolution: 1024,
+  samples: 32,
+  resolution: 256,
   color: "#ffffff",
 };
 
@@ -32,4 +32,18 @@ export const MODELS_CONFIG = {
   Face4: {
     groupRotation: [100 * (Math.PI / 180), 180 * (Math.PI / 180), 0],
   },
+  Rocket: {
+    scale: 3,
+    transmission: 0,
+    roughness: 0,
+    thickness: 3,
+    ior: 1.1,
+    chromaticAberration: 0,
+    anisotropicBlur: 2,
+    distortion: 0,
+    distortionScale: 0,
+    samples: 32,
+    resolution: 256,
+    color: "#ffffff",
+  }
 };

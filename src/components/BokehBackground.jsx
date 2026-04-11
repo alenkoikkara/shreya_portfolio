@@ -49,9 +49,9 @@ const BokehBlob = forwardRef(({ offset, color, size, speed }, ref) => {
           <shaderMaterial args={[shaderArgs]} />
           <directionalLight
             color={color}
-            intensity={1000 * (size / 1)}
-            distance={150}
-            decay={.1}
+            intensity={.5 * (size / 1)}
+            distance={.1}
+            decay={.2}
           />
         </mesh>
       </Float>
@@ -74,20 +74,6 @@ export const BokehBackground = forwardRef((props, ref) => {
 
   return (
     <group ref={groupRef} position={[30, -30, -50]}>
-      {/* Stationary point lights that don't move with scroll */}
-      <ambientLight
-        color="#FFE5B4"
-        intensity={10000}
-        distance={150}
-        decay={0.8}
-      />
-      <ambientLight
-        color="#FFE5B4"
-        intensity={10000}
-        distance={150}
-        decay={0.8}
-      />
-
       <BokehBlob
         ref={blob1}
         offset={[-68, -2, 0]}
@@ -97,7 +83,7 @@ export const BokehBackground = forwardRef((props, ref) => {
       />
       <BokehBlob
         ref={blob2}
-        offset={[8, 5, 0]}  
+        offset={[8, 5, 0]}
         color="#FFE5B4"
         size={15}
         speed={1.2}

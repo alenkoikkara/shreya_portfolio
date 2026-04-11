@@ -1,7 +1,7 @@
 import { useGLTF, MeshTransmissionMaterial, Center } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import bulbModel from "../assets/models/bulb.gltf";
+import bulbModel from "../assets/models/bulb.glb";
 import { DEFAULT_MATERIAL_CONFIG, MODELS_CONFIG } from "../config/modelsConfig";
 
 const MODEL_NAME = "Bulb";

@@ -18,10 +18,13 @@ export const LoadingScreen = ({ isFinished }) => {
 
   return (
     <div 
-      className={`fixed inset-0 z-[2000] bg-[#FDECFF] flex items-center justify-center transition-opacity duration-1000 ease-in-out ${
+      className={`fixed inset-0 z-[2000] flex items-center justify-center transition-opacity duration-1000 ease-in-out ${
         isFinished ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
-      style={{ fontFamily: "'Outfit', sans-serif" }}
+      style={{ 
+        fontFamily: "'Outfit', sans-serif",
+        background: "linear-gradient(135deg, #FDECFF, #E4D1F8)"
+      }}
     >
       <div className={`text-[24px] md:text-[32px] tracking-tight md:tracking-normal transition-all duration-1000 ease-in-out ${
         isFinished ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-none'

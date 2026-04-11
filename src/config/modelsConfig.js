@@ -31,19 +31,5 @@ export const MODELS_CONFIG = {
   },
   Face4: {
     groupRotation: [100 * (Math.PI / 180), 180 * (Math.PI / 180), 0],
-  },
-  Rocket: {
-    scale: 3,
-    transmission: 0,
-    roughness: 0,
-    thickness: 3,
-    ior: 1.1,
-    chromaticAberration: 0,
-    anisotropicBlur: 2,
-    distortion: 0,
-    distortionScale: 0,
-    samples: 32,
-    resolution: 256,
-    color: "#ffffff",
   }
 };

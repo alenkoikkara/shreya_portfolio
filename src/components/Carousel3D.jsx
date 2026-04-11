@@ -838,7 +838,7 @@ export function Carousel3D({ bokehRef, ...props }) {
         />
 
         {/* Action Buttons Linkage */}
-        <Html position={[34, 0, 0]} transform distanceFactor={10}>
+        <Html position={[34, 0, 0]} transform distanceFactor={10} pointerEvents="auto">
           <div style={{
             display: "flex",
             flexDirection: "column",
@@ -847,14 +847,18 @@ export function Carousel3D({ bokehRef, ...props }) {
             fontFamily: "sans-serif",
             color: "#1A1A1A"
           }}>
-            <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "35px 0", cursor: "pointer" }}>
-              <span style={{ fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>AR.SHREYA18@GMAIL.COM</span>
-              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
-            </div>
-            <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
-              <span>LINKEDIN</span>
-              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
-            </div>
+            <a href="mailto:AR.SHREYA18@GMAIL.COM" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "35px 0", cursor: "pointer" }}>
+                <span style={{ fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>AR.SHREYA18@GMAIL.COM</span>
+                <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+              </div>
+            </a>
+            <a href="https://www.linkedin.com/in/shreyashreya/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
+                <span>LINKEDIN</span>
+                <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+              </div>
+            </a>
             <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
               <span>DOWNLOAD RESUME</span>
               <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
@@ -863,9 +867,10 @@ export function Carousel3D({ bokehRef, ...props }) {
         </Html>
 
         {/* Bottom center buttons using absolute to sit above/fixed context */}
-        <Html position={[18, -9, 0]} transform distanceFactor={10} center>
+        <Html position={[18, -9, 0]} transform distanceFactor={10} center pointerEvents="auto">
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", marginTop: "20px" }}>
             <button
+              onClick={() => location.href = "https://pages.shreyauxfolio.net/expertise_v1"}
               className="hover-mask-button group"
               style={{
                 background: "black",

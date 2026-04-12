@@ -148,8 +148,7 @@ export const Overlay = () => {
               className="hover-mask-button relative overflow-hidden rounded-full cursor-pointer pointer-events-auto mr-10 group"
               onClick={() => window.location.href = txt.link}
             > 
-              <img className="absolute top-0 left-0 h-full" src={hoverMask} alt="" />
-              <div className="flex gap-2  relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-3500 whitespace-nowrap">
+                          <div className="flex gap-2  relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-3500 whitespace-nowrap">
                 <div>
                   Read All
                 </div>

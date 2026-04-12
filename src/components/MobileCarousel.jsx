@@ -39,7 +39,7 @@ export const MobileCarousel = () => {
         <p className="text-left font-sans font-light mb-8 opacity-80 leading-relaxed text-sm">
           I love the process of discovering the real problem statement it gives me purpose, and more importantly, it gives the team clarity and direction. When we understand the core issue, every design decision becomes more intentional, and the impact becomes more meaningful.
         </p>
-        <button className="bg-black text-white px-6 py-3 rounded-full text-xs tracking-wider">
+        <button onClick={() => window.location.href = "https://pages.shreyauxfolio.net/expertise_v1#section1"} className="bg-black text-white px-6 py-3 rounded-full text-xs tracking-wider">
           VIEW PROJECT →
         </button>
       </div>
@@ -55,7 +55,7 @@ export const MobileCarousel = () => {
         <p className="text-left font-sans font-light mb-8 opacity-80 leading-relaxed text-sm">
           Designing and delivering a product is an incredibly fulfilling experience, but assuming users will engage with it exactly as intended is just wishful thinking.
         </p>
-        <button className="bg-black text-white px-6 py-3 rounded-full text-xs tracking-wider">
+        <button onClick={() => window.location.href = "https://pages.shreyauxfolio.net/expertise_v1#section3"} className="bg-black text-white px-6 py-3 rounded-full text-xs tracking-wider">
           VIEW PROJECT →
         </button>
       </div>
@@ -71,7 +71,7 @@ export const MobileCarousel = () => {
         <p className="text-left font-sans font-light mb-8 opacity-80 leading-relaxed text-sm">
           As I gained more experience in product design, I realized that strategy isn’t optional it’s essential for a product’s success. A great design means little if it doesn’t align with business goals and user needs.
         </p>
-        <button className="bg-black text-white px-6 py-3 rounded-full text-xs tracking-wider">
+        <button onClick={() => window.location.href = "https://pages.shreyauxfolio.net/expertise_v1#section4"} className="bg-black text-white px-6 py-3 rounded-full text-xs tracking-wider">
           VIEW PROJECT →
         </button>
       </div>
@@ -87,7 +87,7 @@ export const MobileCarousel = () => {
         <p className="text-left font-sans font-light mb-8 opacity-80 leading-relaxed text-sm">
           My design work thrives through meaningful collaboration across teams. With Product Managers, I leverage deep product knowledge to define clear priorities and acceptance criteria. Engineering partnerships involve finding the optimal balance between design vision and technical feasibility without compromising user value
         </p>
-        <button className="bg-black text-white px-6 py-3 rounded-full text-xs tracking-wider">
+        <button onClick={() => window.location.href = "https://pages.shreyauxfolio.net/expertise_v1#section5"} className="bg-black text-white px-6 py-3 rounded-full text-xs tracking-wider">
           VIEW PROJECT →
         </button>
       </div>

@@ -2,7 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { PIN_DURATION, DRUM_SPEED } from "./Carousel3D";
+import { PIN_DURATION, DRUM_SPEED } from "../config/carouselConfig";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,17 +19,17 @@ const texts = [
   {
     title: "Performance & optimization",
     subTitle: "Designing and delivering a product is an incredibly fulfilling experience, but assuming users will engage with it exactly as intended is just wishful thinking.",
-    link: "https://pages.shreyauxfolio.net/expertise_v1#section2"
+    link: "https://pages.shreyauxfolio.net/expertise_v1#section3"
   },
   {
     title: "North Stars & Strategy",
     subTitle: "As I gained more experience in product design, I realized that strategy isn’t optional it’s essential for a product’s success. A great design means little if it doesn’t align with business goals and user needs.",
-    link: "https://pages.shreyauxfolio.net/expertise_v1#section3"
+    link: "https://pages.shreyauxfolio.net/expertise_v1#section4"
   },
   {
     title: "Partnership & Collaboration",
     subTitle: "My design work thrives through meaningful collaboration across teams. With Product Managers, I leverage deep product knowledge to define clear priorities and acceptance criteria. Engineering partnerships involve finding the optimal balance between design vision and technical feasibility without compromising user value",
-    link: "https://pages.shreyauxfolio.net/expertise_v1#section4"
+    link: "https://pages.shreyauxfolio.net/expertise_v1#section5"
   },
   {
     title: "",

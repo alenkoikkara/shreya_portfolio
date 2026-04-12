@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import { PIN_DURATION, DRUM_SPEED } from "../config/carouselConfig";
-import hoverMask from "../assets/hover_mask.png";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const texts = [
   {
@@ -117,12 +117,54 @@ export const Overlay = () => {
       y: 20,
       scrollTrigger: {
         trigger: document.body,
-        start: "top top",
-        end: "2% top",
+        start: "95% top",
+        end: "100% top",
         scrub: true
       }
     });
+
+    // Make the arrow label pulse
+    gsap.fromTo(".scroll-indicator span", 
+      { opacity: 0.2 },
+      { opacity: 0.8, repeat: -1, yoyo: true, duration: 1.5, ease: "power1.inOut" }
+    );
   }, { scope: container });
+
+  const handleArrowClick = () => {
+    const vh = window.innerHeight;
+    const currentScroll = window.scrollY;
+    
+    // Accurate section mapping based on DRUM_SPEED and Carousel3D timeline duration (approx 31.1 units for 3500vh)
+    const unit = (35 / 35) * vh; 
+    
+    const targets = [
+      1 * DRUM_SPEED * unit, // Section 1
+      2 * DRUM_SPEED * unit, // Section 2
+      3 * DRUM_SPEED * unit, // Section 3
+      4 * DRUM_SPEED * unit, // Section 4
+      9 * unit,            // Skills
+      17.5 * unit,           // Tools
+      21.0 * unit,           // Journey
+      28.5 * unit            // Contact
+    ];
+
+    const nextTarget = targets.find(t => t > currentScroll + 100);
+
+    if (nextTarget) {
+      gsap.to(window, {
+        scrollTo: nextTarget,
+        duration: 1.5,
+        ease: "power2.inOut"
+      });
+    } else {
+      // If at the end, scroll to bottom
+      gsap.to(window, {
+        scrollTo: document.body.scrollHeight,
+        duration: 1.5,
+        ease: "power2.inOut"
+      });
+    }
+  };
 
   return (
     <div ref={container} className="fixed top-[60vh] right-0 w-full flex justify-end px-4 pointer-events-none z-[999]">
@@ -172,11 +214,13 @@ export const Overlay = () => {
       ))}
       
       {/* Scroll Indicator */}
-      <div className="scroll-indicator fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 pointer-events-none z-[1000]">
-        <span className="opacity-0 text-[10px] font-light tracking-[0.3em] uppercase">Scroll to explore</span>
-        <div className="scroll-indicator-arrow">
+      <div className="scroll-indicator fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-[1000]">
+        <div 
+          className="scroll-indicator-arrow cursor-pointer pointer-events-auto transition-transform hover:scale-125"
+          onClick={handleArrowClick}
+        >
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ shapeRendering: 'crispEdges' }}>
-            <path d="M4 8h2v2H4V8zM6 10h2v2H6v-2zM8 12h2v2H8v-2zM10 14h4v2h-4v-2zM14 12h2v2h-2v-2zM16 10h2v2h-2v-2zM18 8h2v2h-2V8z" fill="black" fillOpacity="1" />
+            <path d="M4 8h2v2H4V8zM6 10h2v2H6v-2zM8 12h2v2H8v-2zM10 14h4v2h-4v-2zM14 12h2v2h-2v-2zM16 10h2v2h-2v-2zM18 8h2v2h-2V8z" fill="black" fillOpacity="0.8" />
           </svg>
         </div>
       </div>

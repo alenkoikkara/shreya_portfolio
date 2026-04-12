@@ -3,6 +3,7 @@ import { Text, Html } from "@react-three/drei";
 import { LinkModel } from "../../models/LinkModel";
 import { MessageModel } from "../../models/MessageModel";
 import { LinkedinModel } from "../../models/LinkedinModel";
+import arrow from "../../assets/icons/arrow-right-line.png";
 
 export const ContactSection = ({
   contactGroupRef,
@@ -50,18 +51,24 @@ export const ContactSection = ({
           <a href="mailto:AR.SHREYA18@GMAIL.COM" style={{ textDecoration: 'none', color: 'inherit' }}>
             <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "35px 0", cursor: "pointer" }}>
               <span style={{ fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>AR.SHREYA18@GMAIL.COM</span>
-              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}><div>
+                <img width={18} height={1} src={arrow} alt="" />
+              </div></div>
             </div>
           </a>
           <a href="https://www.linkedin.com/in/shreyashreya/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
             <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
               <span>LINKEDIN</span>
-              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}><div>
+                <img width={18} height={1} src={arrow} alt="" />
+              </div></div>
             </div>
           </a>
           <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
             <span>DOWNLOAD RESUME</span>
-            <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>→</div>
+            <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}><div>
+              <img width={18} height={1} src={arrow} alt="" />
+            </div></div>
           </div>
         </div>
       </Html>

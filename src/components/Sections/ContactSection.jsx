@@ -90,7 +90,7 @@ export const ContactSection = ({
             </div>
           </button>
           <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{
-            background: "rgba(208, 221, 243, 0.8)",
+            background: "rgba(255, 255, 255, 0.6)",
             color: "#1A1A1A",
             border: "1px solid rgba(255,255,255,0.4)",
             borderRadius: "30px",

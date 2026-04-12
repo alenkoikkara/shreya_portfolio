@@ -11,12 +11,13 @@ export const FolderModel = ({
   position,
   path = folderModel,
   scale = config.scale,
+  active = true,
 }) => {
   const { scene } = useGLTF(path);
   const lightningRef = useRef();
 
   useFrame((state, delta) => {
-    if (lightningRef.current) {
+    if (lightningRef.current && active) {
       lightningRef.current.rotation.y += delta * 0.15;
     }
   });
@@ -25,7 +26,7 @@ export const FolderModel = ({
     <group
       ref={lightningRef}
       position={position}
-      rotation={config.groupRotation || [0 * (Math.PI / 180), -40 * (Math.PI / 180), -25 * (Math.PI / 180)]}
+      rotation={config.groupRotation || [0 * (Math.PI / 180), 140 * (Math.PI / 180), -25 * (Math.PI / 180)]}
       scale={scale}
       renderOrder={50}
     >

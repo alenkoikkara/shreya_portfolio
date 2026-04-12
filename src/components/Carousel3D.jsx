@@ -223,6 +223,8 @@ export function Carousel3D({ bokehRef, ...props }) {
   const text5Floating = useRef();
   const face1ModelRef = useRef();
 
+  const [isToolsActive, setIsToolsActive] = useState(false);
+
   const { size } = useThree();
   const responsiveScale = size.width / 1440;
 
@@ -439,7 +441,13 @@ export function Carousel3D({ bokehRef, ...props }) {
     tl.current.fromTo(
       toolsContentRef.current.position,
       { y: -30 },
-      { y: 7, duration: 1, ease: "power2.out" },
+      { 
+        y: 7, 
+        duration: 1, 
+        ease: "power2.out",
+        onStart: () => setIsToolsActive(true),
+        onReverseComplete: () => setIsToolsActive(false)
+      },
       toolsStart
     );
 
@@ -449,7 +457,13 @@ export function Carousel3D({ bokehRef, ...props }) {
     // 3. Final Exit (Tools title scrolls up)
     tl.current.to(
       toolsGroupRef.current.position,
-      { y: 40, duration: 1.5, ease: "power2.in" },
+      { 
+        y: 40, 
+        duration: 1.5, 
+        ease: "power2.in",
+        onStart: () => setIsToolsActive(false),
+        onReverseComplete: () => setIsToolsActive(true)
+      },
       lastToolExitTime + 0.5
     );
 
@@ -646,10 +660,10 @@ export function Carousel3D({ bokehRef, ...props }) {
             PARTNERSHIP
           </DrumText>
           <group ref={face1ModelRef}>
-          <BoyGirlModel
-            position={[-2, -.5, RADIUS + 15]}
-            scale={.6}
-          />
+            <BoyGirlModel
+              position={[-2, -.5, RADIUS + 15]}
+              scale={.6}
+            />
             <QuoteModel
               position={[3, .5, RADIUS + 13.5]}
               scale={.2}
@@ -735,11 +749,11 @@ export function Carousel3D({ bokehRef, ...props }) {
             anchorX="left"
             anchorY="top"
           >
-            A curated selection of the software and frameworks I use to bring ideas to life. From design prototyping to high-performance 3D web experiences.
-          </Text>
+            A journey through the teams and companies that have shaped my perspective, each one adding to how I think, learn, and design today.          </Text>
           <FolderModel
             position={[15, -6, 0]}
             scale={3}
+            active={isToolsActive}
           />
         </group>
       </group>

@@ -31,7 +31,11 @@ export const MODELS_CONFIG = {
   Bulb: {
     ior: 1.1,
   },
-    
+  Message: {
+    ior: 1.1,
+    thickness: 1,
+    roughness: 0.1,
+  },
   Face1: {
     groupRotation: [97 * (Math.PI / 180), -2 * (Math.PI / 180), -22 * (Math.PI / 180)],
   },

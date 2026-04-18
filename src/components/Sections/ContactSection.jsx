@@ -64,6 +64,14 @@ export const ContactSection = ({
               </div></div>
             </div>
           </a>
+          <a href="https://www.instagram.com/slushy.creation/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
+              <span>INSTAGRAM</span>
+              <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}><div>
+                <img width={18} height={1} src={arrow} alt="" />
+              </div></div>
+            </div>
+          </a>
           <div className="linkage-item pointer flex justify-between" style={{ borderBottom: "1px solid #1A1A1A", padding: "25px 0", fontSize: "20px", fontWeight: "300", cursor: "pointer" }}>
             <span>DOWNLOAD RESUME</span>
             <div className="linkage-arrow" style={{ background: "black", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}><div>

@@ -24,23 +24,19 @@
   position: absolute;
   top: 0;
   left: -20px;
-  width: 140%;
+  width: 170%;
   height: 100%;
   background: white;
-  transform: translateX(-100%);
+  transform: translateX(-140%);
   transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
   z-index: 1;
   pointer-events: none;
 
-  /* Pixelated mask for the sliding layer */
-  -webkit-mask-image: url("./assets/hover_mask.png");
-  -webkit-mask-size: cover;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: right center;
-  mask-image: url("./assets/hover_mask.png");
-  mask-size: cover;
-  mask-repeat: no-repeat;
-  mask-position: right center;
+  /* Inline SVG for generating a crisp pixelated edge */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cpath d='M0,0 h80 v10 h-5 v10 h15 v10 h-10 v10 h15 v10 h-20 v10 h10 v10 h10 v10 h-15 v10 h10 v10 H0 Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cpath d='M0,0 h80 v10 h-5 v10 h15 v10 h-10 v10 h15 v10 h-20 v10 h10 v10 h10 v10 h-15 v10 h10 v10 H0 Z' fill='white'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
 }
 
 .hover-mask-button:hover::before {

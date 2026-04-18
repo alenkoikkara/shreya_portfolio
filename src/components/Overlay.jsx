@@ -51,9 +51,9 @@ export const Overlay = () => {
     subRefs.current.forEach((el, i) => {
       if (!el) return;
       if (i === 0) {
-        gsap.set(el, { opacity: 1, y: 0 }); // First is visible
+        gsap.set(el, { autoAlpha: 1, y: 0 }); // First is visible
       } else {
-        gsap.set(el, { opacity: 0, y: 10 }); // Others start hidden/displaced
+        gsap.set(el, { autoAlpha: 0, y: 10 }); // Others start hidden/displaced
       }
     });
 
@@ -82,8 +82,8 @@ export const Overlay = () => {
           const inDur = entryEndTime - entryStartTime;
           tl.fromTo(
             el,
-            { opacity: 0 },
-            { opacity: 1, duration: inDur, ease: "power2.out" },
+            { autoAlpha: 0 },
+            { autoAlpha: 1, duration: inDur, ease: "power2.out" },
             entryStartTime
           );
         }
@@ -97,7 +97,7 @@ export const Overlay = () => {
 
         tl.to(
           el,
-          { opacity: 0, duration: outDur, ease: "power2.in" },
+          { autoAlpha: 0, duration: outDur, ease: "power2.in" },
           exitStartTime
         );
       }
@@ -113,18 +113,17 @@ export const Overlay = () => {
     });
 
     gsap.to(".scroll-indicator", {
-      opacity: 0,
+      autoAlpha: 0,
       y: 20,
       scrollTrigger: {
-        trigger: document.body,
-        start: "95% top",
-        end: "100% top",
+        start: () => window.innerHeight * 27.5,
+        end: () => window.innerHeight * 28.5,
         scrub: true
       }
     });
 
     // Make the arrow label pulse
-    gsap.fromTo(".scroll-indicator span", 
+    gsap.fromTo(".scroll-indicator span",
       { opacity: 0.2 },
       { opacity: 0.8, repeat: -1, yoyo: true, duration: 1.5, ease: "power1.inOut" }
     );
@@ -133,10 +132,10 @@ export const Overlay = () => {
   const handleArrowClick = () => {
     const vh = window.innerHeight;
     const currentScroll = window.scrollY;
-    
+
     // Accurate section mapping based on DRUM_SPEED and Carousel3D timeline duration (approx 31.1 units for 3500vh)
-    const unit = (35 / 35) * vh; 
-    
+    const unit = (35 / 35) * vh;
+
     const targets = [
       1 * DRUM_SPEED * unit, // Section 1
       2 * DRUM_SPEED * unit, // Section 2
@@ -173,7 +172,7 @@ export const Overlay = () => {
           key={i}
           ref={(el) => subRefs.current[i] = el}
           className="absolute right-0 text-[clamp(0.65rem,1vw,1.05rem)] tracking-wide font-sans flex items-center justify-between w-full"
-          style={{ transform: i === 0 ? 'translateY(0)' : 'translateY(20px)', opacity: i === 0 ? 1 : 0 }}
+          style={{ transform: i === 0 ? 'translateY(0)' : 'translateY(20px)', opacity: i === 0 ? 1 : 0, visibility: i === 0 ? 'visible' : 'hidden' }}
         >
           {/* Corrected Text Block (Single instance) */}
           <div className="flex flex-col items-end max-w-sm mr-12 text-black opacity-0">
@@ -184,18 +183,18 @@ export const Overlay = () => {
               {txt.subTitle}
             </div>
           </div>
-          
+
           {txt.title && (
             <div
               className="hover-mask-button relative overflow-hidden rounded-full cursor-pointer pointer-events-auto mr-10 group"
               onClick={() => window.location.href = txt.link}
-            > 
-                          <div className="flex gap-2 items-center  relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-3500 whitespace-nowrap">
+            >
+              <div className="flex gap-2 items-center  relative z-10 px-5 py-2 text-[11px] font-light text-white group-hover:text-black transition-colors duration-1000 whitespace-nowrap">
                 <div>
                   Read All
                 </div>
                 <div>
-                  <img width={18} height={1} src={arrow} alt="" />
+                  <img width={18} height={1} src={arrow} className="transition-all duration-1000 group-hover:invert" alt="" />
                 </div>
               </div>
             </div>
@@ -212,10 +211,10 @@ export const Overlay = () => {
           </div>
         </div>
       ))}
-      
+
       {/* Scroll Indicator */}
       <div className="scroll-indicator fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-[1000]">
-        <div 
+        <div
           className="scroll-indicator-arrow cursor-pointer pointer-events-auto transition-transform hover:scale-125"
           onClick={handleArrowClick}
         >

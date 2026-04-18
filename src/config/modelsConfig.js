@@ -1,3 +1,5 @@
+import { ior } from "three/tsl";
+
 /**
  * Default material configuration for all models using MeshTransmissionMaterial.
  */
@@ -26,6 +28,10 @@ export const MODELS_CONFIG = {
     // Arrow has a specific rotation on the mesh inside the center component
     meshRotation: [1 * (Math.PI / 180), -1.8 * (Math.PI / 180), 0],
   },
+  Bulb: {
+    ior: 1.1,
+  },
+    
   Face1: {
     groupRotation: [97 * (Math.PI / 180), -2 * (Math.PI / 180), -22 * (Math.PI / 180)],
   },
